@@ -1,25 +1,25 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import goat from './SVG/goat.svg'
+import tiger from './SVG/tiger.svg'
+import './App.css'
+//main component
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <body>
+      <div id="maindiv">
+        <div id='frontpicture'>
+         
+          <img src={goat} className="App-logo" alt="logo" />
+        
+          <img src={tiger} className="App-logo" alt="logo" />
+        
+        </div>
+        <div id='startdiv'>
+          start game here
+        </div>
+      </div>
+    </body>
   );
 }
 
