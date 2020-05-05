@@ -1,16 +1,19 @@
 import React from 'react'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
+import Button from 'react-bootstrap/Button'
 
 export default function Navigation() {
 
         return(
+            
             <Navbar collapseOnSelect expand="lg" bg="primary " variant="dark">
+                <div className="container">
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="mr-auto">
-                            <Nav.Link href="/play">Play</Nav.Link>
+                            <Button variant="outline-warning"  href='/game'>Play the Game</Button>{' '}
                             <Nav.Link href="/instruction">Instruction</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
@@ -37,10 +40,12 @@ export default function Navigation() {
                     <Navbar.Collapse id="responsive-navbar-nav">
                         
                         <Nav className="ml-auto">
-                            <Nav.Link href="/about">About</Nav.Link>
-                            <Nav.Link href="/login">Sign in</Nav.Link>
+                            <Nav.Link href="/about">About</Nav.Link>{' '}
+                            <Button variant="outline-success" href='/login'>Log In/Sign Up</Button>{' '}
                         </Nav>
                     </Navbar.Collapse>
+                    </div>
                 </Navbar>
+           
            );
 }

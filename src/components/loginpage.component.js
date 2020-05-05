@@ -1,8 +1,8 @@
 import React from 'react';
-import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
+
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
-import './App.css'
+
 //import goat from './SVG/goat.svg'
 //import tiger from './SVG/tiger.svg'
 
@@ -14,7 +14,6 @@ function App() {
 //<img src={tiger} className="App-logo" alt="logo" />
 
   return (
-    <Router>
       <body>
       <div>  
       <div className="container">
@@ -26,7 +25,7 @@ function App() {
                 <Form.Label>Email address</Form.Label>
                 <Form.Control type="email" placeholder="Enter email" />
                 <Form.Text className="text-muted">
-                  We'll never share your email with anyone else.
+                  We'll never share your info with anyone else.
                 </Form.Text>
               </Form.Group>
 
@@ -45,8 +44,6 @@ function App() {
             </div></div>
          </div>
         </body>
-        </Router>
-    
   );
 }
 

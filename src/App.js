@@ -1,12 +1,12 @@
 import React from 'react';
-import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
-import Button from 'react-bootstrap/Button'
-import Form from 'react-bootstrap/Form'
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 import './App.css'
 //import goat from './SVG/goat.svg'
 //import tiger from './SVG/tiger.svg'
 import Navbar from './components/navbar.component'
 import Landing from './components/landingpage.component'
+import GamePage from './components/game/gamecomponent'
+import LoginPage from './components/loginpage.component'
 //main component
 
 function App() {
@@ -16,8 +16,11 @@ function App() {
 
   return (
     <Router>
-      <Navbar/>
-      <Route path="/" exact component={Landing}/>
+      
+        <Navbar/>
+        <Route path="/" exact component={Landing}/>
+        <Route path="/game" component={GamePage}/>
+        <Route path="/login" component={LoginPage}/>
     </Router>
     
   );
