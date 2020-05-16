@@ -1,0 +1,30 @@
+.board{
+    margin: auto;
+    left:50%;
+    top:50%;
+}
+
+
+.board-row {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding: 0 4px;
+}
+
+
+.board-row img
+{
+    background: transparent;
+    border: 1px solid transparent;
+    float: center;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 34px;
+    margin-right: -1px;
+    margin-top: -1px;
+    height: 80px;
+    padding: 0;
+    text-align: center;
+    width: 80px
+}

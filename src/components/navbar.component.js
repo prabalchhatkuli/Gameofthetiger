@@ -7,13 +7,13 @@ export default function Navigation() {
 
         return(
             
-            <Navbar collapseOnSelect expand="lg" bg="primary " variant="dark">
+            <Navbar collapseOnSelect expand="lg" bg="light " variant="light">
                 <div className="container">
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="mr-auto">
-                            <Button variant="outline-warning"  href='/game'>Play the Game</Button>{' '}
+                            <Button variant="outline-danger"  href='/game'>Play the Game </Button>{' '}
                             <Nav.Link href="/instruction">Instruction</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
@@ -26,7 +26,7 @@ export default function Navigation() {
                         height="30"
                         className="d-inline-block align-top"
                         />{' '}
-                     Game of the Tiger
+                     Game of the Tiger | बाघ चाल
                      {' '}
                      <img
                         alt=""
