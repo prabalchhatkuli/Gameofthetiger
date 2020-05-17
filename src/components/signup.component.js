@@ -10,16 +10,20 @@ export default class loginPage extends Component {
   constructor(props)
   {
     super(props);
-    this.handleLogin = this.handleLogin.bind(this);
+    this.handleSignup = this.handleSignup.bind(this);
 
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    this.handleRemember = this.handleRemember.bind(this);
+    this.handleConfirmPasswordChange=this.handleConfirmPasswordChange.bind(this);
+    this.handleFirstnameChange =this.handleFirstnameChange.bind(this);
+    this.handleLastnameChange = this.handleLastnameChange.bind(this);
 
     this.state={
       email:'',
+      firstname:'',
+      lastname:'',
       password:'',
-      remember:false
+      confirmPassword:'',
     }
   }
 
@@ -37,34 +41,52 @@ export default class loginPage extends Component {
     })
   }
 
-  handleRemember(e)
+  handleConfirmPasswordChange(e)
   {
     this.setState({
-      remember: e.target.value,
+      confirmPassword: e.target.value,
     })
   }
 
-  async handleLogin(e)
+  handleFirstnameChange(e)
   {
-    e.preventDefault();
-    console.log("login button clicked::::");
-    //state has all login information along with remember option
-    console.log(this.state);
+    this.setState({
+      firstname: e.target.value,
+    })
+  }
 
-    await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
+  handleLastnameChange(e)
+  {
+    this.setState({
+      lastname: e.target.value,
+    })
+  }
+
+
+  async handleSignup(e)
+  {
+    if(this.state.password!==this.state.confirmPassword)
+    {
+      alert("Both passwords must match");
+      return;
+    }
+    e.preventDefault();
+    console.log("signup button clicked::::");
+
+    await firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.confirmPassword).catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
       // [START_EXCLUDE]
-      if (errorCode === 'auth/wrong-password') {
-        alert('Wrong password.');
+      if (errorCode === 'auth/weak-password') {
+        alert('The password is too weak.');
       } else {
         alert(errorMessage);
       }
       console.log(error);
       // [END_EXCLUDE]
     });
-    //console.log(firebase.auth().currentUser);
+    console.log(firebase.auth().currentUser);
   }
 
 
@@ -84,22 +106,19 @@ export default class loginPage extends Component {
                   </Form.Text>
                 </Form.Group>
                 <Form.Group>
-                  <Form.Label>FirstName</Form.Label>
-                  <Form.Control type="text" placeholder="Lorem" />
-                  <Form.Label>Lastname</Form.Label>
-                  <Form.Control type="text" placeholder="Ipsum"/>
+                  <Form.Label>Firstname:</Form.Label>
+                  <Form.Control type="text" placeholder="Lorem" onChange={this.handleFirstnameChange}/>
+                  <Form.Label>Lastname:</Form.Label>
+                  <Form.Control type="text" placeholder="Ipsum" onChange={this.handleLastnameChange}/>
                 </Form.Group>
 
                 <Form.Group controlId="formBasicPassword">
                   <Form.Label>Password:</Form.Label>
                   <Form.Control type="password" placeholder="Secret Password"  onChange={this.handlePasswordChange} />
                   <Form.Label>Confirm Password:</Form.Label>
-                  <Form.Control type="password" placeholder="Retype same Password" />
+                  <Form.Control type="password" placeholder="Retype same Password" onChange={this.handleConfirmPasswordChange}/>
                 </Form.Group>
 
-                <Form.Group controlId="formBasicCheckbox">
-                  <Form.Check className="text-center" type="checkbox" label="Remember me"  onChange={this.handleRemember} />
-                </Form.Group>
                 <Button className="center" variant="primary" onClick={this.handleSignup}>
                   Create an account
                 </Button>{' '}

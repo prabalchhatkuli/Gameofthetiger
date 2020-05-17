@@ -1,3 +1,50 @@
+.board {
+    border: 10px solid gray;
+    text-align: center;
+    position: relative;
+    width: 45vw;
+    height: 45vw;
+    margin: auto;
+  }
+
+  .square {
+    background-color: rgb(3, 146, 3);
+    height: 20%;
+    width: 20%;
+    max-height: 100vw;
+    max-width: 100vw;
+    float: left;
+    padding: 0;
+    margin: auto;
+  }
+
+  .path {
+    background-color: red;
+    height: 80%;
+    width: 80%;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+  }
+
+  .linepath{
+    height: 25%;
+    width: 25%;
+  }
+
+  @media only screen and (max-width: 600px) {
+    /* For mobile phones: */
+    [class="board"] {
+      width: 100vw;
+      height: 100vw;
+    }
+  }
+  
+
+
+
+
+/*
 .board{
     margin: auto;
     left:50%;
@@ -28,3 +75,5 @@
     text-align: center;
     width: 80px
 }
+
+*/
