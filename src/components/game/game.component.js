@@ -4,104 +4,67 @@ import './game.css';
 
 
 class Game extends Component {
+    /*constructor(props)
+    {
+        super(props);
+        //this.changeColor = this.changeColor.bind(this);
+    }*/
+
+    shouldComponentUpdate()
+    {
+        console.log("components should updated");
+    }
+
+    componentDidUpdate()
+    {
+        console.log("components did updated");
+    }
+
+    playerMove(e)
+    {
+        console.log("div clicked");
+    }
+
+    getBoard(){
+        console.log("get board function called");
+        const objs = []
+        for (var i=0; i < 25; i++) {
+          objs.push(<div className="squares" onClick={this.playerMove} key={`Board${i.toString()}`}></div>)
+        }
+        return objs;
+    }
+
+    getIllustrations(){
+        const objs = [];
+        let keyCounter=0;//keys are needed for listed elements
+        for (let i=0; i < 2; i++) {
+            for (let j=0; j < 2; j++) {
+                objs.push(<div className="squares outline1" key={`illustration${keyCounter.toString()}`}></div>);
+                keyCounter++;
+                objs.push(<div className="squares outline2" key={`illustration${keyCounter.toString()}`}></div>);
+                keyCounter++;
+            }
+            for (let j=0; j< 2; j++) {
+                objs.push(<div className="squares outline2" key={`illustration${keyCounter.toString()}`}></div>);
+                keyCounter++;
+                objs.push(<div className="squares outline1" key={`illustration${keyCounter.toString()}`}></div>);
+                keyCounter++;
+            }
+        }
+
+        return objs;
+    }
+
     render() {
         return (
             <div>
                 <div className='board'>
-                    {/*1st*/}
-                    <div class="square"></div>
-                    <div class="square"></div>
-                    <div class="square"></div>
-                    <div class="square"></div>
-                    <div class="square"></div>
-                    {/*2nd*/}
-                    <div class="square"></div>
-                    <div class="square"></div>
-                    <div class="square"></div>
-                    <div class="square"></div>
-                    <div class="square"></div>
-                    {/*3rd*/}
-                    <div class="square"></div>
-                    <div class="square"></div>
-                    <div class="square"></div>
-                    <div class="square"></div>
-                    <div class="square"></div>
-                    {/*4th*/}
-                    <div class="square"></div>
-                    <div class="square"></div>
-                    <div class="square"></div>
-                    <div class="square"></div>
-                    <div class="square"></div>
-                    {/*5th*/}
-                    <div class="square"></div>
-                    <div class="square"></div>
-                    <div class="square"></div>
-                    <div class="square"></div>
-                    <div class="square"></div>
-                    {/*path div contains all the illustrated paths*/}
-                    <div class="path">
-                        {/*1st*/}
-                        <div class="square linepath"></div>
-                        <div class="square linepath"></div>
-                        <div class="square linepath"></div>
-                        <div class="square linepath"></div>
-                        
-                        {/*2nd*/}
-                        <div class="square linepath"></div>
-                        <div class="square linepath"></div>
-                        <div class="square linepath"></div>
-                        <div class="square linepath"></div>
-                        
-                        {/*3rd*/}
-                        <div class="square linepath"></div>
-                        <div class="square linepath"></div>
-                        <div class="square linepath"></div>
-                        <div class="square linepath"></div>
-                        
-                        {/*4th*/}
-                        <div class="square linepath"></div>
-                        <div class="square linepath"></div>
-                        <div class="square linepath"></div>
-                        <div class="square linepath"></div>
-                        
+                    {/*get the main board*/}
+                        {this.getBoard()}
+                    {/*contains all the illustrated paths and diagonal elements.*/}
+                    <div className="squares inner-square">
+                        {this.getIllustrations()}
                     </div>
-                {/*
-                    <div className='board-row'>
-
-                        <img src={require('../../SVG/squareright.svg')} alt="right square"/>{' '}
-                        <img src={require('../../SVG/squareleft.svg')} alt="left square"/>{' '}
-                        <img src={require('../../SVG/squareright.svg')} alt="right square"/>{' '}
-                        <img src={require('../../SVG/squareleft.svg')} alt="left square"/>{' '}
-                    
-                    </div>
-
-                    <div className='board-row'>
-
-                        <img src={require('../../SVG/squareleft.svg')} alt="left square"/>{' '}
-                        <img src={require('../../SVG/squareright.svg')} alt="right square"/>{' '}
-                        <img src={require('../../SVG/squareleft.svg')} alt="left square"/>{' '}
-                        <img src={require('../../SVG/squareright.svg')} alt="right square"/>{' '}
-                        
-                    </div>
-
-                    <div className='board-row'>
-
-                        <img src={require('../../SVG/squareright.svg')} alt="right square"/>{' '}
-                        <img src={require('../../SVG/squareleft.svg')} alt="left square"/>{' '}
-                        <img src={require('../../SVG/squareright.svg')} alt="right square"/>{' '}
-                        <img src={require('../../SVG/squareleft.svg')} alt="left square"/>{' '}
-
-                    </div>
-
-                    <div className='board-row'>
-
-                        <img src={require('../../SVG/squareleft.svg')} alt="left square"/>{' '}
-                        <img src={require('../../SVG/squareright.svg')} alt="right square"/>{' '}
-                        <img src={require('../../SVG/squareleft.svg')} alt="left square"/>{' '}
-                        <img src={require('../../SVG/squareright.svg')} alt="right square"/>{' '}
-
-                    </div>
-                */}
                 </div>
             </div>
         )
