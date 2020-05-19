@@ -16,8 +16,6 @@ export default class Square extends Component {
       s:false,
       se:false
     }
-
-    this.clickfunction= this.clickfunction.bind(this);
   }
 //set state according to props, the props contain information on what direction 
 //a square will allow movemements
@@ -35,18 +33,36 @@ export default class Square extends Component {
     }));
   }
   */
-  clickfunction= ()=> {
-    this.setState((state, props)=>({
-      value:'Goat'
-    }))
+  getPiece(p){
+    switch(p){
+
+      case 'T':    return <img
+          alt=""
+          src={require('../../SVG/tigerpiece.svg')}
+          width="45%"
+          height="45%"
+          className="d-inline-block align-top"
+          />
+
+  
+      case 'G':    return <img
+          alt=""
+          src={require('../../SVG/goatpiece.svg')}
+          width="60%"
+          height="60%"
+          className="d-inline-block align-top"
+          />
+
+      default: 
+    }
   }
 
   render() {
     return (
         <div 
           className="squares" 
-          onClick={this.clickfunction}>
-          {this.state.value}
+          onClick={this.props.onClick}>
+          {this.getPiece(this.props.value)}
         </div>
     );
   }

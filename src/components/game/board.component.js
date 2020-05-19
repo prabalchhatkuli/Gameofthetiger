@@ -3,18 +3,16 @@ import Square from './square.component'
 import './game.css'
 
 export default class Board extends Component {
-    constructor(props){
-        super(props);
-        //array will have characters G/T/null
-        this.state={
-            squares:Array(25).fill(null)
-        }
-    }
+    
     renderSquare(i) {
         return (
-          <Square value={this.state.squares[i]}/>
+          <Square 
+            value={this.props.squares[i]}
+            onClick={()=>this.props.handleClick(i)}
+          />
         );
       }
+
     getIllustrations(){
         const objs = [];
         let keyCounter=0;//keys are needed for listed elements
@@ -38,6 +36,9 @@ export default class Board extends Component {
       render() {
         return (
           <div className="board">
+            <div className="squares inner-square">
+                {this.getIllustrations()}
+            </div>
               {this.renderSquare(0)}
               {this.renderSquare(1)}
               {this.renderSquare(2)}
@@ -63,9 +64,6 @@ export default class Board extends Component {
               {this.renderSquare(22)}
               {this.renderSquare(23)}
               {this.renderSquare(24)}
-            <div className="squares inner-square">
-                {this.getIllustrations()}
-            </div>
         </div>
         );
       }

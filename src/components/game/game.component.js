@@ -5,25 +5,31 @@ import Board from './board.component'
 
 
 class Game extends Component {
-    /*constructor(props)
+    constructor(props)
     {
         super(props);
         //this.changeColor = this.changeColor.bind(this);
-    }*/
-
-    shouldComponentUpdate()
-    {
-        console.log("components should updated");
+        this.state ={
+            history: [{
+                squares: Array(25).fill(null),
+            }],
+            gisnext: true,
+        };
     }
 
-    componentDidUpdate()
-    {
-        console.log("components did updated");
-    }
+    handleClick(i){
+        const history = this.state.history;
+        const current = history[history.length-1];
+        const squares = current.squares.slice();
 
-    playerMove(e)
-    {
-        console.log("div clicked");
+        squares[i]= this.state.gisnext? 'G': 'T';
+        this.setState((state, props) => ({
+            history: history.concat([{
+                squares: squares,
+            }]),
+            gisnext: !this.state.gisnext,
+        }));
+
     }
 /*
     getBoard(){
@@ -38,15 +44,24 @@ class Game extends Component {
 
 
     render() {
+        const history = this.state.history;
+        const current = history[history.length -1];
+        
+        let status;
+        status = 'Next player: ' + (this.state.gisnext ? 'Goat' : 'Tiger');
         return (
             <div className="game">
+                <div className="game-info">
+                    <div>{status}</div>
+                    <ol>{/*add smth*/}</ol>
+                </div>
                 <div>
                         {/*get the main board*/}
-                        <Board/>
+                        <Board
+                            squares={current.squares}
+                            handleClick={(i)=> this.handleClick(i)}
+                        />
                         {/*contains all the illustrated paths/click divs and diagonal elements.*/}
-                </div>
-                <div className="gameInfo">
-                    <p>Here is game info</p>
                 </div>
             </div>
         )
