@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
 import './game.css';
+import Board from './board.component'
 
 
 class Game extends Component {
@@ -24,7 +25,7 @@ class Game extends Component {
     {
         console.log("div clicked");
     }
-
+/*
     getBoard(){
         console.log("get board function called");
         const objs = []
@@ -33,38 +34,19 @@ class Game extends Component {
         }
         return objs;
     }
+*/
 
-    getIllustrations(){
-        const objs = [];
-        let keyCounter=0;//keys are needed for listed elements
-        for (let i=0; i < 2; i++) {
-            for (let j=0; j < 2; j++) {
-                objs.push(<div className="squares outline1" key={`illustration${keyCounter.toString()}`}></div>);
-                keyCounter++;
-                objs.push(<div className="squares outline2" key={`illustration${keyCounter.toString()}`}></div>);
-                keyCounter++;
-            }
-            for (let j=0; j< 2; j++) {
-                objs.push(<div className="squares outline2" key={`illustration${keyCounter.toString()}`}></div>);
-                keyCounter++;
-                objs.push(<div className="squares outline1" key={`illustration${keyCounter.toString()}`}></div>);
-                keyCounter++;
-            }
-        }
-
-        return objs;
-    }
 
     render() {
         return (
-            <div>
-                <div className='board'>
-                    {/*get the main board*/}
-                        {this.getBoard()}
-                    {/*contains all the illustrated paths and diagonal elements.*/}
-                    <div className="squares inner-square">
-                        {this.getIllustrations()}
-                    </div>
+            <div className="game">
+                <div>
+                        {/*get the main board*/}
+                        <Board/>
+                        {/*contains all the illustrated paths/click divs and diagonal elements.*/}
+                </div>
+                <div className="gameInfo">
+                    <p>Here is game info</p>
                 </div>
             </div>
         )
