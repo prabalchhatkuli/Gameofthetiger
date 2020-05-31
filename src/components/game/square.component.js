@@ -2,21 +2,21 @@ import React, { Component } from 'react'
 import './game.css';
 
 export default class Square extends Component {
-  constructor(props)
-  {
-    super(props);
-    this.state={
-      value:null,
-      e:false,
-      ne:false,
-      n:false,
-      nw:false,
-      w:false,
-      sw:false,
-      s:false,
-      se:false
-    }
-  }
+  // constructor(props)
+  // {
+  //   super(props);
+  //   this.state={
+  //     value:null,
+  //     e:false,
+  //     ne:false,
+  //     n:false,
+  //     nw:false,
+  //     w:false,
+  //     sw:false,
+  //     s:false,
+  //     se:false
+  //   }
+  // }
 //set state according to props, the props contain information on what direction 
 //a square will allow movemements
 /*  componentWillMount(){

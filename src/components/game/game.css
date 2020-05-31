@@ -10,7 +10,7 @@
   }
 
 /*all squares in the board except the board*/
-  .squares {
+.squares {
     background-color:transparent;
     height: 20%;
     width: 20%;
