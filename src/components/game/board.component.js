@@ -38,7 +38,7 @@ export default class Board extends Component {
           <div className="board">
             <div className="squares inner-square">
                 {this.getIllustrations()}
-            </div>
+            </div> 
               {this.renderSquare(0)}
               {this.renderSquare(1)}
               {this.renderSquare(2)}

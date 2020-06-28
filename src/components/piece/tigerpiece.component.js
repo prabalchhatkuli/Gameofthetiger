@@ -1,7 +1,10 @@
-import React, { Component } from 'react'
+import Piece from "./piece.component";
 
-export default class tigerpiece extends Component {
-    
+export default class tigerpiece extends Piece{
+    constructor(){
+      super('T');
+    }
+
     findBoundaries(evenOrOdd, src){
         //boundaries in the order: T, L, R, B
         let boundaries=Array(4).fill(false);
@@ -50,7 +53,7 @@ export default class tigerpiece extends Component {
         {
             let moves=[(src-6),(src-5), (src-4), (src-1), (src+1), (src+4), (src+5), (src+6)];
             //top
-            if(boundaries[0]){
+            if(boundaries[0]){ 
               moves[0]=null;
               moves[1]=null;
               moves[2]=null;
@@ -67,19 +70,20 @@ export default class tigerpiece extends Component {
               moves[4]=null;
               moves[7]=null;
             }
+            
             //bottom
             if(boundaries[3]){
               moves[5]=null;
               moves[6]=null;
               moves[7]=null;
             }
-            console.log(moves);
+            return moves.includes(dest);
         }
         //if odd
             //can go E/W/N/S except boundaries
         else
         {
-          let moves=[(src-5), (src-1), (src+1), (src+5)];
+            let moves=[(src-5), (src-1), (src+1), (src+5)];
             //top
             if(boundaries[0]){
               moves[0]=null;
@@ -98,15 +102,8 @@ export default class tigerpiece extends Component {
             }
             //moves has the position of possible moves, has null on the list
             console.log(moves);
+            return moves.includes(dest);
         }
     }
 
-
-    render() {
-        return (
-            <div>
-                
-            </div>
-        )
-    }
 }

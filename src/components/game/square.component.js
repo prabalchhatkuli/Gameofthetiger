@@ -8,7 +8,7 @@ export default class Square extends Component {
   //   this.state={
   //     value:null,
   //     e:false,
-  //     ne:false,
+  //     ne:false, 
   //     n:false,
   //     nw:false,
   //     w:false,
@@ -62,7 +62,7 @@ export default class Square extends Component {
         <div 
           className="squares" 
           onClick={this.props.onClick}>
-          {this.getPiece(this.props.value)}
+          {this.getPiece(this.props.value.player)}
         </div>
     );
   }

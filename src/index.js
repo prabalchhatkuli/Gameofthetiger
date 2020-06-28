@@ -4,9 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {Provider} from 'react-redux'
 
-import store from './config/store'
 //-------------------------------------------------------------firebase------------------------------
 // Firebase App (the core Firebase SDK) is always required and must be listed first
 import * as firebase from "firebase/app";
@@ -37,9 +35,8 @@ firebase.initializeApp(firebaseConfig);
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
+
     <App />
-    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );

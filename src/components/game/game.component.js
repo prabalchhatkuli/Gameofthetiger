@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
-
+import {Provider} from 'react-redux'
 import './game.css';
 import Board from './board.component'
+import Tiger from '../piece/tigerpiece.component'
+import Goat from '../piece/goatpiece.component'
+import Piece from '../piece/piece.component'
 //import fallenanimals from './fallenanimals.component'
 
 
@@ -9,10 +12,10 @@ class Game extends Component {
     constructor(props)
     {
         super(props);
-        //this.changeColor = this.changeColor.bind(this);
+        //this.changeColor = this.changeColor.bind(this);  Array(25).fill(new Piece())
         this.state ={
             history: [{
-                squares: Array(25).fill(null),
+                squares: Array(25).fill(new Piece()),
             }],
             gisnext: true,
             sourceSelection:-1,
@@ -24,11 +27,11 @@ class Game extends Component {
     
     //tigers start at the four corners of the board
     componentDidMount(){
-        let startstate = Array(25).fill(null);
-        startstate[0]='T';
-        startstate[4]='T';
-        startstate[20]='T';
-        startstate[24]='T';
+        let startstate = Array(25).fill(new Piece());
+        startstate[0]=new Tiger();
+        startstate[4]=new Tiger();
+        startstate[20]=new Tiger();
+        startstate[24]=new Tiger();
         //here over-rwriting the initial null board state with tigers built in
         this.setState({
             history: [{
@@ -47,7 +50,7 @@ class Game extends Component {
         if(this.state.sourceSelection===-1){
             //if clicked div has the piece that another player's piece is in
                 //give status error
-            if((squares[i]==='T'&&this.state.gisnext) || (squares[i]==='G'&&!this.state.gisnext))
+            if((squares[i].player==='T'&&this.state.gisnext) || (squares[i].player==='G'&&!this.state.gisnext))
             {
                 console.log("wrong piece to move");
                 return;
@@ -57,13 +60,14 @@ class Game extends Component {
                 //give status error
             if(this.state.gisnext)
             {
-                if(squares[i]===null){
+                console.log(squares[i].player);
+                if(squares[i].player===null){
                     //need to do something
                     //count g and if number is less than 20 continue
                     if(this.state.goatsOnBoard<16)
                     {
                         console.log("goats placed");
-                        squares[i]='G';
+                        squares[i]=new Goat();
                         this.setState((state, props)=>{
                             return {goatsOnBoard: state.goatsOnBoard+1};
                         });
@@ -78,6 +82,7 @@ class Game extends Component {
                 //try to move the goat
                 else
                 {
+                    console.log(this.state.goatsOnBoard);
                     if(this.state.goatsOnBoard>=16)
                     {
                         this.setState((state, props)=>{
@@ -95,7 +100,7 @@ class Game extends Component {
             //try to place a new tiger
             if(!this.state.gisnext)
             {
-                if(squares[i]===null)
+                if(squares[i].player===null)
                 {
                     //clicked on incorrect place for tiger//give error
                     console.log("cannot place more than 4 tigers. Choose tiger first");
@@ -106,7 +111,7 @@ class Game extends Component {
                 //if clicked correct piece
                     //change the background color of the div : this is the source div
                     //change source selection to the index of the div
-                if(squares[i]==='T')
+                if(squares[i].player==='T')
                 {
                     this.setState((state, props)=>{
                         return {sourceSelection: i};
@@ -132,7 +137,7 @@ class Game extends Component {
                 return;
             }
             //check if destination is valid
-            if(squares[i]!=null)
+            if(squares[i].player!=null)
             {
                 //error: destination square not empty
                 console.log("destination is not empty: choose an empty destination");
@@ -143,8 +148,9 @@ class Game extends Component {
             else
             {
                 //execute the move
-                squares[i]=this.state.gisnext? 'G':'T';
-                squares[this.state.sourceSelection]=null;
+                squares[i]=this.state.gisnext? new Goat():new Tiger();
+                //remove the object in square[this.state.sourceSelection]
+                squares[this.state.sourceSelection]=new Piece();
                 this.setState((state, props)=>{
                     return {sourceSelection: -1};
                 });
