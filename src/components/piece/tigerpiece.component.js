@@ -33,7 +33,8 @@ export default class tigerpiece extends Piece{
         return boundaries;
     }
 
-
+    //tigers can move the same as goats but if a singular goat is blocking their way in one direction, they cannot move
+    //
     ismovepossible(src, dest)
     {   
         //check source number

@@ -33,7 +33,10 @@ export default class goatpiece extends Piece{
         return boundaries;
     }
 
-
+    //goats cannot be blocked in any way
+    //do not jump or do anything
+    //need to lookup the original state before making decision
+    //the square needs to be globally available to both goat/tiger/game component
     ismovepossible(src, dest)
     {   
         //check source number

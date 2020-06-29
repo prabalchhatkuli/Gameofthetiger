@@ -124,8 +124,9 @@ class Game extends Component {
         else{
         //if source selection is not -1 : player chose the destination
             //if source selection not -1 and the next div is the same
-            //change the backgroundn color back to what it was
+            //------need to change the backgroundn color back to what it was
             //do nothing
+
             if(this.state.sourceSelection===i)
             {
                 //do nothing
@@ -136,6 +137,18 @@ class Game extends Component {
                 console.log("selection cancelled");
                 return;
             }
+
+            //const isDestEnemyOccupied = squares[i].player? true : false; 
+            // const isMovePossible = squares[this.state.sourceSelection].isMovePossible(this.state.sourceSelection, i, isDestEnemyOccupied);
+
+            // if(isMovePossible){
+            //     console.log("Move possible");
+            // }
+            // else
+            // {
+            //     console.log("Move not Possible");
+            // }
+
             //check if destination is valid
             if(squares[i].player!=null)
             {
@@ -172,12 +185,12 @@ class Game extends Component {
         const history = this.state.history;
         const current = history[history.length -1];
         
-        let status;
-        status = 'Next player: ' + (this.state.gisnext ? 'Goat' : 'Tiger');
+        let nextPlayer;
+        nextPlayer = 'Next player: ' + (this.state.gisnext ? 'Goat' : 'Tiger');
         return (
             <div className="game">
                 <div className="game-info">
-                    <div>{status}</div>
+                    <div>{nextPlayer}</div>
                     <ol>{/*add smth*/}</ol>
                 </div>
                 <div>
