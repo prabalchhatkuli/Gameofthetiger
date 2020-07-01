@@ -21,6 +21,7 @@ class Game extends Component {
             sourceSelection:-1,
             destinationSelection:0,
             goatsOnBoard:0,//always <=20
+            goatsTaken:0,
             status:''
         };
     }
@@ -139,38 +140,43 @@ class Game extends Component {
             }
             
             //if null this will return false
-            const isDestEnemyOccupied = squares[i].player? true : false; 
+            //const isDestEnemyOccupied = squares[i].player? true : false; 
             //check if the given move is possible, if possible, execute the move
-             const isMovePossible = squares[this.state.sourceSelection].isMovePossible(this.state.sourceSelection, i, isDestEnemyOccupied,squares);
+             const isMovePossible = squares[this.state.sourceSelection].isMovePossible(this.state.sourceSelection, i,squares);
 
-            // if(isMovePossible){
-            //     console.log("Move possible");
-            // }
-            // else
-            // {
-            //     console.log("Move not Possible");
-            // }
-
-            //check if destination is valid
-            if(squares[i].player!=null)
-            {
-                //error: destination square not empty
-                console.log("destination is not empty: choose an empty destination");
-                return;
-            }
-            //if valid dest position of the piece
-                //switch the user: whoever will play next
-            else
-            {
-                //execute the move
-                squares[i]=this.state.gisnext? new Goat():new Tiger();
-                //remove the object in square[this.state.sourceSelection]
-                squares[this.state.sourceSelection]=new Piece();
+            //if move is possible execute
+            //check if destination is valid is done in the object while calculating if move is
+            if(isMovePossible){
+                console.log("Move possible");
+                let DoesTigerEat = Math.abs(this.state.sourceSelection-i)
+                //if it is tiger's turn and whether it is trying to eat the goat
+                if(!this.state.gisnext&&(DoesTigerEat===4||DoesTigerEat===2||DoesTigerEat===10||DoesTigerEat===12)){
+                    squares[this.state.sourceSelection]=new Piece(); //remove old position
+                    squares[i]=new Tiger(); //tiger in new position
+                    squares[this.state.sourceSelection+(this.state.sourceSelection-i)/2]=new Piece(); //remove goat
+                    this.setState((state, props)=>{
+                        return {goatsTaken: state.goatsTaken+1};
+                    })
+                }
+                else{
+                    //if valid dest position of the piece
+                    //switch the user: whoever will play next
+                    //execute the move
+                    squares[i]=this.state.gisnext? new Goat():new Tiger();
+                    //remove the object in square[this.state.sourceSelection]
+                    squares[this.state.sourceSelection]=new Piece();
+                }
                 this.setState((state, props)=>{
                     return {sourceSelection: -1};
                 });
                 console.log("destination selected: "+i);
                 //change user
+            }
+            else
+            {
+                console.log("Move not Possible");
+                console.log("destination is not empty: choose an empty destination");
+                return;
             }
         }
 
@@ -180,7 +186,6 @@ class Game extends Component {
             }]),
             gisnext: !this.state.gisnext,
         }));
-
     }
 //---------------------------------------------------handleclick()----------------------------------------------------------
     render() {

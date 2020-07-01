@@ -37,7 +37,7 @@ export default class goatpiece extends Piece{
     //do not jump or do anything
     //need to lookup the original state before making decision
     //the square needs to be globally available to both goat/tiger/game component
-    ismovepossible(src, dest)
+    isMovePossible(src, dest, board)
     {   
         //check source number
             //even or odd
@@ -54,6 +54,7 @@ export default class goatpiece extends Piece{
             //can go all sides except boundaries
         if(evenOrOdd)
         {
+          //moves has the position of possible moves, contains null elements
             let moves=[(src-6),(src-5), (src-4), (src-1), (src+1), (src+4), (src+5), (src+6)];
             //top
             if(boundaries[0]){ 
@@ -79,7 +80,14 @@ export default class goatpiece extends Piece{
               moves[6]=null;
               moves[7]=null;
             }
-            return moves.includes(dest);
+            //ensure destination is empty
+            if(moves.includes(dest) && board[dest].player===null){
+              return true;
+            }
+            else
+            {
+              return false;
+            }
         }
         //if odd
             //can go E/W/N/S except boundaries
@@ -102,9 +110,15 @@ export default class goatpiece extends Piece{
             if(boundaries[3]){
               moves[3]=null;
             }
-            //moves has the position of possible moves, has null on the list
-            console.log(moves);
-            return moves.includes(dest);
+
+            //ensure destination is empty
+            if(moves.includes(dest) && board[dest].player===null){
+              return true;
+            }
+            else
+            {
+              return false;
+            }
         }
     }
 }
