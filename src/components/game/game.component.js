@@ -137,9 +137,11 @@ class Game extends Component {
                 console.log("selection cancelled");
                 return;
             }
-
-            //const isDestEnemyOccupied = squares[i].player? true : false; 
-            // const isMovePossible = squares[this.state.sourceSelection].isMovePossible(this.state.sourceSelection, i, isDestEnemyOccupied);
+            
+            //if null this will return false
+            const isDestEnemyOccupied = squares[i].player? true : false; 
+            //check if the given move is possible, if possible, execute the move
+             const isMovePossible = squares[this.state.sourceSelection].isMovePossible(this.state.sourceSelection, i, isDestEnemyOccupied,squares);
 
             // if(isMovePossible){
             //     console.log("Move possible");
