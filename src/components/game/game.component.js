@@ -150,7 +150,7 @@ class Game extends Component {
                 console.log("Move possible");
                 let DoesTigerEat = Math.abs(this.state.sourceSelection-i)
                 //if it is tiger's turn and whether it is trying to eat the goat
-                if(!this.state.gisnext&&(DoesTigerEat===4||DoesTigerEat===2||DoesTigerEat===10||DoesTigerEat===12)){
+                if(!this.state.gisnext&&(DoesTigerEat===8||DoesTigerEat===2||DoesTigerEat===10||DoesTigerEat===12)){
                     squares[this.state.sourceSelection]=new Piece(); //remove old position
                     squares[i]=new Tiger(); //tiger in new position
                     squares[this.state.sourceSelection+(this.state.sourceSelection-i)/2]=new Piece(); //remove goat

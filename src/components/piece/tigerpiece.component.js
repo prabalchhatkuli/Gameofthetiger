@@ -114,18 +114,38 @@ export default class tigerpiece extends Piece{
               eatMoves[3]=null;
             }
             //----------------------------------------------------------------
-            //if non-null moves element is a boundary element, turn the index at eatMoves to null
+            
             for(let i=0; i<4; i++)
             {
+              //check if a goat is present in the box, if not cannot jump over
+              console.log("palyer for tiger move:");
+              console.log(board[moves[i]]);
+              if(board[moves[i]].player==='T')
+              {
+                eatMoves[i]=null;
+                moves[i]=null;
+              }
+              
+              //if goat is present then cannot move in the next but can eat
+              if(board[moves[i]].player==='G')
+              {
+                moves[i]=null;
+              }
+              
+              //if move space is empty, can move into but cannot eat/jump over
+              if(board[moves[i]].player===null)
+              {
+                eatMoves[i]=null;
+              }
+
+              //check if the move is in the boundary, if yes, cannot jump over
               if(moves[i]!==null && ((moves[i]>=0&&moves[i]<=4)||(moves[i]>=20&&moves[i]<=24)||(moves[i]%4===0)||(moves[i]%5===0))){
                 eatMoves[i]=null;
-                if(board[moves[i]].player===null){
-                  moves[i]=null;
-                }
               }
             }
 
-            if(eatMoves.includes(dest)){
+            //if eat possible
+            if(eatMoves.includes(dest)&&board[dest].player===null){
               return true;
             }
             //----------------------------------------------------------------
