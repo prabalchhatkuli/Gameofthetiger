@@ -93,7 +93,7 @@ export default class tigerpiece extends Piece{
             }
 
 
-            for(let i=0; i<4; i++)
+            for(let i=0; i<8; i++)
             {
               //check if a goat is present in the box, if not cannot jump over
 
