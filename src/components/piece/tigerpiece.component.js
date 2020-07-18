@@ -53,24 +53,33 @@ export default class tigerpiece extends Piece{
         if(evenOrOdd)
         {
             let moves=[(src-6),(src-5), (src-4), (src-1), (src+1), (src+4), (src+5), (src+6)];
-            //           src-12,src-10,  src-8,  src+2,  src-2,    src+8 ,   src+10, src+12
+            let eatMoves= [(src-12),(src-10), (src-8), (src-2), (src+2), (src+8), (src+10), (src+12)];
             //top
             if(boundaries[0]){ 
               moves[0]=null;
               moves[1]=null;
               moves[2]=null;
+              eatMoves[0]=null;
+              eatMoves[1]=null;
+              eatMoves[2]=null;
             }
             //left
             if(boundaries[1]){
               moves[0]=null;
               moves[3]=null;
               moves[5]=null;
+              eatMoves[0]=null;
+              eatMoves[3]=null;
+              eatMoves[5]=null;
             }
             //right
             if(boundaries[2]){
               moves[2]=null;
               moves[4]=null;
               moves[7]=null;
+              eatMoves[2]=null;
+              eatMoves[4]=null;
+              eatMoves[7]=null;
             }
             
             //bottom
@@ -78,7 +87,62 @@ export default class tigerpiece extends Piece{
               moves[5]=null;
               moves[6]=null;
               moves[7]=null;
+              eatMoves[5]=null;
+              eatMoves[6]=null;
+              eatMoves[7]=null;
             }
+
+
+            for(let i=0; i<4; i++)
+            {
+              //check if a goat is present in the box, if not cannot jump over
+
+              if(moves[i]===null)
+              {
+                continue;
+              }
+    
+              if(board[moves[i]].player==='T')
+              {
+                eatMoves[i]=null;
+                moves[i]=null;
+              }
+              
+              //if goat is present then cannot move in the next but can eat
+              else if(board[moves[i]].player==='G')
+              {
+                moves[i]=null;
+              }
+              
+              //if move space is empty, can move into but cannot eat/jump over
+              else if(board[moves[i]].player===null || board[eatMoves[i]].player!==null)
+              {
+                eatMoves[i]=null;
+              }
+
+              //if there is another piece in the eatmove place already
+              if(eatMoves[i]!==null){
+                if(board[eatMoves[i]].player!==null){
+                  eatMoves[i]=null;
+                }
+              }
+              //check if the move is into the boundary, if yes, cannot jump over, 
+              if(moves[i]!==null && ((moves[i]>=0&&moves[i]<=4)||(moves[i]>=20&&moves[i]<=24)||(moves[i]%4===0)||(moves[i]%5===0))){
+                //but, if the tiger is in the boundary it can move in a direction :eatMoves not null
+                if(!((src>=0&&src<=4)||(src>=20&&src<=24)||(src%4===0)||(src%5===0))){
+                  eatMoves[i]=null;
+                }
+              }
+            }
+
+            console.log("eamoves and moves");
+            console.log(eatMoves);
+            console.log(moves);
+            //if eat possible
+            if(eatMoves.includes(dest)&&board[dest].player===null){
+              return true;
+            }
+
             if(moves.includes(dest) && board[dest].player===null){
               return true;
             }
@@ -92,7 +156,7 @@ export default class tigerpiece extends Piece{
         else
         {
             let moves=[(src-5), (src-1), (src+1), (src+5)];
-            let eatMoves=[(src-10), (src+2), (src-2), (src+10)] // for any of these moves to be possible there must be a goat in respective ones
+            let eatMoves=[(src-10), (src-2), (src+2), (src+10)] // for any of these moves to be possible there must be a goat in respective ones
             //top
             if(boundaries[0]){
               moves[0]=null;
@@ -118,8 +182,12 @@ export default class tigerpiece extends Piece{
             for(let i=0; i<4; i++)
             {
               //check if a goat is present in the box, if not cannot jump over
-              console.log("palyer for tiger move:");
-              console.log(board[moves[i]]);
+
+              if(moves[i]===null)
+              {
+                continue;
+              }
+    
               if(board[moves[i]].player==='T')
               {
                 eatMoves[i]=null;
@@ -127,23 +195,35 @@ export default class tigerpiece extends Piece{
               }
               
               //if goat is present then cannot move in the next but can eat
-              if(board[moves[i]].player==='G')
+              else if(board[moves[i]].player==='G')
               {
                 moves[i]=null;
               }
               
               //if move space is empty, can move into but cannot eat/jump over
-              if(board[moves[i]].player===null)
+              else if(board[moves[i]].player===null || board[eatMoves[i]].player!==null)
               {
                 eatMoves[i]=null;
               }
 
-              //check if the move is in the boundary, if yes, cannot jump over
+              //if there is another piece in the eatmove place already
+              if(eatMoves[i]!==null){
+                if(board[eatMoves[i]].player!==null){
+                  eatMoves[i]=null;
+                }
+              }
+              //check if the move is into the boundary, if yes, cannot jump over, 
               if(moves[i]!==null && ((moves[i]>=0&&moves[i]<=4)||(moves[i]>=20&&moves[i]<=24)||(moves[i]%4===0)||(moves[i]%5===0))){
-                eatMoves[i]=null;
+                //but, if the tiger is in the boundary it can move in a direction :eatMoves not null
+                if(!((src>=0&&src<=4)||(src>=20&&src<=24)||(src%4===0)||(src%5===0))){
+                  eatMoves[i]=null;
+                }
               }
             }
 
+            console.log("eamoves and moves");
+            console.log(eatMoves);
+            console.log(moves);
             //if eat possible
             if(eatMoves.includes(dest)&&board[dest].player===null){
               return true;

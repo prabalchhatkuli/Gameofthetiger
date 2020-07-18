@@ -63,6 +63,7 @@ export default class Square extends Component {
           className="squares" 
           onClick={this.props.onClick}>
           {this.getPiece(this.props.value.player)}
+          {this.props.index}
         </div>
     );
   }

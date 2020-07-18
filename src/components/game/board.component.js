@@ -7,6 +7,7 @@ export default class Board extends Component {
     renderSquare(i) {
         return (
           <Square 
+            index={i}
             value={this.props.squares[i]}
             onClick={()=>this.props.handleClick(i)}
           />

@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import {Provider} from 'react-redux'
 import './game.css';
 import Board from './board.component'
 import Tiger from '../piece/tigerpiece.component'
@@ -19,6 +18,7 @@ class Game extends Component {
             }],
             gisnext: true,
             sourceSelection:-1,
+            currentBoard: Array(25).fill(null),
             destinationSelection:0,
             goatsOnBoard:0,//always <=20
             goatsTaken:0,
@@ -61,7 +61,6 @@ class Game extends Component {
                 //give status error
             if(this.state.gisnext)
             {
-                console.log(squares[i].player);
                 if(squares[i].player===null){
                     //need to do something
                     //count g and if number is less than 20 continue
@@ -153,7 +152,7 @@ class Game extends Component {
                 if(!this.state.gisnext&&(DoesTigerEat===8||DoesTigerEat===2||DoesTigerEat===10||DoesTigerEat===12)){
                     squares[this.state.sourceSelection]=new Piece(); //remove old position
                     squares[i]=new Tiger(); //tiger in new position
-                    squares[this.state.sourceSelection+(this.state.sourceSelection-i)/2]=new Piece(); //remove goat
+                    squares[this.state.sourceSelection-(this.state.sourceSelection-i)/2]=new Piece(); //remove goat
                     this.setState((state, props)=>{
                         return {goatsTaken: state.goatsTaken+1};
                     })
