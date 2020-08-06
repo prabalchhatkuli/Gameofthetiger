@@ -5,7 +5,7 @@ import './App.css'
 //import tiger from './SVG/tiger.svg'
 import Navbar from './components/navbar.component'
 import Landing from './components/landingpage.component'
-import GamePage from './components/game/game.component'
+import GameChoice from './components/gamechoice.component'
 import LoginPage from './components/loginpage.component'
 import InstructPage from './components/instruction.component'
 import AboutPage from './components/about.component'
@@ -23,7 +23,7 @@ function App() {
         <Navbar/>
       <Switch>
         <Route path="/" exact component={Landing}/>
-        <Route path="/game" component={GamePage}/>
+        <Route path="/game" component={GameChoice}/>
         <Route path="/login" component={LoginPage}/>
         <Route path="/instruction" component={InstructPage}/>
         <Route path="/about" component={AboutPage}/>

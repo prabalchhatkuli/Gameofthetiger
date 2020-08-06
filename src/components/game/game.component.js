@@ -4,6 +4,7 @@ import Board from './board.component'
 import Tiger from '../piece/tigerpiece.component'
 import Goat from '../piece/goatpiece.component'
 import Piece from '../piece/piece.component'
+import Chat from '../chat/chat.component'
 //import fallenanimals from './fallenanimals.component'
 
 
@@ -207,6 +208,7 @@ class Game extends Component {
                         />
                         {/*contains all the illustrated paths/click divs and diagonal elements.*/}
                 </div>
+                <Chat/>
             </div>
         )
     }

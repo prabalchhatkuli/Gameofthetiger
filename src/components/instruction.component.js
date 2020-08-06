@@ -11,6 +11,11 @@ export default function InstructPage() {
 
 Compared to traditional board games like Chess or Checkers,
 this game is asymmetric in that one player controls four tigers and the other player controls upto twenty goats.
+
+
+Tigers need to jump over(eat) 5 goats to win.
+
+Goats need to block all moves of fopur tigers to win.
                 </p>
             </div>
         </div>
