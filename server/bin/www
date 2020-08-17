@@ -49,7 +49,7 @@ const connections = [null, null];
 
 // Handle a socket connection request from web client
 io.on('connection', function (socket) {
-  
+
   // Find an available player number
   let playerIndex = -1;
   for (var i in connections) {
@@ -74,6 +74,7 @@ io.on('connection', function (socket) {
     console.log('from socket id:', socket.id);
     io.emit('RECEIVE_MESSAGE', msg);
   });
+
   socket.on('disconnect', () => {
     console.log('user disconnected',socket.id);
     console.log(`Player ${playerIndex} Disconnected`);
@@ -82,17 +83,15 @@ io.on('connection', function (socket) {
 
 
   //handle move shared by one user--------------------------------------need to adjust for bagchaal---------
-  socket.on('actuate', function (data) {
-    const { grid, metadata } = data; // Get grid and metadata properties from client
+  socket.on('SEND_MOVE', function (data) {
+    const { boardState, goatsOnBoard, gisnext } = data; // Get grid and metadata properties from client
     
     const move = {
-      playerIndex,
-      grid,
-      metadata,
+      playerIndex, boardState, goatsOnBoard, gisnext
     };
 
     // Emit the move to all other clients
-    socket.broadcast.emit('move', move);
+    socket.broadcast.emit('RECEIVE_MOVE', move);
   });
 
   // Ignore player 3

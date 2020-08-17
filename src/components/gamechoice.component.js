@@ -14,15 +14,15 @@ export default class GameChoice extends Component {
     }
 
     singlePlayer(){
-        ReactDOM.render(<Game/>, document.getElementById('gametype'));
+        ReactDOM.render(<Game choice="single"/>, document.getElementById('gametype'));
     }
 
     twoPlayer(){
-        ReactDOM.render(<Game/>, document.getElementById('gametype'));
+        ReactDOM.render(<Game choice="double"/>, document.getElementById('gametype'));
     }
 
     multiplayer(){
-        ReactDOM.render(<Game/>, document.getElementById('gametype'));
+        ReactDOM.render(<Game choice="multi"/>, document.getElementById('gametype'));
     }
 
     choose(){

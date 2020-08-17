@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import io from "socket.io-client";
 import './game.css';
 import Board from './board.component'
 import Tiger from '../piece/tigerpiece.component'
@@ -6,7 +7,6 @@ import Goat from '../piece/goatpiece.component'
 import Piece from '../piece/piece.component'
 import Chat from '../chat/chat.component'
 //import fallenanimals from './fallenanimals.component'
-
 
 class Game extends Component {
     constructor(props)
@@ -23,7 +23,8 @@ class Game extends Component {
             destinationSelection:0,
             goatsOnBoard:0,//always <=20
             goatsTaken:0,
-            status:''
+            status:'',
+            socket:io('10.1.30.50:5000')
         };
     }
     
@@ -38,12 +39,40 @@ class Game extends Component {
         this.setState({
             history: [{
                 squares:startstate
-            }]
+            }],
         })
+
+        //componentdidmount will contain the information for emmitting and receiving moves
+        this.state.socket.on('RECEIVE_MOVE', function(move){
+            //console.log(move.gisnext);
+            this.setState((state, props) => ({
+                history: state.history.concat([{
+                    squares: move.boardState,
+                }]),
+                gisnext: move.gisnext,
+                currentBoard: move.boardState,
+                goatsOnBoard: move.goatsOnBoard,
+                goatsTaken: (20-move.goatsOnBoard)
+            }));
+            }.bind(this));
+    }
+
+    //-----------------------------socket communications--------------------------
+    sendMoves(){
+        //send the latest board positions
+            //next player info
+            //goats on board
+            //goatsTaken
+        let payload = {boardState:this.state.currentBoard,
+                    goatsOnBoard:this.state.goatsOnBoard,
+                    gisnext: this.state.gisnext}
+
+        this.state.socket.emit('SEND_MOVE', payload);
+        this.setState({message: ''});
     }
 
 //----------------------------------------------------------handleClick()-------------------------------------------------
-    handleClick(i){
+    async handleClick(i){
         const history =  this.state.history;
         const current = history[history.length-1];
         const squares = current.squares.slice();
@@ -180,12 +209,18 @@ class Game extends Component {
             }
         }
 
-        this.setState((state, props) => ({
-            history: history.concat([{
+        //move possible so history is edited
+        await this.setState((state, props) => ({
+            history: state.history.concat([{
                 squares: squares,
             }]),
             gisnext: !this.state.gisnext,
+            currentBoard: squares
         }));
+        //if game is multiplayer send moves
+        if(this.props.choice==='multi'){
+            this.sendMoves();
+        }
     }
 //---------------------------------------------------handleclick()----------------------------------------------------------
     render() {
@@ -208,7 +243,7 @@ class Game extends Component {
                         />
                         {/*contains all the illustrated paths/click divs and diagonal elements.*/}
                 </div>
-                <Chat/>
+                <Chat socket={this.state.socket}/>
             </div>
         )
     }

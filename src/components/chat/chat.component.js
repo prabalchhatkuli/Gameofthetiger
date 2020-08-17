@@ -1,5 +1,4 @@
 import React from "react";
-import io from "socket.io-client";
 
 class Chat extends React.Component{
     constructor(props){
@@ -15,7 +14,7 @@ class Chat extends React.Component{
 
     sendMessage = ev => {
         ev.preventDefault();
-        this.socket.emit('SEND_MESSAGE', {
+        this.props.socket.emit('SEND_MESSAGE', {
             author: this.state.username,
             message: this.state.message
         })
@@ -24,14 +23,14 @@ class Chat extends React.Component{
     }
 
     componentDidMount(){
-        this.socket = io('10.1.30.50:5000');
+        //this.socket = this.props.socket;
         console.log("socket created");
 
-        this.socket.on('RECEIVE_MESSAGE', function(data){
+        this.props.socket.on('RECEIVE_MESSAGE', function(data){
             addMessage(data);
         });
 
-        this.socket.on('PLAYER_NUMBER', function(data){
+        this.props.socket.on('PLAYER_NUMBER', function(data){
             addMessage({author:"SYSTEM",message:("your player number is: --->"+ data)});
         })
 
