@@ -1,7 +1,10 @@
 import React from 'react'
+import "firebase/auth";
+import {auth} from '../firebase.config'
 
-export default function InstructPage() {
 
+export default function InstructPage(props) {
+    console.log(auth.currentUser);
     return (
         <div>
             <div className="container">

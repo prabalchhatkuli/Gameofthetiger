@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import {Link} from 'react-router-dom';
 import * as firebase from "firebase/app";
 import "firebase/auth";
+import { auth, signInWithGoogle, generateUserDocument } from '../firebase.config.js';
 
 export default class loginPage extends Component {
 
@@ -73,7 +74,7 @@ export default class loginPage extends Component {
     e.preventDefault();
     console.log("signup button clicked::::");
 
-    await firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.confirmPassword).catch(function(error) {
+    const {user} = await auth.createUserWithEmailAndPassword(this.state.email, this.state.confirmPassword).catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
@@ -84,9 +85,13 @@ export default class loginPage extends Component {
         alert(errorMessage);
       }
       console.log(error);
+      return;
       // [END_EXCLUDE]
     });
-    console.log(firebase.auth().currentUser);
+    console.log(auth.currentUser);
+    console.log('mic check 123333');
+    await generateUserDocument(user, this.state.firstname, this.state.lastname, this.state.email);
+    console.log("mic uncheck 32111")
   }
 
 

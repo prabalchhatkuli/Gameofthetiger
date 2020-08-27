@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom';
 import Game from './game/game.component'
+import Multichoice from './chat/multichoice.component'
 
 export default class GameChoice extends Component {
 
     constructor(props){
         super(props);
         this.state ={
-            gamechosen: false
+            gamechosen: false,
         };
         this.singlePlayer =  this.singlePlayer.bind(this);
-
     }
 
     singlePlayer(){
@@ -22,7 +22,15 @@ export default class GameChoice extends Component {
     }
 
     multiplayer(){
-        ReactDOM.render(<Game choice="multi"/>, document.getElementById('gametype'));
+
+        ReactDOM.render(
+        
+        
+            <Multichoice/>, document.getElementById('multichoice')
+        
+        
+        );
+        // ReactDOM.render(<Game choice="multi"/>, document.getElementById('gametype'));
     }
 
     choose(){
@@ -40,8 +48,10 @@ export default class GameChoice extends Component {
 
     render() {
         return(
-        <div id='gametype'>{this.choose()}</div>
-             
+        <div>
+            <div id='gametype'>{this.choose()}</div>
+            <div id='multichoice'></div>
+        </div>
         );
     }
 }

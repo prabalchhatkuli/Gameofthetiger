@@ -4,7 +4,8 @@ import Form from 'react-bootstrap/Form'
 import {Link} from 'react-router-dom';
 import * as firebase from "firebase/app";
 import "firebase/auth";
-
+import {auth} from '../firebase.config.js'
+ 
 export default class loginPage extends Component {
 
   constructor(props)
@@ -15,7 +16,7 @@ export default class loginPage extends Component {
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleRemember = this.handleRemember.bind(this);
-    // this.handleSignout = this.handleSignout.bind(this);
+    this.handleSignout = this.handleSignout.bind(this);
 
     this.state={
       email:'',
@@ -49,7 +50,7 @@ export default class loginPage extends Component {
   {
     e.preventDefault();
 
-    await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
+    await auth.signInWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
@@ -62,26 +63,26 @@ export default class loginPage extends Component {
       console.log(error);
       // [END_EXCLUDE]
     });
-    console.log(firebase.auth().currentUser);
+    console.log(auth.currentUser);
   }
 
   
-  handleSignup(e)
-  {
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        console.log(user);
-        // User is signed in.
-      } else {
-        console.log("not signed in");
-      }
-    });
-  }
-
-  // handleSignout(e)
+  // handleSignup(e)
   // {
-  //   firebase.auth().signOut();
+  //   firebase.auth().onAuthStateChanged(function(user) {
+  //     if (user) {
+  //       console.log(user);
+  //       // User is signed in.
+  //     } else {
+  //       console.log("not signed in");
+  //     }
+  //   });
   // }
+
+  handleSignout(e)
+  {
+    auth.signOut();
+  }
 
   render() {
     return (
@@ -110,10 +111,10 @@ export default class loginPage extends Component {
                 </Button>{' '}
                 <Link to="/signup" className="btn btn-primary">
                    Don't have an Account? Wanna create an account?
-                </Link>
-                {/* <Button className="center" variant="primary" onClick={this.handleSignout}>
+                </Link>{' '}
+                <Button className="center" variant="primary" onClick={this.handleSignout}>
                   Signout
-                </Button> */}
+                </Button> 
               </Form>
             </div>
          </div>
