@@ -11,6 +11,6 @@ const chatRoomsSchema = new Schema({
     }
 )
 
-const Schedule = mongoose.model('Schedule', chatRoomsSchema);
+const chatRooms = mongoose.model('chatRooms', chatRoomsSchema);
 
-module.exports = Schedule;
+module.exports = chatRooms;

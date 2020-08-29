@@ -13,6 +13,6 @@ const chatMessagesSchema = new Schema({
     }
 )
 
-const Schedule = mongoose.model('Schedule', chatMessagesSchema);
+const chatMessages = mongoose.model('chatMessages', chatMessagesSchema);
 
-module.exports = Schedule;
+module.exports = chatMessages;

@@ -1,14 +1,17 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
+import axios from 'axios';
 
 export default class Multichoice extends Component {
     constructor(props){
         super(props);
-        this.state={modalShow:true};
+        this.state={modalShow:true, playerPiece:null, linkId:null};
         this.onCloseButtonClick =  this.onCloseButtonClick.bind(this);
+        this.onGenerateButtonClick =  this.onGenerateButtonClick.bind(this);
     }
 
     onCloseButtonClick(e)
@@ -22,7 +25,33 @@ export default class Multichoice extends Component {
     }
 
     setPlayerPiece(event) {
+        this.setState({
+            playerPiece: event.target.value,
+          })
         console.log(event.target.value);
+    }
+
+    async onGenerateButtonClick(event){
+        console.log("Generating randomly generated link");
+        let payload={adminPiece:this.state.playerPiece};
+        try
+        {
+            const response = await axios.post('http://localhost:5000/room/generate',payload);
+
+            //no need to implement callback
+            this.setState(()=>({
+                linkId: response.data.roomID
+            }));
+        }
+        catch(error)
+        {
+            console.log(error);
+            const errorMsg = <p className="text-warning">Error in generating key. Please press again.</p>
+            ReactDOM.render(errorMsg, document.getElementById('generate result'));
+            return;
+        }
+        const successMsg = <p className="text-success">http://localhost:3000/game/room/{this.state.linkId}</p>
+        ReactDOM.render(successMsg, document.getElementById('generate result'));
     }
 
     render() {
@@ -45,7 +74,8 @@ export default class Multichoice extends Component {
                         <Tabs defaultActiveKey="new" id="uncontrolled-tab-example">
                             <Tab eventKey="new" title="Create New Room">
                                 <p>Share the link below with your friends</p>
-                                <Button >Generate game link</Button>
+                                <div id='generate result'></div>
+                                <Button onClick={this.onGenerateButtonClick}>Generate game link</Button>
                                 <p id="gameLink"></p>
                                 <h6>Choose Your piece</h6>
                                 <div class="custom-control custom-radio custom-control-inline" onChange={this.setPlayerPiece.bind(this)}>
