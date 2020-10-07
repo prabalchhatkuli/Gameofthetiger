@@ -9,6 +9,7 @@ var debug = require('debug')('server:server');
 var http = require('http');
 const chatrooms = require('../models/chatrooms.model');
 const chatmessages = require('../models/chatmessages.model');
+const { data } = require('jquery');
 
 
 /**
@@ -55,15 +56,9 @@ io.on('connection', function (socket) {
 
   socket.on("join", async room => {
     socket.join(room);
-    io.emit("roomJoined", room);
+    io.to(room).emit("roomJoined", room);
     //io.to('room1').to('room2').to('room3').emit('some event');
   });
-
-  socket.on("create", async room=>{
-    //need to add socket to the database
-    socket.join(room);
-    io.emit("roomJoined", room);
-  })
 
   // Find an available player number
   let playerIndex = -1;
@@ -105,6 +100,13 @@ io.on('connection', function (socket) {
     */
   });
 
+  socket.on('SEND_MESSAGE_ROOM', (msg) => {
+    console.log('message sent');
+    console.log('from socket id:', socket.id);
+    console.log("----------------------------------------");
+    io.to(msg.roomID).emit('RECEIVE_MESSAGE_ROOM', msg);
+  });
+
   socket.on('disconnect', () => {
     console.log('user disconnected',socket.id);
     console.log(`Player ${playerIndex} Disconnected`);
@@ -114,14 +116,14 @@ io.on('connection', function (socket) {
 
   //handle move shared by one user--------------------------------------need to adjust for bagchaal---------
   socket.on('SEND_MOVE', function (data) {
-    const { boardState, goatsOnBoard, gisnext } = data; // Get grid and metadata properties from client
+    const { boardState, goatsOnBoard, gisnext, goatsTaken } = data; // Get grid and metadata properties from client
     
     const move = {
-      playerIndex, boardState, goatsOnBoard, gisnext
+      playerIndex, boardState, goatsOnBoard, goatsTaken, gisnext
     };
 
     // Emit the move to all other clients
-    socket.broadcast.emit('RECEIVE_MOVE', move);
+    socket.broadcast.to(data.roomID).emit('RECEIVE_MOVE', move);
   });
 
   // Ignore player 3

@@ -1,9 +1,15 @@
-import React from 'react'
+import React,{useContext} from 'react'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 import Button from 'react-bootstrap/Button'
+import {auth} from '../firebase.config.js'
 
-export default function Navigation() {
+export default function Navigation(props) {
+
+        function signout()
+        {
+            auth.signOut();
+        }
 
         return(
             
@@ -41,7 +47,11 @@ export default function Navigation() {
                         
                         <Nav className="ml-auto">
                             <Nav.Link href="/about">About</Nav.Link>{' '}
-                            <Button variant="outline-success" href='/login'>Log In/Sign Up</Button>{' '}
+                            {props.userInfo === null?
+                                <Button variant="outline-success" href='/login'>Log In/Sign Up</Button>
+                                :
+                                <Button onClick={signout}>Signout {props.userInfo.email}</Button>
+                            }
                         </Nav>
                     </Navbar.Collapse>
                     </div>

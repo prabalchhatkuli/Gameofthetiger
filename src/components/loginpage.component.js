@@ -16,7 +16,6 @@ export default class loginPage extends Component {
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleRemember = this.handleRemember.bind(this);
-    this.handleSignout = this.handleSignout.bind(this);
 
     this.state={
       email:'',
@@ -64,24 +63,7 @@ export default class loginPage extends Component {
       // [END_EXCLUDE]
     });
     console.log(auth.currentUser);
-  }
-
-  
-  // handleSignup(e)
-  // {
-  //   firebase.auth().onAuthStateChanged(function(user) {
-  //     if (user) {
-  //       console.log(user);
-  //       // User is signed in.
-  //     } else {
-  //       console.log("not signed in");
-  //     }
-  //   });
-  // }
-
-  handleSignout(e)
-  {
-    auth.signOut();
+    window.location.href="/";
   }
 
   render() {
@@ -112,9 +94,6 @@ export default class loginPage extends Component {
                 <Link to="/signup" className="btn btn-primary">
                    Don't have an Account? Wanna create an account?
                 </Link>{' '}
-                <Button className="center" variant="primary" onClick={this.handleSignout}>
-                  Signout
-                </Button> 
               </Form>
             </div>
          </div>

@@ -7,28 +7,27 @@ export default class GameChoice extends Component {
 
     constructor(props){
         super(props);
+        console.log(props);
         this.state ={
             gamechosen: false,
         };
         this.singlePlayer =  this.singlePlayer.bind(this);
+        this.twoPlayer =  this.twoPlayer.bind(this);
+        this.multiplayer =  this.multiplayer.bind(this);
     }
 
     singlePlayer(){
-        ReactDOM.render(<Game choice="single"/>, document.getElementById('gametype'));
+        ReactDOM.render(<Game choice="single" userInfo={this.props.userInfo}/>, document.getElementById('gametype'));
     }
 
     twoPlayer(){
-        ReactDOM.render(<Game choice="double"/>, document.getElementById('gametype'));
+        ReactDOM.render(<Game choice="double" userInfo={this.props.userInfo}/>, document.getElementById('gametype'));
     }
 
     multiplayer(){
 
         ReactDOM.render(
-        
-        
-            <Multichoice/>, document.getElementById('multichoice')
-        
-        
+            <Multichoice userInfo={this.props.userInfo}/>, document.getElementById('multichoice')
         );
         // ReactDOM.render(<Game choice="multi"/>, document.getElementById('gametype'));
     }
@@ -44,14 +43,18 @@ export default class GameChoice extends Component {
             )
         }
     }
-    
 
     render() {
         return(
-        <div>
-            <div id='gametype'>{this.choose()}</div>
-            <div id='multichoice'></div>
-        </div>
+            this.props.userInfo===null?
+                <div>
+                    <h4>Please log in to continue.</h4>
+                </div>
+                :
+                <div>
+                    <div id='gametype'>{this.choose()}</div>
+                    <div id='multichoice'></div>
+                </div>
         );
     }
 }

@@ -14,10 +14,21 @@ class Chat extends React.Component{
 
     sendMessage = ev => {
         ev.preventDefault();
-        this.props.socket.emit('SEND_MESSAGE', {
-            author: this.state.username,
-            message: this.state.message
-        })
+        if(this.props.name === 'Global')
+        {
+            this.props.socket.emit('SEND_MESSAGE', {
+                author: this.state.username,
+                message: this.state.message
+            });
+        }
+        else
+        {
+            this.props.socket.emit('SEND_MESSAGE_ROOM', {
+                author: this.state.username,
+                message: this.state.message,
+                roomID:this.props.roomID
+            });
+        }
         this.setState({message: ''});
 
     }
@@ -26,12 +37,21 @@ class Chat extends React.Component{
         //this.socket = this.props.socket;
         console.log("socket created");
 
-        this.props.socket.on('RECEIVE_MESSAGE', function(data){
-            addMessage(data);
-        });
+        if(this.props.name === 'Global')
+        {
+            this.props.socket.on('RECEIVE_MESSAGE', function(data){
+                addMessage(data);
+            });
+        }
+        else
+        {
+            this.props.socket.on('RECEIVE_MESSAGE_ROOM', function(data){
+                addMessage(data);
+            });
+        }
 
         this.props.socket.on('PLAYER_NUMBER', function(data){
-            addMessage({author:"SYSTEM",message:("your player number is: --->"+ data)});
+            addMessage({author:"SYSTEM",message:("You have been connected to the room. CODE("+ data+")")});
         })
 
         const addMessage = data => {
@@ -49,12 +69,12 @@ class Chat extends React.Component{
                     <div className="col-4">
                         <div className="card">
                             <div className="card-body">
-                                <div className="card-title">ROOM CHAT</div>
+                                <div className="card-title">{this.props.name} Chat</div>
                                 <hr/>
                                 <div className="messages">
                                     {this.state.messages.map(message => {
                                         return (
-                                            <div>{message.author}: {message.message}</div>
+                                            <div><strong>{message.author}</strong>: {message.message}</div>
                                         )
                                     })}
                                 </div>

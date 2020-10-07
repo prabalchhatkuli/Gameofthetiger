@@ -53,7 +53,7 @@ export default class goatpiece extends Piece{
         //if even
             //can go all sides except boundaries
         if(evenOrOdd)
-        {
+        { 
           //moves has the position of possible moves, contains null elements
             let moves=[(src-6),(src-5), (src-4), (src-1), (src+1), (src+4), (src+5), (src+6)];
             //top
