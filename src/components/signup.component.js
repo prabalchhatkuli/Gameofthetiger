@@ -6,13 +6,55 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import { auth, signInWithGoogle, generateUserDocument } from '../firebase.config.js';
 
-export default class loginPage extends Component {
+/**/
+/*
+class SignupPage
 
+NAME
+
+        SignupPage component - renders the signup page and handles all signup procedures
+
+SYNOPSIS
+
+        states:
+          email, firstname, lastname, password, confirmPassword ->states for user information
+
+DESCRIPTION
+
+        This class will render the signup page with all the required html elements,
+        it will also handle the signup procedure with firebase and receive an auth object from
+        firebase authentication.
+
+RETURNS
+
+        no returns. generates auth object and saves it in the object in firebase.config.
+
+AUTHOR
+
+        Prabal Chhatkuli
+
+DATE
+
+        5/26/2020
+
+*/
+/**/
+export default class SignupPage extends Component {
+  /*
+    NAME
+
+        constructor - renders the signup page and handles all signup procedures
+
+    DESCRIPTION
+
+        This will initialize the states of the component and also bind the current
+        object to all of the functions that will use the states.
+
+  */
   constructor(props)
   {
     super(props);
     this.handleSignup = this.handleSignup.bind(this);
-
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleConfirmPasswordChange=this.handleConfirmPasswordChange.bind(this);
@@ -28,6 +70,17 @@ export default class loginPage extends Component {
     }
   }
 
+  /**/
+  /*
+    Trivial function to handle changes in states:
+      -handleEmailChange
+      -handlePasswordChange
+      -handleConfirmPasswordChange
+      -handleFirstnameChange
+      -handleLastnameChange
+  */
+  /**/
+  /************************************************* */
   handleEmailChange(e)
   {
     this.setState({
@@ -62,20 +115,53 @@ export default class loginPage extends Component {
       lastname: e.target.value,
     })
   }
+  /************************************************* */
 
+  /**/
+  /*
+  handleSignup(e)
 
+  NAME
+
+          handleSignup - handles signup for a new user
+
+  SYNOPSIS
+
+          async handleSignup(e)
+              e     ->the event that caused the signup
+
+  DESCRIPTION
+
+          This function will confirm passwords, then create the new user on firebase,
+          the auth object hence returned will be store in the firebase.config file.
+          The function will also generate the user info document in firestore.
+
+  RETURNS
+
+          no returns. stores the auth object, then redirects the user to the landing page.
+
+  AUTHOR
+
+          Prabal Chhatkuli
+
+  DATE
+
+          4/25/2020
+
+  */
+  /**/
   async handleSignup(e)
   {
+    //confirm both passwords are the same
     if(this.state.password!==this.state.confirmPassword)
     {
       alert("Both passwords must match");
       return;
     }
     e.preventDefault();
-    console.log("signup button clicked::::");
 
+    //create the user
     const {user} = await auth.createUserWithEmailAndPassword(this.state.email, this.state.confirmPassword).catch(function(error) {
-      // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
       // [START_EXCLUDE]
@@ -88,14 +174,16 @@ export default class loginPage extends Component {
       return;
       // [END_EXCLUDE]
     });
-    console.log(auth.currentUser);
-    console.log('mic check 123333');
+
+    //create user document, on success
     await generateUserDocument(user, this.state.firstname, this.state.lastname, this.state.email);
-    console.log("mic uncheck 32111")
+    
+    //redirect to the homepage
+    window.location.href="/";
   }
 
 
-
+  //render function for the component
   render() {
     return (
       <div>

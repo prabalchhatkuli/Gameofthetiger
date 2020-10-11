@@ -6,16 +6,48 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import {auth} from '../firebase.config.js'
  
-export default class loginPage extends Component {
+/**/
+/*
+class LoginPage
+
+NAME
+
+        LoginPage component - renders the signup page and handles all signup procedures
+
+SYNOPSIS
+
+        states:
+          email, password, remember ->states for user information
+
+DESCRIPTION
+
+        This class will render the login page with all the required html elements,
+        it will also handle the login procedures with firebase and retrieve the auth object
+
+RETURNS
+
+        no returns. gets the auth object and saves it in the firebase.config file.
+
+AUTHOR
+
+        Prabal Chhatkuli
+
+DATE
+
+        5/26/2020
+
+*/
+/**/
+export default class LoginPage extends Component {
 
   constructor(props)
   {
     super(props);
     this.handleLogin = this.handleLogin.bind(this);
-    // this.handleSignup = this.handleSignup.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleRemember = this.handleRemember.bind(this);
+    this.enterPressed = this.enterPressed.bind(this);
 
     this.state={
       email:'',
@@ -23,7 +55,17 @@ export default class loginPage extends Component {
       remember:false
     }
   }
-
+  
+  /**/
+  /*
+    Trivial function to handle changes in states:
+      -handleEmailChange
+      -handlePasswordChange
+      -handleRemember
+      -enterPressed
+  */
+  /**/
+  /************************************************* */
   handleEmailChange(e)
   {
     this.setState({
@@ -45,10 +87,49 @@ export default class loginPage extends Component {
     })
   }
 
+  enterPressed(event) {
+    //calls the handlelogin function when user enters "enter"
+    var code = event.keyCode || event.which;
+    if(code === 13) { //13 is the enter keycode
+        this.handleLogin();
+    } 
+  }
+  /************************************************* */
+
+  /**/
+  /*
+  handleLogin(e)
+
+  NAME
+
+          handleLogin - handles login for a existing user
+
+  SYNOPSIS
+
+          async handleLogin(e)
+              e     ->the event that caused the login
+
+  DESCRIPTION
+
+          This function will send a authentication request to firebase. Assumes the user is already created.
+          Then, it redirects the authenticated user to the homepage/landing.
+
+  RETURNS
+
+          no returns. stores the auth object, then redirects the user to the landing page.
+
+  AUTHOR
+
+          Prabal Chhatkuli
+
+  DATE
+
+          4/25/2020
+
+  */
+  /**/
   async handleLogin(e)
   {
-    e.preventDefault();
-
     await auth.signInWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
@@ -62,10 +143,12 @@ export default class loginPage extends Component {
       console.log(error);
       // [END_EXCLUDE]
     });
-    console.log(auth.currentUser);
+    
+    //redirect to the homepage on success
     window.location.href="/";
   }
 
+  //render function for the component
   render() {
     return (
       <div>
@@ -83,7 +166,7 @@ export default class loginPage extends Component {
 
                 <Form.Group controlId="formBasicPassword">
                   <Form.Label>Password</Form.Label>
-                  <Form.Control type="password" placeholder="Password"  onChange={this.handlePasswordChange} />
+                  <Form.Control type="password" placeholder="Password" onKeyPress={this.enterPressed.bind(this)} onChange={this.handlePasswordChange} />
                 </Form.Group>
                 <Form.Group controlId="formBasicCheckbox">
                   <Form.Check className="text-center" type="checkbox" label="Remember me"  onChange={this.handleRemember} />

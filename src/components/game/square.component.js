@@ -1,38 +1,40 @@
 import React, { Component } from 'react'
 import './game.css';
 
+/**/
+/*
+Square
+
+NAME
+
+        Square class - smallest unit of the game board
+
+SYNOPSIS
+
+        getPiece(p)      ->gets the image of the piece based on p
+        render()          ->renders the component
+
+DESCRIPTION
+
+        This function will return a square, which is a position that a piece can occupy in the game.
+        The square will contain the image of the piece that is meant to be there.
+
+RETURNS
+
+        Returns an image element for the piece that should be at this square.
+        an empty element otherwise.
+
+AUTHOR
+
+        Prabal Chhatkuli
+
+DATE
+
+        07/15/2020
+
+*/
+/**/
 export default class Square extends Component {
-  // constructor(props)
-  // {
-  //   super(props);
-  //   this.state={
-  //     value:null,
-  //     e:false,
-  //     ne:false, 
-  //     n:false,
-  //     nw:false,
-  //     w:false,
-  //     sw:false,
-  //     s:false,
-  //     se:false
-  //   }
-  // }
-//set state according to props, the props contain information on what direction 
-//a square will allow movemements
-/*  componentWillMount(){
-    this.setState((state, props)=>({
-      animal:props.animal,
-      e:props.e,
-      ne:props.ne,
-      n:props.n,
-      nw:props.nw,
-      w:props.w,
-      sw:props.sw,
-      s:props.s,
-      se:props.se
-    }));
-  }
-  */
   getPiece(p){
     switch(p){
 
@@ -63,7 +65,7 @@ export default class Square extends Component {
           className="squares" 
           onClick={this.props.onClick}>
           {this.getPiece(this.props.value.player)}
-          {this.props.index}
+          
         </div>
     );
   }

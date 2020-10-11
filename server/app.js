@@ -14,7 +14,6 @@ const mongoose = require('mongoose');
 var indexRouter = require('./routes/index');
 var roomRouter = require('./routes/room');
 
-
 var app = express();
 
 // view engine setup
@@ -36,7 +35,7 @@ connection.once('open',()=>{
   console.log("MongoDB database connection established successfully.");
 })
 //---------------------------------------------------
-
+//routers
 app.use('/', indexRouter);
 app.use('/room', roomRouter);
 

@@ -3,6 +3,35 @@ import ReactDOM from 'react-dom';
 import Game from './game/game.component'
 import Multichoice from './chat/multichoice.component'
 
+/**/
+/*
+class GameChoice
+
+NAME
+
+        GameChoice component - component to choose the type of game to play
+
+SYNOPSIS
+        props
+            userInfo       ->the signed in user object
+
+DESCRIPTION
+
+        The component renders two buttons which lets the user pick the type of game
+        The user object is passed as props to the respective option
+
+RETURNS
+        Renders the chosen type of game
+
+AUTHOR
+        Prabal Chhatkuli 
+
+DATE
+        8/6/2020
+
+*/
+/**/
+
 export default class GameChoice extends Component {
 
     constructor(props){
@@ -29,7 +58,6 @@ export default class GameChoice extends Component {
         ReactDOM.render(
             <Multichoice userInfo={this.props.userInfo}/>, document.getElementById('multichoice')
         );
-        // ReactDOM.render(<Game choice="multi"/>, document.getElementById('gametype'));
     }
 
     choose(){
@@ -38,7 +66,6 @@ export default class GameChoice extends Component {
                 <div className="container">
                     <button onClick={this.twoPlayer} className="btn btn-primary form-control">Two Players on same Device</button>{' '}
                     <button onClick={this.multiplayer} className="btn btn-primary form-control">Multiplayer</button>{'   '}
-                    <button onClick={this.singlePlayer} className="btn btn-primary form-control">VS AI</button>{'  '}
                 </div>
             )
         }

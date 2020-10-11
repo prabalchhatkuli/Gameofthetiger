@@ -1,5 +1,6 @@
 import React from 'react'
 
+//about page function displays simple facts about the developer
 export default function AboutPage() {
     return (
         <div className='container text-center'>

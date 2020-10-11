@@ -1,4 +1,4 @@
-/*Main game board*/
+/*styling for the Main game board*/
 .board {
     border: 10px solid gray;
     background-color:  rgb(41, 175, 41);
@@ -8,6 +8,24 @@
     height: 45vw;
     margin: auto;
   }
+
+/*style for the info board*/
+.game-info{
+  float: left;
+  width: 15%;
+}
+
+/*style for the game board*/
+.game{
+  float: left;
+  width: 50%;
+}
+
+/*style for the chat boxes*/
+.chat{
+  float: right;
+  width: 33%;
+}
 
 /*all squares in the board except the board*/
 .squares {
@@ -92,38 +110,17 @@
       width: 100vw;
       height: 100vw;
     }
+    [class="game"]{
+      /* display: block; */
+      width: 100%;
+    }
+    [class="chat"]{
+      /* display: block; */
+      width: 100%;
+    }
+    [class="game-info"]{
+      /* display: block; */
+      width: 100%;
+    }
   }
 
-/*
-.board{
-    margin: auto;
-    left:50%;
-    top:50%;
-}
-
-
-.board-row {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    padding: 0 4px;
-}
-
-
-.board-row img
-{
-    background: transparent;
-    border: 1px solid transparent;
-    float: center;
-    font-size: 24px;
-    font-weight: bold;
-    line-height: 34px;
-    margin-right: -1px;
-    margin-top: -1px;
-    height: 80px;
-    padding: 0;
-    text-align: center;
-    width: 80px
-}
-
-*/

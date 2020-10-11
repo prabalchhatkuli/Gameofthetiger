@@ -8,6 +8,45 @@ import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import axios from 'axios';
 
+/**/
+/*
+class Multichoice
+
+NAME
+
+        Multichoice class - starts process for a multiplayer game
+
+SYNOPSIS
+
+        state:
+            modalShow       ->flag for modal view
+            playerPiece        ->the piece that the player wants to play with
+            linkId              ->the id of the game room
+            setRedirect         ->flag for redirecting to the room
+            userInfo            ->the user object from firebase
+        
+        
+
+DESCRIPTION
+        The component create a modal and asks for user to input the piece they want to play with.
+        Also, a game room can be generated. Once game is created they can join the game. There is also
+        the option to join the game using an already created link.
+
+
+RETURNS
+        UI component
+
+AUTHOR
+
+        Prabal Chhatkuli
+
+DATE
+
+        9/12/2020
+
+*/
+/**/
+
 export default class Multichoice extends Component {
     constructor(props){
         super(props);
@@ -20,6 +59,7 @@ export default class Multichoice extends Component {
         this.createGame = this.createGame.bind(this);
     }
 
+    /*trivial function for close button click*/
     onCloseButtonClick(e)
     {
         this.setState({
@@ -30,6 +70,7 @@ export default class Multichoice extends Component {
           window.location.href="/game"
     }
 
+    /*trivial function to set the player piece*/
     setPlayerPiece(event) {
         this.setState({
             playerPiece: event.target.value,
@@ -42,6 +83,23 @@ export default class Multichoice extends Component {
         console.log(event.target.value);
     }
 
+    /**/
+    /*
+    onGenerateButtonClick()
+
+    NAME
+
+            onGenerateButtonClick function - get a unique room number
+
+    DESCRIPTION
+            This component communicates with the server to generate a unique room number.
+            on response, the DOM is updated with the received information.
+
+    RETURNS
+            sets the state of LinkID to the received response from the server.
+
+    */
+    /**/
     async onGenerateButtonClick(event){
         console.log("Generating randomly generated link");
         let payload={piece:this.state.playerPiece, user: this.state.userInfo.email};
@@ -65,18 +123,19 @@ export default class Multichoice extends Component {
         ReactDOM.render(successMsg, document.getElementById('generate result'));
     }
 
+    /*trivial function to go to the room*/
     createGame()
     {
         //room has already been created
         //now just connect to the room with the room ID
         //if, connection successful, redirect to the main game page
-        //else, show an error output
         this.setState(()=>({
             setRedirect: true
         }));
         console.log("Setredirect setter");
     }
 
+    /*trivial function to redirect to the link of the game*/
     joinGame(e)
     {
         //enter the url
@@ -112,10 +171,6 @@ export default class Multichoice extends Component {
                             <h5>Join:</h5>
                             <Tabs defaultActiveKey="new" id="uncontrolled-tab-example">
                                 <Tab eventKey="new" title="Create New Room">
-                                    <p>Share the link below with your friends</p>
-                                    <div id='generate result'></div>
-                                    <Button onClick={this.onGenerateButtonClick}>Generate game link</Button>
-                                    <p id="gameLink"></p>
                                     <h6>Choose Your piece</h6>
                                     <div class="custom-control custom-radio custom-control-inline" onChange={this.setPlayerPiece.bind(this)}>
                                     <input type="radio" id="GoatChoice" name="PieceChoice" value='goat' class="custom-control-input"/>
@@ -125,6 +180,10 @@ export default class Multichoice extends Component {
                                     <input type="radio" id="TigerChoice" name="PieceChoice" value='tiger' class="custom-control-input"/>
                                     <label class="custom-control-label" for="TigerChoice">Tiger</label>
                                     </div>
+                                    <p>Share the link below with your friends</p>
+                                    <div id='generate result'></div>
+                                    <Button onClick={this.onGenerateButtonClick}>Generate game link</Button>
+                                    <p id="gameLink"></p>
                                     <Button onClick={this.createGame}>Submit</Button>
                                 </Tab>
                                 <Tab eventKey="old" title="Join with link">

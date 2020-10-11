@@ -1,10 +1,78 @@
 import Piece from "./piece.component";
 
-export default class tigerpiece extends Piece{
+/**/
+/*
+class Tigerpiece
+
+NAME
+
+        Tigerpiece - class for the tiger piece in the game
+
+SYNOPSIS
+
+        findBoundaries    ->determine boundaries for move
+        isTigerBlocked    ->determine if tiger is able to move
+        isMovePossible    ->determine if certain move is possible
+
+DESCRIPTION
+
+        This class describes the properties of the tiger piece. It decribes its movement patterns,
+        loss patterns, etc. it also find the boundaries around the edges and corners of the board 
+        for a tiger.
+
+RETURNS
+
+        tiger object
+
+AUTHOR
+
+        Prabal Chhatkuli
+
+DATE
+
+        3/18/2020
+
+*/
+/**/
+
+export default class Tigerpiece extends Piece{
     constructor(){
       super('T');
     }
 
+    /**/
+    /*
+    findBoundaries(evenOrOdd, src)
+
+    NAME
+
+            findBoundaries function - function to find boundaries in the board
+
+    SYNOPSIS
+
+            findBoundaries(evenOrOdd, src)
+            evenOrOdd     -> if a tiger is in an even position or a odd position
+            src           -> source point where the tiger is located
+
+    DESCRIPTION
+
+            This class find the boundary of the board, this is necessary to determine
+            if a possible move is blocked because of a boundary in the board.
+
+    RETURNS
+
+            an array of four objects, each determining whether each side of the board is blocked or open
+
+    AUTHOR
+
+            Prabal Chhatkuli
+
+    DATE
+
+            3/18/2020
+
+    */
+    /**/
     findBoundaries(evenOrOdd, src){
         //boundaries in the order: T, L, R, B
         let boundaries=Array(4).fill(false);
@@ -33,8 +101,39 @@ export default class tigerpiece extends Piece{
         return boundaries;
     }
 
-    //tigers can move the same as goats but if a singular goat is blocking their way in one direction, they cannot move
-    //
+    /**/
+    /*
+    isTigerBlocked(src, board)
+
+    NAME
+
+            isTigerBlocked function - function to determine if a tiger has any moves possible
+
+    SYNOPSIS
+
+            isTigerBlocked(src, board)
+            board         -> the overall arragement of the board 
+            src           -> source point where the tiger is located
+
+    DESCRIPTION
+
+            determines if the tiger has any moves possible or not. It does this by finding all possible moves.
+            Then if at least one move is possible the tiger is not blocked.
+
+    RETURNS
+
+            true or false: depending on whether the moves of the tiger is blocked or not.
+
+    AUTHOR
+
+            Prabal Chhatkuli
+
+    DATE
+
+            2/24/2020
+
+    */
+    /**/
     isTigerBlocked(src, board)
     {   
         //check source number
@@ -48,8 +147,7 @@ export default class tigerpiece extends Piece{
         //find boundaries
         let boundaries=this.findBoundaries(evenOrOdd, src);
         console.log(boundaries);
-        //if even
-            //can go all sides except boundaries
+        //if even can go all sides except boundaries
         let moves=[];
         let eatMoves=[];
         if(evenOrOdd)
@@ -94,12 +192,11 @@ export default class tigerpiece extends Piece{
               eatMoves[7]=null;
             }
         }
-        //if odd
-            //can go E/W/N/S except boundaries
+        //if odd can go E/W/N/S except boundaries
         else
         {
             moves=[(src-5), (src-1), (src+1), (src+5)];
-            eatMoves=[(src-10), (src-2), (src+2), (src+10)] // for any of these moves to be possible there must be a goat in respective ones
+            eatMoves=[(src-10), (src-2), (src+2), (src+10)] // for any of these moves to be possible there must be a goat in respective moves
             //top
             if(boundaries[0]){
               moves[0]=null;
@@ -120,12 +217,8 @@ export default class tigerpiece extends Piece{
               moves[3]=null;
               eatMoves[3]=null;
             }
-            //----------------------------------------------------------------
-            
         }
-        console.log("length of moves");
-        console.log(eatMoves);
-        console.log(moves);
+        
         for(let i=0; i<moves.length; i++)
             {
               //check if a goat is present in the box, if not cannot jump over
@@ -171,9 +264,7 @@ export default class tigerpiece extends Piece{
 
             }
 
-            console.log("eamoves and moves");
-            console.log(eatMoves);
-            console.log(moves);
+          
             let allPossibleMoves = eatMoves.concat(moves);
             let empty = true;
             var i;
@@ -188,8 +279,41 @@ export default class tigerpiece extends Piece{
             return empty;
     }
 
-    //tigers can move the same as goats but if a singular goat is blocking their way in one direction, they cannot move
-    //
+    /**/
+    /*
+    isMovePossible(src, dest, board)
+
+    NAME
+
+            isMovePossible function - function to determine if a proposed move is possible
+
+    SYNOPSIS
+
+            isMovePossible(src, dest, board)
+            board         -> the overall arragement of the board 
+            src           -> source point where the tiger is located
+            dest          -> the destination proposed by the user
+
+    DESCRIPTION
+
+            The function determines all possible moves of the tiger including the ones
+             where the tiger can eat a goat. Then determines whether the proposed move is included
+             in the possible move
+
+    RETURNS
+
+            true or false: depending on whether the move is possible
+
+    AUTHOR
+
+            Prabal Chhatkuli
+
+    DATE
+
+            2/24/2020
+
+    */
+    /**/
     isMovePossible(src, dest, board)
     {   
         //check source number
@@ -203,8 +327,7 @@ export default class tigerpiece extends Piece{
         //find boundaries
         let boundaries=this.findBoundaries(evenOrOdd, src);
         console.log(boundaries);
-        //if even
-            //can go all sides except boundaries
+        //if even can go all sides except boundaries
         let moves=[];
         let eatMoves=[];
         if(evenOrOdd)
@@ -249,8 +372,7 @@ export default class tigerpiece extends Piece{
               eatMoves[7]=null;
             }
         }
-        //if odd
-            //can go E/W/N/S except boundaries
+        //if odd can go E/W/N/S except boundaries
         else
         {
             moves=[(src-5), (src-1), (src+1), (src+5)];
@@ -275,8 +397,6 @@ export default class tigerpiece extends Piece{
               moves[3]=null;
               eatMoves[3]=null;
             }
-            //----------------------------------------------------------------
-            
         }
         console.log("length of moves");
         console.log(eatMoves);
@@ -284,7 +404,6 @@ export default class tigerpiece extends Piece{
         for(let i=0; i<moves.length; i++)
             {
               //check if a goat is present in the box, if not cannot jump over
-
               if(moves[i]===null)
               {
                 continue;
@@ -326,16 +445,13 @@ export default class tigerpiece extends Piece{
 
             }
 
-            console.log("eamoves and moves");
-            console.log(eatMoves);
-            console.log(moves);
             //if eat possible
             if(eatMoves.includes(dest)&&board[dest].player===null){
               return true;
             }
             //----------------------------------------------------------------
             //moves has the position of possible moves, has null on the list
-                        //ensure destination is empty
+            //ensure destination is empty
             else if(moves.includes(dest) && board[dest].player===null){
               return true;
             }

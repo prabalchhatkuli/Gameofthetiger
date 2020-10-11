@@ -10,6 +10,7 @@ var http = require('http');
 const chatrooms = require('../models/chatrooms.model');
 const chatmessages = require('../models/chatmessages.model');
 const { data } = require('jquery');
+const { models } = require('mongoose');
 
 
 /**
@@ -37,27 +38,19 @@ server.on('listening', onListening);
 //-----------------------------------------------socket.io----------------------------------
 var io = require('socket.io')(server);
 
-// io.on('connection', (socket) => {
-//   console.log('a user connected:', socket.id);
-//   socket.on('SEND_MESSAGE', (msg) => {
-//     console.log('message sent');
-//     console.log('from socket id:', socket.id);
-//     io.emit('RECEIVE_MESSAGE', msg);
-//   });
-//   socket.on('disconnect', () => {
-//     console.log('user disconnected',socket.id);
-//   });
-// });
-//---------------------------------2048---------------------------
 const connections = [null, null];
 
 // Handle a socket connection request from web client
-io.on('connection', function (socket) {
+io.on('connection', async function (socket) {
 
   socket.on("join", async room => {
     socket.join(room);
-    io.to(room).emit("roomJoined", room);
-    //io.to('room1').to('room2').to('room3').emit('some event');
+    let messages = await chatmessages.find({ chatRoomID: room });
+    messages.forEach(function (document) {
+      const {author, message} = document;
+      let msg = {author:author, message:message}
+      io.to(room).emit('RECEIVE_MESSAGE_ROOM', msg);
+    });
   });
 
   // Find an available player number
@@ -75,35 +68,39 @@ io.on('connection', function (socket) {
   
   // Tell the connecting client what player number they are
   socket.emit('PLAYER_NUMBER', playerIndex);
+  //emit all global chat messages to the client when they connect
+  let globalmessages = await chatmessages.find({ chatRoomID: 'global' });
+  globalmessages.forEach(function (document) {
+    const {author, message} = document;
+    let msg = {author:author, message:message}
+    io.emit('RECEIVE_MESSAGE', msg);
+  });
   
   //handle message sending
   console.log('a user connected:', socket.id);
 
-  socket.on('SEND_MESSAGE', (msg) => {
+  //for global chat room
+  socket.on('SEND_MESSAGE', async (msg) => {
     console.log('message sent');
     console.log('from socket id:', socket.id);
-    io.emit('RECEIVE_MESSAGE', msg);
+    //msg has author and message
+    //insert the message on the chatmessages model as a global room message
+    const {author, message} = msg
+    await chatmessages.create(
+      {chatRoomID:'global', author, message});
 
-    /*
-      const { chatRoomName, author, message } = data;
-      const chatRoom = await models.ChatRoom.findAll({
-        where: { name: chatRoomName },
-      });
-      const chatRoomId = chatRoom[0].id;
-      const chatMessage = await models.ChatMessage.create({
-        chatRoomId,
-        author,
-        message: message,
-      });
-      io.emit("newMessage", chatMessage);
-    });
-    */
+    io.emit('RECEIVE_MESSAGE', msg);
   });
 
-  socket.on('SEND_MESSAGE_ROOM', (msg) => {
+  socket.on('SEND_MESSAGE_ROOM', async(msg) => {
     console.log('message sent');
     console.log('from socket id:', socket.id);
     console.log("----------------------------------------");
+    const {author, message} = msg;
+    console.log(msg);
+    await chatmessages.create(
+      {chatRoomID:msg.roomID, author, message});
+    console.log("added to db");
     io.to(msg.roomID).emit('RECEIVE_MESSAGE_ROOM', msg);
   });
 
@@ -114,13 +111,21 @@ io.on('connection', function (socket) {
   });
 
 
-  //handle move shared by one user--------------------------------------need to adjust for bagchaal---------
-  socket.on('SEND_MOVE', function (data) {
-    const { boardState, goatsOnBoard, gisnext, goatsTaken } = data; // Get grid and metadata properties from client
+  //handle move shared by one user
+  socket.on('SEND_MOVE', async function (data) {
+    const { boardState, goatsOnBoard, gisnext, goatsTaken, winner} = data;
     
     const move = {
-      playerIndex, boardState, goatsOnBoard, goatsTaken, gisnext
+      playerIndex, boardState, goatsOnBoard, goatsTaken, gisnext, winner
     };
+
+    // if the winner is decided find the room in the database and update
+    if(winner!=null)
+    {
+      let listOfRooms = await chatrooms.find({name:data.roomID});
+      listOfRooms[0].winner = winner;
+      await listOfRooms[0].save();
+    }
 
     // Emit the move to all other clients
     socket.broadcast.to(data.roomID).emit('RECEIVE_MOVE', move);

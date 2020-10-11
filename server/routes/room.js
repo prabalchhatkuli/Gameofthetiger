@@ -3,7 +3,38 @@ var router = express.Router();
 const chatrooms = require('../models/chatrooms.model');
 const chatmessages = require('../models/chatmessages.model');
 
-//accepts number of characters to generate a room ID
+/**/
+/*
+ makeid(l)
+
+NAME
+
+       makeid function - randomly generate a string of l characters 
+
+SYNOPSIS
+
+        function makeid(l)
+           l    -> number of characters for the id
+
+DESCRIPTION
+        This function randomly chooses l numbers from a set of characters and composes
+        the string as an id.
+
+RETURNS
+
+        returns a string l characters long
+
+AUTHOR
+
+        Prabal Chhatkuli
+
+DATE
+
+        10/11/2020
+
+*/
+/**/
+
 function makeid(l)
 {
   return new Promise((resolve, reject)=>{
@@ -17,14 +48,31 @@ function makeid(l)
   }) 
 }
 
+
+/**/
+/*
+ generateRoomID
+
+NAME
+       generateRoomID function - generate a room with an ID
+
+DESCRIPTION
+        generates an id of 6 characters. Loops until the generated id is unique for the database.
+        Then creates an entry in the database with the created roomID.
+
+RETURNS
+        responds to the client with the generated Room ID.
+
+AUTHOR
+        Prabal Chhatkuli
+
+DATE
+        10/11/2020
+
+*/
+/**/
 /* GET users listing. */
 var generateRoomID = async function(req, res){
-  console.log(req.body.adminPiece);
-  
-  //generate a 6 character room id 
-  //validate that the room is not already created in the database
-  //if room already present create another 
-  //await chatrooms.insertMany([{name:roomID}]);
   var roomID;
   let list;
   do
@@ -40,28 +88,83 @@ var generateRoomID = async function(req, res){
   res.end();
 }
 
+/**/
+/*
+ validateRoom
+
+NAME
+       validateRoom function - generate a room with an ID
+
+SYNOPSIS  
+      function (req, res)
+        req     -> req.body has the roomID
+        res     ->call back
+
+DESCRIPTION
+        checks if the room ID has been generated before.
+        Also, it is verified whether the game has completed or not
+
+RETURNS
+        responds to the client with the validity
+
+AUTHOR
+        Prabal Chhatkuli
+
+DATE
+        10/11/2020
+
+*/
+/**/
 var validateRoom = async function(req, res){
   let list = await chatrooms.find({name:req.body.roomID});
 
-  console.log("reached here in server");
-  console.log(list);
   if(list.length === 0)
   {
-    console.log("invalid room");
     res.send({isRoomValid: false})
   }
   else
   {
-    console.log("valid room");
-    res.send({isRoomValid: true})
+    if(list[0].winner=='-')
+    {
+      res.send({isRoomValid: true})    
+    }
+    else
+    {
+      res.send({isRoomValid: false})
+    }   
   }
   res.end();
 }
 
+/**/
+/*
+ joinRoom
+
+NAME
+       joinRoom function - let a user join a room
+
+SYNOPSIS  
+      function (req, res)
+        req     -> req.body has the roomID
+        res     ->call back
+
+DESCRIPTION
+        finds the requested room. Then returns the relevant player piece information
+        to the correct user.
+
+RETURNS
+        responds to the client with the player piece
+
+AUTHOR
+        Prabal Chhatkuli
+
+DATE
+        10/11/2020
+
+*/
+/**/
 var joinRoom = async function(req, res){
   let listOfRooms = await chatrooms.find({name:req.body.roomID});
-  console.log(req.body.userInfo);
-  console.log(listOfRooms);
   //find what the player is: creator / joiner
   //if joiner is already validated: the requesting client is an audience
   if(req.body.userInfo === listOfRooms[0].creator)
@@ -104,7 +207,6 @@ var joinRoom = async function(req, res){
       }
     }
   }
-
 }
 
 router.post('/joinRoom', joinRoom);

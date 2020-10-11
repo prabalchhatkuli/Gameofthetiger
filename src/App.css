@@ -1,0 +1,47 @@
+
+/* css style for the landing page image*/
+.hero-image {
+    background-image: url("./SVG/landing.jpg");
+    background-color: #cccccc;
+    height: 90vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+  }
+
+  /* css style for the landing page text*/
+  .hero-text {
+    content: 'Game of the Tiger';
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+  }
+
+/* DEMO-SPECIFIC STYLES */
+.hero-text h2 {
+  color: #fff;
+  overflow: hidden; /* Ensures the content is not revealed until the animation */
+  border-right: .15em solid orange; /* The typwriter cursor */
+  white-space: nowrap; /* Keeps the content on a single line */
+  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+  /* Adjust as needed */
+  animation: 
+    typing 3.5s steps(20, end) infinite,
+    blink-caret .5s step-end infinite;
+}
+
+/* The typing effect in the main page*/
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: orange }
+}

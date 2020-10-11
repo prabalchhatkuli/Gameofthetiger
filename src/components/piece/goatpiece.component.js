@@ -1,10 +1,77 @@
 import Piece from "./piece.component";
 
-export default class goatpiece extends Piece{
+/**/
+/*
+class Goatpiece
+
+NAME
+
+        Goatpiece - class for the goat piece in the game
+
+SYNOPSIS
+
+        findBoundaries    ->determine boundaries for move
+        isMovePossible    ->determine if certain move is possible
+
+DESCRIPTION
+
+        This class describes the properties of the goat piece. It decribes its movement patterns,
+        loss patterns, etc. it also find the boundaries around the edges and corners of the board 
+        for a goat.
+
+RETURNS
+
+        tiger object
+
+AUTHOR
+
+        Prabal Chhatkuli
+
+DATE
+
+        3/18/2020
+
+*/
+/**/
+
+export default class Goatpiece extends Piece{
     constructor(player){
         super('G');
       }
-//--------------------------------------------------------check possible moves---------------------------
+    
+    /**/
+    /*
+    findBoundaries(evenOrOdd, src)
+
+    NAME
+
+            findBoundaries function - function to find boundaries in the board
+
+    SYNOPSIS
+
+            findBoundaries(evenOrOdd, src)
+            evenOrOdd     -> if a tiger is in an even position or a odd position
+            src           -> source point where the tiger is located
+
+    DESCRIPTION
+
+            This class find the boundary of the board, this is necessary to determine
+            if a possible move is blocked because of a boundary in the board.
+
+    RETURNS
+
+            an array of four objects, each determining whether each side of the board is blocked or open
+
+    AUTHOR
+
+            Prabal Chhatkuli
+
+    DATE
+
+            3/18/2020
+
+    */
+    /**/
     findBoundaries(evenOrOdd, src){
         //boundaries in the order: T, L, R, B
         let boundaries=Array(4).fill(false);
@@ -33,10 +100,40 @@ export default class goatpiece extends Piece{
         return boundaries;
     }
 
-    //goats cannot be blocked in any way
-    //do not jump or do anything
-    //need to lookup the original state before making decision
-    //the square needs to be globally available to both goat/tiger/game component
+    /**/
+    /*
+    isMovePossible(src, dest, board)
+
+    NAME
+
+            isMovePossible function - function to determine if a proposed move is possible
+
+    SYNOPSIS
+
+            isMovePossible(src, dest, board)
+            board         -> the overall arragement of the board 
+            src           -> source point where the goat is located
+            dest          -> the destination proposed by the user
+
+    DESCRIPTION
+
+            The function determines all possible moves of the goat. The goat can only move to an empty destination
+            unlike the tiger that can jump over a goat to reach a blocked location.
+
+    RETURNS
+
+            true or false: depending on whether the move is possible
+
+    AUTHOR
+
+            Prabal Chhatkuli
+
+    DATE
+
+            2/24/2020
+
+    */
+    /**/
     isMovePossible(src, dest, board)
     {   
         //check source number

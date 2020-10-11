@@ -9,21 +9,50 @@ import InstructPage from './components/instruction.component'
 import AboutPage from './components/about.component'
 import Signup from './components/signup.component'
 import GameRoom from './components/chat/gameroom.component'
+import Profile from './components/profile.component'
 
 import { UserContext } from "./providers/UserProvider";
-//main component
+
+/**/
+/*
+App(props)
+
+NAME
+
+        App - Starts the top level of the application
+
+SYNOPSIS
+
+        App(props)
+            props             --> properties it may have recieved from parent(can be null)
+
+DESCRIPTION
+
+        This function starts the react app. It intializes the router to various endpoints of the app
+        This function also provides the user object to all other components of the applicaiton
+
+RETURNS
+
+        returns a dom object with the react router elements, switch, and their respective elements
+
+AUTHOR
+
+        Prabal Chhatkuli
+
+DATE
+
+        05/21/2020
+
+*/
+/**/
 
 function App(props) {
-//<img src={goat} className="App-logo" alt="logo" />
-        
-//<img src={tiger} className="App-logo" alt="logo" />
+  //retrieve user object
   const user = useContext(UserContext);
+
+  //returns a router with all main components
   return (
     <Router>
-      {/* <div>
-      {user? <h1>{user.email}</h1>:<h1></h1>}
-      {console.log(user)}
-      </div> */}
       <Navbar userInfo={user}/>
       <Switch>
         <Route path="/" exact render={(props) => (
@@ -44,7 +73,9 @@ function App(props) {
         <Route path="/signup" render={(props) => (
                   <Signup {...props} />
                 )}/>
-        
+        <Route path="/profile" render={(props) => (
+                  <Profile {...props} userInfo={user}/>
+                )}/>
         <Route path="/room/:roomID" render={(props) => (
                   <GameRoom {...props}  userInfo={user}/>
                 )}/>
