@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "heroku-postbuild": "cd .. && npm install --only=dev && npm install && npm run build"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -17,6 +18,6 @@
     "socket.io": "^2.3.0"
   },
   "engines": {
-    "node": "12.6"
+    "node": "8.9.2"
   }
 }
