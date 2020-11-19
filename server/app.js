@@ -42,7 +42,7 @@ app.use(express.static(path.join(process.cwd(), "build")))
 // Right before your app.listen(), add this:
 app.get("*", (req, res) => {
     res.sendFile(path.join(process.cwd(), "build", "index.html"));
-
+})
 //---------------------------------------------------
 //routers
 app.use('/', indexRouter);
