@@ -36,13 +36,13 @@ connection.once('open',()=>{
 })
 
 // ... other app.use middleware 
-app.use(express.static(path.join(process.cwd(), "build")))
+app.use(express.static(path.join(__dirname, '../build')));
 
 // ...
 // Right before your app.listen(), add this:
 app.get("*", (req, res) => {
-    res.sendFile(path.join(process.cwd(), "build"));
-})
+    res.sendFile(path.join(__dirname, '../build'));
+});
 //---------------------------------------------------
 //routers
 app.use('/', indexRouter);
