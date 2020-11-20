@@ -29,7 +29,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "0.0.0.0:5000",
+  "proxy": "https://powerful-chamber-36962.herokuapp.com",
   "eslintConfig": {
     "extends": "react-app"
   },
