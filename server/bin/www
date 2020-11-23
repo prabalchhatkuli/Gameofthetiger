@@ -9,8 +9,6 @@ var debug = require('debug')('server:server');
 var http = require('http');
 const chatrooms = require('../models/chatrooms.model');
 const chatmessages = require('../models/chatmessages.model');
-const { data } = require('jquery');
-const { models } = require('mongoose');
 
 
 /**
@@ -100,7 +98,7 @@ io.on('connection', async function (socket) {
     console.log(msg);
     await chatmessages.create(
       {chatRoomID:msg.roomID, author, message});
-    console.log("added to db");
+
     io.to(msg.roomID).emit('RECEIVE_MESSAGE_ROOM', msg);
   });
 

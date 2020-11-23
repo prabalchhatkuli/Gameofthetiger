@@ -37,7 +37,7 @@ DATE
 class Chat extends React.Component{
     constructor(props){
         super(props);
-        console.log("constructor called");
+
         this.state = {
             username: '',
             message: '',
@@ -111,8 +111,6 @@ class Chat extends React.Component{
     */
     /**/
     componentDidMount(){
-        //this.socket = this.props.socket;
-        console.log("socket created");
 
         if(this.props.name === 'Global')
         {

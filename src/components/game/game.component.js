@@ -83,7 +83,7 @@ class Game extends Component {
             goatsTaken:0,
             winner:null,
             status:'',
-            socket:io('http://localhost:5000')
+            socket:io('/')
         };
     }
     
