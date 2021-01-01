@@ -24,7 +24,7 @@
     "typescript": "^3.9.7"
   },
   "scripts": {
-    "start": "cd server &&npm install && npm start",
+    "start": "cd server && HTTPS=true && npm install && npm start",
     "build": "react-scripts build && cd server && npm install",
     "heroku-postbuild": "react-scripts build && npm run build",
     "test": "react-scripts test",

@@ -15,11 +15,6 @@ const chatmessages = require('../models/chatmessages.model');
     SSL
 */
 
-if (process.env.LE_URL && process.env.LE_CONTENT) {
-  app.get(process.env.LE_URL, function(req, res) {
-    return res.send(process.env.LE_CONTENT)
-  });
-}
 
 /**
  * Get port from environment and store in Express.
@@ -37,8 +32,8 @@ app.set('port', port);
 /*
 https initializations
 */
-var credentials = {key: privateKey, cert: certificate};
-var server = https.createServer(credentials, app);
+
+var server = https.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
