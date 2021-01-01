@@ -43,8 +43,8 @@ app.use(express.static(path.join(__dirname, '../build')));
 /*
     ssl certs
 */
-app.get("/.well-known/acme-challenge/9uKdMNgSpg_PAn0aEGAOiDOf31S2ViO4aS7bfaSaQkk", function(req, res){
-  res.send("9uKdMNgSpg_PAn0aEGAOiDOf31S2ViO4aS7bfaSaQkk.TNK4ugUkMOjrIi1ihimZMBzrHvoVsn-OPTH3A7wvLfw");
+app.get("/.well-known/acme-challenge/QCidg6_Mr5Gngohw1HZ3g9WeA6UmYRYSYjIbWoYx5A4", function(req, res){
+  res.send("QCidg6_Mr5Gngohw1HZ3g9WeA6UmYRYSYjIbWoYx5A4.TNK4ugUkMOjrIi1ihimZMBzrHvoVsn-OPTH3A7wvLfw");
   });
 
 // Right before your app.listen(), add this:

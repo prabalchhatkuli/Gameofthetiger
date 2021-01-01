@@ -7,7 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('server:server');
 //var http = require('http');
-var https = require('https');
+var http = require('http');
 const chatrooms = require('../models/chatrooms.model');
 const chatmessages = require('../models/chatmessages.model');
 
@@ -33,7 +33,7 @@ app.set('port', port);
 https initializations
 */
 
-var server = https.createServer(app);
+var server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
