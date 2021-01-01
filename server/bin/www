@@ -6,10 +6,20 @@
 
 var app = require('../app');
 var debug = require('debug')('server:server');
-var http = require('http');
+//var http = require('http');
+var https = require('https');
 const chatrooms = require('../models/chatrooms.model');
 const chatmessages = require('../models/chatmessages.model');
 
+/*
+    SSL
+*/
+
+if (process.env.LE_URL && process.env.LE_CONTENT) {
+  app.get(process.env.LE_URL, function(req, res) {
+    return res.send(process.env.LE_CONTENT)
+  });
+}
 
 /**
  * Get port from environment and store in Express.
@@ -22,7 +32,13 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+//var server = http.createServer(app);
+
+/*
+https initializations
+*/
+var credentials = {key: privateKey, cert: certificate};
+var server = https.createServer(credentials, app);
 
 /**
  * Listen on provided port, on all network interfaces.
