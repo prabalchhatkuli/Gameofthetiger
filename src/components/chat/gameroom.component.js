@@ -132,7 +132,7 @@ export default class GameRoom extends Component {
 
             try
             {
-                const response = await axios.post('http://localhost:5000/room/joinRoom',payload);
+                const response = await axios.post('/room/joinRoom',payload);
 
                 //no need to implement callback
                 this.setState(()=>({
