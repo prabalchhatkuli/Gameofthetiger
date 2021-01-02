@@ -105,7 +105,7 @@ export default class Multichoice extends Component {
         let payload={piece:this.state.playerPiece, user: this.state.userInfo.email};
         try
         {
-            const response = await axios.post('http://localhost:5000/room/generate',payload);
+            const response = await axios.post('/room/generate',payload);
 
             //no need to implement callback
             this.setState(()=>({
@@ -119,7 +119,7 @@ export default class Multichoice extends Component {
             ReactDOM.render(errorMsg, document.getElementById('generate result'));
             return;
         }
-        const successMsg = <p className="text-success">http://localhost:3000/room/{this.state.linkId}</p>
+        const successMsg = <p className="text-success">http://gameoftiger.prabal.dev/room/{this.state.linkId}</p>
         ReactDOM.render(successMsg, document.getElementById('generate result'));
     }
 

@@ -80,7 +80,7 @@ export default class GameRoom extends Component {
         //check if the room has been created and stored in the database
         try
         {
-            const response = await axios.post('http://localhost:5000/room/validateRoom',payload);
+            const response = await axios.post('/room/validateRoom',payload);
 
             //no need to implement callback
             this.setState(()=>({
