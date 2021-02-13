@@ -18,6 +18,7 @@ const firebaseConfig = {
 //initialize firebase/firestore/authentication using the configuration
 firebase.initializeApp(firebaseConfig);
 export const auth = firebase.auth();
+const analytics = firebase.analytics();
 export const firestore = firebase.firestore();
 
 auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
