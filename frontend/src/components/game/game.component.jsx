@@ -7,7 +7,7 @@ import Goat from '../piece/goatpiece.component'
 import Piece from '../piece/piece.component'
 import Chat from '../chat/chat.component'
 import Winner from './winner.component'
-import { setWinLoss, auth } from '../../firebase.config'
+import { auth } from '../../firebase.config'
 
 /**/
 /*
@@ -135,31 +135,11 @@ class Game extends Component {
         
         //componentdidmount will contain the information for emmitting and receiving moves
         this.state.socket.on('RECEIVE_MOVE', function(move){
-            //if the winner is determined, then update the win/loss for the user
+            //if the winner is determined, confirm it to the server, which
+            //records win/loss once both players have reported
             if(move.winner)
             {
-                //update firestore for the wins and losses in the user profile
-                if(move.winner=='T')
-                {
-                    if(this.props.playerPiece=='tiger')
-                    {
-                        setWinLoss(1,0,this.props.userInfo.uid);
-                    }
-                    else if(this.props.playerPiece == 'goat')
-                    {
-                        setWinLoss(0,1,this.props.userInfo.uid);
-                    }
-                }
-                else if(move.winner=='G'){
-                    if(this.props.playerPiece=='tiger')
-                    {
-                        setWinLoss(0,1,this.props.userInfo.uid);
-                    }
-                    else if(this.props.playerPiece == 'goat')
-                    {
-                        setWinLoss(1,0,this.props.userInfo.uid);
-                    }
-                }
+                this.state.socket.emit('GAME_OVER', {roomID: this.props.roomID, winner: move.winner});
             }
             //console.log(move.gisnext);
             var temp_board = Array(25).fill(null);
@@ -213,31 +193,11 @@ class Game extends Component {
     */
     /**/
     sendMoves(){
-        //if the winner is determined, then update the win/loss for the user
+        //if the winner is determined, report it to the server, which
+        //records win/loss once both players have reported
         if(this.state.winner)
         {
-            //update firestore for the wins and losses in the user profile
-            if(this.state.winner=='T')
-            {
-                if(this.props.playerPiece=='tiger')
-                {
-                    setWinLoss(1,0,this.props.userInfo.uid);
-                }
-                else if(this.props.playerPiece == 'goat')
-                {
-                    setWinLoss(0,1,this.props.userInfo.uid);
-                }
-            }
-            else if(this.state.winner=='G'){
-                if(this.props.playerPiece=='tiger')
-                {
-                    setWinLoss(0,1,this.props.userInfo.uid);
-                }
-                else if(this.props.playerPiece == 'goat')
-                {
-                    setWinLoss(1,0,this.props.userInfo.uid);
-                }
-            }
+            this.state.socket.emit('GAME_OVER', {roomID: this.props.roomID, winner: this.state.winner});
         }
 
         //send the latest board positions

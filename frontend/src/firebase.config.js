@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, doc, getDoc, setDoc, updateDoc, increment } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 import { getAuth, GoogleAuthProvider, signInWithPopup, browserSessionPersistence, setPersistence } from 'firebase/auth';
 import { getAnalytics } from 'firebase/analytics';
 
@@ -141,47 +141,4 @@ export const getUserDocument = async uid => {
     } catch (error) {
         console.error("Error fetching user", error);
     }
-};
-
-/**/
-/*
-setWinLoss
-
-NAME
-
-        setWinLoss - update the win/loss numbers in the user document in firestore
-
-SYNOPSIS
-
-        setWinLoss = async(win, loss, uid) => {
-            uid             --> the user authentication object
-            win, loss             --> flags for whether the user won/loss the game
-
-DESCRIPTION
-
-        This function will asynchronously retrieve a user information from firestore,
-        then update it with the new number of win and loss. This will be retrieved from
-        the two arguments provided to the function
-
-RETURNS
-
-        no returns
-
-AUTHOR
-
-        Prabal Chhatkuli
-
-DATE
-
-        9/2/2020
-
-*/
-/**/
-export const setWinLoss = async (win, loss, uid) => {
-    const userRef = doc(firestore, `users/${uid}`);
-    // atomic server-side increment; no read-modify-write race
-    await updateDoc(userRef, {
-        wins: increment(win),
-        losses: increment(loss)
-    });
 };

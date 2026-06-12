@@ -10,6 +10,7 @@ var debug = require('debug')('server:server');
 var http = require('http');
 const chatrooms = require('../models/chatrooms.model');
 const chatmessages = require('../models/chatmessages.model');
+const { recordGameResult } = require('../services/gameResult');
 
 /*
     SSL
@@ -147,16 +148,19 @@ io.on('connection', async function (socket) {
       playerIndex, boardState, goatsOnBoard, goatsTaken, gisnext, winner
     };
 
-    // if the winner is decided find the room in the database and update
-    if(winner!=null)
-    {
-      let listOfRooms = await chatrooms.find({name:data.roomID});
-      listOfRooms[0].winner = winner;
-      await listOfRooms[0].save();
-    }
-
     // Emit the move to all other clients
     socket.broadcast.to(data.roomID).emit('RECEIVE_MOVE', move);
+  });
+
+  //handle a client reporting the end of the game; stats are committed
+  //server-side once both participants report the same winner
+  socket.on('GAME_OVER', async function (data) {
+    try {
+      const result = await recordGameResult(data.roomID, data.winner, socket.user.uid);
+      console.log('GAME_OVER', data.roomID, data.winner, '->', result.status);
+    } catch (err) {
+      console.error('GAME_OVER failed:', err);
+    }
   });
 
   // Ignore player 3
