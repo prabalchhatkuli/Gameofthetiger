@@ -1,7 +1,5 @@
 import React, { Component, useContext,useState } from 'react'
-import ReactDOM from 'react-dom'
 import { UserContext } from "../../providers/UserProvider";
-import { Redirect } from "react-router-dom";
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import Tabs from 'react-bootstrap/Tabs'
