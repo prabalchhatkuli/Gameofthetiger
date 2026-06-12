@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Game from '../game/game.component';
 import axios from 'axios';
+import { auth } from "../../firebase.config";
 
 /**/
 /*
@@ -96,10 +97,12 @@ export default function GameRoom({ userInfo }) {
     async function startGame() {
         // If the room is valid, get the state of the player: i.e. the pieces of the player
         if (validRoom) {
-            const payload = { roomID: roomID, userInfo: userInfo.email };
+            const payload = { roomID: roomID };
 
             try {
-                const response = await axios.post('/room/joinRoom', payload);
+                const token = await auth.currentUser.getIdToken();
+                const response = await axios.post('/room/joinRoom', payload,
+                    { headers: { Authorization: `Bearer ${token}` } });
                 setPlayerPiece(response.data.playerPiece);
             } catch (error) {
                 console.log(error);

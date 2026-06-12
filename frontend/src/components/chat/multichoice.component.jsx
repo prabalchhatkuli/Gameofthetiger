@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button'
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import axios from 'axios';
+import { auth } from "../../firebase.config";
 
 /**/
 /*
@@ -101,10 +102,12 @@ export default class Multichoice extends Component {
     /**/
     async onGenerateButtonClick(event){
         console.log("Generating randomly generated link");
-        let payload={piece:this.state.playerPiece, user: this.state.userInfo.email};
+        let payload={piece:this.state.playerPiece};
         try
         {
-            const response = await axios.post('/room/generate',payload);
+            const token = await auth.currentUser.getIdToken();
+            const response = await axios.post('/room/generate', payload,
+                { headers: { Authorization: `Bearer ${token}` } });
 
             //no need to implement callback
             this.setState(()=>({
