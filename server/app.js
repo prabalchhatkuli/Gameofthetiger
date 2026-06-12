@@ -11,7 +11,6 @@ require('dotenv').config()
 const mongoose = require('mongoose');
 //------------------------------------------------------------------------
 
-var indexRouter = require('./routes/index');
 var roomRouter = require('./routes/room');
 
 var app = express();
@@ -33,26 +32,16 @@ mongoose.connect(uri)
   .then(() => console.log("MongoDB database connection established successfully."))
   .catch(err => console.error("MongoDB connection error:", err));
 
-// ... other app.use middleware 
+// serve the built frontend
 app.use(express.static(path.join(__dirname, '../frontend/build')));
 
-// ...
+//routers
+app.use('/room', roomRouter);
 
-/*
-    ssl certs
-*/
-app.get("/.well-known/acme-challenge/QCidg6_Mr5Gngohw1HZ3g9WeA6UmYRYSYjIbWoYx5A4", function(req, res){
-  res.send("QCidg6_Mr5Gngohw1HZ3g9WeA6UmYRYSYjIbWoYx5A4.TNK4ugUkMOjrIi1ihimZMBzrHvoVsn-OPTH3A7wvLfw");
-  });
-
-// Right before your app.listen(), add this:
+// SPA fallback: all remaining GETs get the React app (must stay below the routers)
 app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
 });
-//---------------------------------------------------
-//routers
-app.use('/', indexRouter);
-app.use('/room', roomRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
