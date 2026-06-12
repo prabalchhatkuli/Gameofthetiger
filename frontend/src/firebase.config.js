@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, setDoc, updateDoc, increment } from 'firebase/firestore';
 import { getAuth, GoogleAuthProvider, signInWithPopup, browserSessionPersistence, setPersistence } from 'firebase/auth';
 import { getAnalytics } from 'firebase/analytics';
 
@@ -178,13 +178,10 @@ DATE
 */
 /**/
 export const setWinLoss = async (win, loss, uid) => {
-    // Get the document reference
     const userRef = doc(firestore, `users/${uid}`);
-    // Retrieve initial user info
-    const userDocument = await getDoc(userRef);
-    // Update
+    // atomic server-side increment; no read-modify-write race
     await updateDoc(userRef, {
-        wins: userDocument.data().wins + win,
-        losses: userDocument.data().losses + loss
+        wins: increment(win),
+        losses: increment(loss)
     });
 };
