@@ -18,7 +18,7 @@ var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 app.use(cors());
 app.use(logger('dev'));
@@ -29,14 +29,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //---------------------mongoose connection---------------
 const uri = process.env.ATLAS_URI;
-mongoose.connect(uri,{useNewUrlParser:true, useCreateIndex:true});
-const connection=mongoose.connection;
-connection.once('open',()=>{
-  console.log("MongoDB database connection established successfully.");
-})
+mongoose.connect(uri)
+  .then(() => console.log("MongoDB database connection established successfully."))
+  .catch(err => console.error("MongoDB connection error:", err));
 
 // ... other app.use middleware 
-app.use(express.static(path.join(__dirname, '../build')));
+app.use(express.static(path.join(__dirname, '../frontend/build')));
 
 // ...
 
@@ -49,7 +47,7 @@ app.get("/.well-known/acme-challenge/QCidg6_Mr5Gngohw1HZ3g9WeA6UmYRYSYjIbWoYx5A4
 
 // Right before your app.listen(), add this:
 app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, '../build/index.html'));
+    res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
 });
 //---------------------------------------------------
 //routers
