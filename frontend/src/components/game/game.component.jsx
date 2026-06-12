@@ -7,7 +7,7 @@ import Goat from '../piece/goatpiece.component'
 import Piece from '../piece/piece.component'
 import Chat from '../chat/chat.component'
 import Winner from './winner.component'
-import {setWinLoss}from '../../firebase.config'
+import { setWinLoss, auth } from '../../firebase.config'
 
 /**/
 /*
@@ -83,7 +83,16 @@ class Game extends Component {
             goatsTaken:0,
             winner:null,
             status:'',
-            socket:io('/')
+            socket:io('/', {
+                auth: (cb) => {
+                    // called on every (re)connect; sends a fresh ID token
+                    if (auth.currentUser) {
+                        auth.currentUser.getIdToken().then(token => cb({ token }));
+                    } else {
+                        cb({});
+                    }
+                }
+            })
         };
     }
     

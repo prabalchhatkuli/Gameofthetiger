@@ -53,6 +53,19 @@ const io = new Server(server, {
   }
 });
 
+const admin = require('../firebaseAdmin');
+
+// Reject sockets without a valid Firebase ID token; attach the decoded
+// token so event handlers know who is connected.
+io.use(async (socket, next) => {
+  try {
+    socket.user = await admin.auth().verifyIdToken(socket.handshake.auth.token);
+    next();
+  } catch (err) {
+    next(new Error('unauthorized'));
+  }
+});
+
 const connections = [null, null];
 
 // Handle a socket connection request from web client
