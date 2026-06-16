@@ -12,7 +12,9 @@ please mention any bugs in the Issues section.
 ## Prerequisites
 
 - Node.js 18+
-- A `server/.env` file with `ATLAS_URI=<your MongoDB connection string>`
+- A `server/.env` file with:
+  - `ATLAS_URI=<your MongoDB connection string>`
+  - `FIREBASE_SERVICE_ACCOUNT=<single-line service account JSON>` (Firebase console → Project settings → Service accounts → Generate new private key)
 
 ## Development
 

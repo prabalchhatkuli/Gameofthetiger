@@ -109,11 +109,12 @@ const io = new Server(server, { cors: {...} });
 - `join` - Client joins room, receives chat history
 - `SEND_MOVE` / `RECEIVE_MOVE` - Game state sync
 - `SEND_MESSAGE` / `SEND_MESSAGE_ROOM` - Chat
+- `GAME_OVER` - Client reports game result; server records win/loss in Firestore after both players report the same winner
 
 ### API Endpoints
-- `POST /room/generate` - Create multiplayer room
-- `POST /room/validateRoom` - Check room exists
-- `POST /room/joinRoom` - Join and get assigned piece
+- `POST /room/generate` - Create multiplayer room (requires `Authorization: Bearer <Firebase ID token>`)
+- `POST /room/validateRoom` - Check room exists (public)
+- `POST /room/joinRoom` - Join and get assigned piece (requires `Authorization: Bearer <Firebase ID token>`)
 
 ## Code Conventions
 
@@ -148,3 +149,5 @@ const io = new Server(server, { cors: {...} });
 - Firebase config is in `frontend/src/firebase.config.js`
 - Dev server: port 3000 (Vite), port 5000 (Express)
 - Vite proxies `/room` and `/socket.io` to backend in development
+- Backend also expects `FIREBASE_SERVICE_ACCOUNT` in `server/.env` (service account JSON, single line) for token verification and server-side stat writes
+- Sockets require a Firebase ID token via the Socket.io `auth` payload
