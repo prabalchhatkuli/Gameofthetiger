@@ -153,29 +153,30 @@ export default class LoginPage extends Component {
   //render function for the component
   render() {
     return (
-      <div className="mx-auto max-w-md px-4 py-6">
-        <h3 className="mb-4 text-2xl font-semibold">Sign In</h3>
-        <div className="space-y-4">
-          <div className="space-y-1">
-            <Label htmlFor="email">Email address</Label>
-            <Input id="email" type="email" placeholder="Enter email" onChange={this.handleEmailChange} />
-            <p className="text-sm text-muted-foreground">***We'll never share your info with anyone else.</p>
+      <main className="mx-auto flex max-w-md flex-col px-5 py-12 sm:py-16">
+        <div className="heritage-card animate-rise p-7 sm:p-9">
+          <p className="eyebrow mb-2">Welcome back</p>
+          <h1 className="mb-6 font-display text-3xl font-semibold tracking-tight">Sign in</h1>
+          <div className="space-y-5">
+            <div className="space-y-1.5">
+              <Label htmlFor="email">Email address</Label>
+              <Input id="email" type="email" placeholder="you@example.com" onChange={this.handleEmailChange} />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" type="password" placeholder="••••••••" onKeyPress={this.enterPressed.bind(this)} onChange={this.handlePasswordChange} />
+            </div>
+            <label className="flex items-center gap-2 text-sm text-muted-foreground">
+              <input type="checkbox" onChange={this.handleRemember} className="accent-primary" /> Remember me
+            </label>
+            <Button onClick={this.handleLogin} size="lg" className="w-full rounded-full text-base">Sign in</Button>
           </div>
-          <div className="space-y-1">
-            <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" placeholder="Password" onKeyPress={this.enterPressed.bind(this)} onChange={this.handlePasswordChange} />
-          </div>
-          <label className="flex items-center gap-2 text-sm">
-            <input type="checkbox" onChange={this.handleRemember} /> Remember me
-          </label>
-          <div className="flex gap-2">
-            <Button variant="default" onClick={this.handleLogin}>Submit</Button>
-            <Button variant="outline" asChild>
-              <Link to="/signup">Don't have an Account? Create one</Link>
-            </Button>
-          </div>
+          <p className="mt-6 text-center text-sm text-muted-foreground">
+            New here?{' '}
+            <Link to="/signup" className="font-medium text-primary hover:underline">Create an account</Link>
+          </p>
         </div>
-      </div>
+      </main>
     );
   }
 }

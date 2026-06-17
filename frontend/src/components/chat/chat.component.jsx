@@ -149,32 +149,53 @@ class Chat extends React.Component{
     render(){
         return (
             <div className="mx-auto max-w-2xl px-4">
-                <div >
-                    <div>
-                        <div className="card">
-                            <div className="card-body " >
-                                <div className="card-title"><strong>{this.props.name}</strong> Chat</div>
-                                <hr/>
-                                <div id = "chat-messages" style={{overflow: "scroll", maxHeight:"30vh"}} className="messages">
-                                    {this.state.messages.map(message => {
-                                        this.updateScroll();
-                                        return (
-                                            <div><strong>{message.author}</strong>: {message.message}</div>
-                                        );
-                                    })}
-                                </div>
+                <div className="heritage-card animate-rise">
+                    {/* Header */}
+                    <div className="border-b border-border pb-3 mb-3">
+                        <h2 className="font-display text-lg font-semibold text-foreground">
+                            <span className="text-primary">{this.props.name}</span> Chat
+                        </h2>
+                    </div>
 
-                            </div>
-                            <div className="card-footer">
-                                <input type="text" placeholder="Screen Name" value={this.state.username} onChange={ev => this.setState({username: ev.target.value})} className="w-full rounded border px-3 py-2"/>
-                                <br/>
-                                <input type="text" placeholder="Message" className="w-full rounded border px-3 py-2" value={this.state.message}
-                                 onKeyPress={this.enterPressed.bind(this)}
-                                 onChange={ev => this.setState({message: ev.target.value})}/>
-                                <br/>
-                                <button onClick={this.sendMessage} className="w-full rounded bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90">Send</button>
-                            </div>
-                        </div>
+                    {/* Messages area */}
+                    <div
+                        id="chat-messages"
+                        className="max-h-72 overflow-y-auto space-y-2 p-1"
+                    >
+                        {this.state.messages.map((message, index) => {
+                            this.updateScroll();
+                            return (
+                                <div key={index} className="rounded-lg bg-accent/50 px-3 py-2">
+                                    <span className="text-xs font-semibold text-primary">{message.author}</span>
+                                    <p className="text-sm text-foreground mt-0.5">{message.message}</p>
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    {/* Footer / input row */}
+                    <div className="border-t border-border pt-3 mt-3 space-y-2">
+                        <input
+                            type="text"
+                            placeholder="Screen Name"
+                            value={this.state.username}
+                            onChange={ev => this.setState({username: ev.target.value})}
+                            className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        />
+                        <input
+                            type="text"
+                            placeholder="Message"
+                            value={this.state.message}
+                            onKeyPress={this.enterPressed.bind(this)}
+                            onChange={ev => this.setState({message: ev.target.value})}
+                            className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        />
+                        <button
+                            onClick={this.sendMessage}
+                            className="w-full rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
+                        >
+                            Send
+                        </button>
                     </div>
                 </div>
             </div>

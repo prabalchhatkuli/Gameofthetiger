@@ -188,32 +188,41 @@ export default class SignupPage extends Component {
   //render function for the component
   render() {
     return (
-      <div className="mx-auto max-w-md px-4 py-6">
-        <h3 className="mb-4 text-2xl font-semibold">Create an account with us</h3>
-        <div className="space-y-4">
-          <div className="space-y-1">
-            <Label htmlFor="email">Email address</Label>
-            <Input id="email" type="email" placeholder="example@example.com" onChange={this.handleEmailChange} />
-            <p className="text-sm text-muted-foreground">***We'll never share your info with anyone else.</p>
+      <main className="mx-auto flex max-w-md flex-col px-5 py-12 sm:py-16">
+        <div className="heritage-card animate-rise p-7 sm:p-9">
+          <p className="eyebrow mb-2">Join the hunt</p>
+          <h1 className="mb-6 font-display text-3xl font-semibold tracking-tight">Create your account</h1>
+          <div className="space-y-5">
+            <div className="space-y-1.5">
+              <Label htmlFor="email">Email address</Label>
+              <Input id="email" type="email" placeholder="you@example.com" onChange={this.handleEmailChange} />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label htmlFor="firstname">First name</Label>
+                <Input id="firstname" type="text" placeholder="First" onChange={this.handleFirstnameChange} />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="lastname">Last name</Label>
+                <Input id="lastname" type="text" placeholder="Last" onChange={this.handleLastnameChange} />
+              </div>
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" type="password" placeholder="••••••••" onChange={this.handlePasswordChange} />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="confirm">Confirm password</Label>
+              <Input id="confirm" type="password" placeholder="••••••••" onChange={this.handleConfirmPasswordChange} />
+            </div>
+            <Button onClick={this.handleSignup} size="lg" className="w-full rounded-full text-base">Create account</Button>
           </div>
-          <div className="space-y-1">
-            <Label htmlFor="firstname">Firstname</Label>
-            <Input id="firstname" type="text" placeholder="Lorem" onChange={this.handleFirstnameChange} />
-            <Label htmlFor="lastname">Lastname</Label>
-            <Input id="lastname" type="text" placeholder="Ipsum" onChange={this.handleLastnameChange} />
-          </div>
-          <div className="space-y-1">
-            <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" placeholder="Secret Password" onChange={this.handlePasswordChange} />
-            <Label htmlFor="confirm">Confirm Password</Label>
-            <Input id="confirm" type="password" placeholder="Retype same Password" onChange={this.handleConfirmPasswordChange} />
-          </div>
-          <div className="flex gap-2">
-            <Button variant="default" onClick={this.handleSignup}>Create an account</Button>
-            <Button variant="outline" asChild><Link to="/login">Back to Login?</Link></Button>
-          </div>
+          <p className="mt-6 text-center text-sm text-muted-foreground">
+            Already have an account?{' '}
+            <Link to="/login" className="font-medium text-primary hover:underline">Sign in</Link>
+          </p>
         </div>
-      </div>
+      </main>
     );
   }
 }

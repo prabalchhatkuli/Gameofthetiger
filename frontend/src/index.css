@@ -1,75 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+  Game of the Tiger — "heritage parchment" design system.
+  Palette is taken from the actual game pieces: tiger saffron (#d15a09)
+  and goat indigo (#184b89) on aged parchment.
+*/
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
+  --radius: 0.5rem;
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --background: oklch(0.967 0.014 84);
+  --foreground: oklch(0.255 0.022 52);
+
+  --card: oklch(0.992 0.006 84);
+  --card-foreground: oklch(0.255 0.022 52);
+  --popover: oklch(0.992 0.006 84);
+  --popover-foreground: oklch(0.255 0.022 52);
+
+  /* tiger saffron */
+  --primary: oklch(0.585 0.158 49);
+  --primary-foreground: oklch(0.98 0.012 84);
+
+  --secondary: oklch(0.918 0.02 78);
+  --secondary-foreground: oklch(0.30 0.04 56);
+
+  --muted: oklch(0.93 0.014 80);
+  --muted-foreground: oklch(0.50 0.025 58);
+
+  /* goat indigo */
+  --accent: oklch(0.40 0.105 256);
+  --accent-foreground: oklch(0.98 0.012 84);
+
+  --destructive: oklch(0.55 0.205 27);
+
+  --border: oklch(0.855 0.024 74);
+  --input: oklch(0.855 0.024 74);
+  --ring: oklch(0.585 0.158 49);
+
+  --chart-1: oklch(0.585 0.158 49);
+  --chart-2: oklch(0.40 0.105 256);
+  --chart-3: oklch(0.70 0.12 70);
+  --chart-4: oklch(0.50 0.09 200);
+  --chart-5: oklch(0.55 0.13 20);
+
+  --sidebar: oklch(0.992 0.006 84);
+  --sidebar-foreground: oklch(0.255 0.022 52);
+  --sidebar-primary: oklch(0.585 0.158 49);
+  --sidebar-primary-foreground: oklch(0.98 0.012 84);
+  --sidebar-accent: oklch(0.918 0.02 78);
+  --sidebar-accent-foreground: oklch(0.30 0.04 56);
+  --sidebar-border: oklch(0.855 0.024 74);
+  --sidebar-ring: oklch(0.585 0.158 49);
 }
 
 @theme inline {
@@ -77,6 +61,10 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  --font-sans: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -116,5 +104,58 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    /* layered parchment: warm radial glow + faint grain */
+    background-image:
+      radial-gradient(ellipse 80% 60% at 50% -10%, oklch(0.585 0.158 49 / 0.07), transparent 60%),
+      radial-gradient(ellipse 70% 50% at 100% 100%, oklch(0.40 0.105 256 / 0.06), transparent 55%);
+    background-attachment: fixed;
+    min-height: 100vh;
   }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer components {
+  /* a parchment card with a double-rule frame, echoing the board's lines */
+  .heritage-card {
+    @apply rounded-xl border bg-card shadow-[0_1px_0_oklch(1_0_0/0.6)_inset,0_18px_40px_-24px_oklch(0.255_0.022_52/0.5)];
+    position: relative;
+  }
+  .heritage-card::after {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border: 1px solid color-mix(in oklch, var(--border) 80%, transparent);
+    border-radius: calc(var(--radius) + 2px);
+    pointer-events: none;
+  }
+  /* small uppercase eyebrow label */
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.18em] text-primary;
+  }
+  /* faint grain overlay you can drop onto any section */
+  .grain {
+    position: relative;
+  }
+  .grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.4;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+  }
+}
+
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+.animate-rise {
+  animation: rise-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
 }

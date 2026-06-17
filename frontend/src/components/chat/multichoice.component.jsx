@@ -156,34 +156,81 @@ export default class Multichoice extends Component {
         {
             return (
                 <Dialog open={this.state.modalShow} onOpenChange={(o)=>{ if(!o) this.onCloseButtonClick(); }}>
-                    <DialogContent className="max-w-lg">
-                        <DialogHeader><DialogTitle>Multiplayer game</DialogTitle></DialogHeader>
-                        <h5 className="font-medium">Join:</h5>
-                        <Tabs defaultValue="new">
-                            <TabsList>
+                    <DialogContent className="max-w-lg bg-card text-foreground">
+                        <DialogHeader className="space-y-1">
+                            <DialogTitle className="font-display text-2xl text-foreground">Play online</DialogTitle>
+                            <p className="text-sm text-muted-foreground">Create a room or join a friend's link.</p>
+                        </DialogHeader>
+
+                        <Tabs defaultValue="new" className="mt-2">
+                            <TabsList className="grid w-full grid-cols-2">
                                 <TabsTrigger value="new">Create New Room</TabsTrigger>
                                 <TabsTrigger value="old">Join with link</TabsTrigger>
                             </TabsList>
-                            <TabsContent value="new" className="space-y-3">
-                                <h6 className="font-medium">Choose Your piece</h6>
-                                <RadioGroup value={this.state.playerPiece || ''} onValueChange={(v)=>this.setPlayerPiece({ target: { value: v } })} className="flex gap-4">
-                                    <div className="flex items-center gap-2"><RadioGroupItem value="goat" id="GoatChoice" /><Label htmlFor="GoatChoice">Goat</Label></div>
-                                    <div className="flex items-center gap-2"><RadioGroupItem value="tiger" id="TigerChoice" /><Label htmlFor="TigerChoice">Tiger</Label></div>
-                                </RadioGroup>
-                                <p>Share the link below with your friends</p>
-                                {this.state.generateResult && (this.state.generateResult.ok
-                                    ? <p className="text-green-600">http://gameoftiger.prabal.dev/room/{this.state.generateResult.link}</p>
-                                    : <p className="text-yellow-500">Error in generating key. Please press again.</p>)}
-                                <Button onClick={this.onGenerateButtonClick}>Generate game link</Button>
-                                <Button onClick={this.createGame}>Submit</Button>
+
+                            <TabsContent value="new" className="space-y-4 pt-4">
+                                <div className="space-y-2">
+                                    <p className="text-sm font-medium text-foreground">Choose your side</p>
+                                    <RadioGroup
+                                        value={this.state.playerPiece || ''}
+                                        onValueChange={(v)=>this.setPlayerPiece({ target: { value: v } })}
+                                        className="flex gap-3"
+                                    >
+                                        <label
+                                            htmlFor="GoatChoice"
+                                            className={`flex items-center gap-2 rounded-lg border px-3 py-2 cursor-pointer transition-colors
+                                                ${this.state.playerPiece === 'goat'
+                                                    ? 'border-primary bg-primary/10 text-primary'
+                                                    : 'border-border text-foreground hover:bg-muted/50'}`}
+                                        >
+                                            <RadioGroupItem value="goat" id="GoatChoice" />
+                                            <Label htmlFor="GoatChoice" className="cursor-pointer text-accent font-medium">Goat</Label>
+                                        </label>
+                                        <label
+                                            htmlFor="TigerChoice"
+                                            className={`flex items-center gap-2 rounded-lg border px-3 py-2 cursor-pointer transition-colors
+                                                ${this.state.playerPiece === 'tiger'
+                                                    ? 'border-primary bg-primary/10 text-primary'
+                                                    : 'border-border text-foreground hover:bg-muted/50'}`}
+                                        >
+                                            <RadioGroupItem value="tiger" id="TigerChoice" />
+                                            <Label htmlFor="TigerChoice" className="cursor-pointer text-primary font-medium">Tiger</Label>
+                                        </label>
+                                    </RadioGroup>
+                                </div>
+
+                                <div className="space-y-1">
+                                    <p className="text-sm text-muted-foreground">Share the link below with your friends</p>
+                                    {this.state.generateResult && (this.state.generateResult.ok
+                                        ? <p className="text-sm text-green-600 break-all">http://gameoftiger.prabal.dev/room/{this.state.generateResult.link}</p>
+                                        : <p className="text-sm text-muted-foreground">Error in generating key. Please press again.</p>)}
+                                </div>
+
+                                <div className="flex gap-2">
+                                    <Button size="sm" onClick={this.onGenerateButtonClick}>Generate game link</Button>
+                                    <Button size="sm" onClick={this.createGame}>Submit</Button>
+                                </div>
                             </TabsContent>
-                            <TabsContent value="old" className="space-y-3">
-                                <Label htmlFor="JoinGame">Paste the URL Below to join the Room:</Label>
-                                <Input type="url" id="JoinGame" value={this.state.joinLink} onChange={(e)=>this.setState({ joinLink: e.target.value })} />
-                                <Button onClick={this.joinGame}>Join Game</Button>
+
+                            <TabsContent value="old" className="space-y-4 pt-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="JoinGame" className="text-sm font-medium text-foreground">Paste the URL below to join the room:</Label>
+                                    <Input
+                                        type="url"
+                                        id="JoinGame"
+                                        value={this.state.joinLink}
+                                        onChange={(e)=>this.setState({ joinLink: e.target.value })}
+                                        placeholder="https://gameoftiger.prabal.dev/room/..."
+                                        className="bg-background border-border"
+                                    />
+                                </div>
+                                <Button size="sm" onClick={this.joinGame}>Join Game</Button>
                             </TabsContent>
                         </Tabs>
-                        <DialogFooter><Button variant="secondary" onClick={this.onCloseButtonClick}>Close</Button></DialogFooter>
+
+                        <DialogFooter className="mt-2">
+                            <Button variant="outline" onClick={this.onCloseButtonClick}>Close</Button>
+                        </DialogFooter>
                     </DialogContent>
                 </Dialog>
             )

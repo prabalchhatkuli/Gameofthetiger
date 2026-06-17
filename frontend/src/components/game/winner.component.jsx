@@ -1,8 +1,6 @@
-import React, { Component, useContext,useState } from 'react'
-import { UserContext } from "../../providers/UserProvider";
+import React, { useState } from 'react'
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import axios from 'axios';
 
 /**/
 /*
@@ -19,7 +17,7 @@ SYNOPSIS
 
 DESCRIPTION
 
-        This function will display a modal with the winner of the game, the user cannot close the 
+        This function will display a modal with the winner of the game, the user cannot close the
         modal. Instead, the user is redirected to the game page when they press "understood".
 
 RETURNS
@@ -38,18 +36,34 @@ DATE
 /**/
 
 export default function Winner(props) {
-    const [show, setShow] = useState(true);
+    const [show] = useState(true);
 
-    //onclick function for the close button
-    const handleClose = () => console.log("Tried to close modal");
-  
     return (
       <Dialog open={show}>
-        <DialogContent onInteractOutside={(e)=>e.preventDefault()} onEscapeKeyDown={(e)=>e.preventDefault()} className="[&>button]:hidden">
-          <DialogHeader><DialogTitle>Game Over!!</DialogTitle></DialogHeader>
-          <p>{props.winner=='T' ? 'Tiger' : 'Goat'} player is the winner of the game. Press understood to continue.</p>
-          <DialogFooter>
-            <Button variant="default" onClick={()=>{ window.location.href="/game"; }}>Understood</Button>
+        <DialogContent
+          onInteractOutside={(e) => e.preventDefault()}
+          onEscapeKeyDown={(e) => e.preventDefault()}
+          className="[&>button]:hidden text-center"
+        >
+          <div className="mx-auto mb-2 grid h-16 w-16 place-items-center rounded-full bg-primary/10 text-3xl">
+            {props.winner == 'T' ? '🐯' : '🐐'}
+          </div>
+          <DialogHeader>
+            <DialogTitle className="font-display text-2xl text-center">
+              {props.winner == 'T' ? 'Tigers win!' : 'Goats win!'}
+            </DialogTitle>
+          </DialogHeader>
+          <p className="text-sm text-muted-foreground">
+            {props.winner == 'T' ? 'The tigers captured their prey.' : 'The goats cornered every tiger.'}
+          </p>
+          <DialogFooter className="sm:justify-center">
+            <Button
+              onClick={() => { window.location.href = "/game"; }}
+              size="lg"
+              className="rounded-full px-8"
+            >
+              Play again
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
