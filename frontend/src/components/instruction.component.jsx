@@ -37,7 +37,7 @@ export default function InstructPage(props) {
 
     return (
         <div>
-            <div className="container">
+            <div className="mx-auto max-w-2xl px-4">
                 <h3 className="text-center">Instructions for the game</h3>
                 <p>
                 बाघचाल  Bagh-Chal  meaning Game of Tiger is a strategic, two-player board game originating in Nepal.

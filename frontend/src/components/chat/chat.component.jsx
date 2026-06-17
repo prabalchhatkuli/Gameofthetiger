@@ -148,7 +148,7 @@ class Chat extends React.Component{
 
     render(){
         return (
-            <div className="container">
+            <div className="mx-auto max-w-2xl px-4">
                 <div >
                     <div>
                         <div className="card">
@@ -166,13 +166,13 @@ class Chat extends React.Component{
 
                             </div>
                             <div className="card-footer">
-                                <input type="text" placeholder="Screen Name" value={this.state.username} onChange={ev => this.setState({username: ev.target.value})} className="form-control"/>
+                                <input type="text" placeholder="Screen Name" value={this.state.username} onChange={ev => this.setState({username: ev.target.value})} className="w-full rounded border px-3 py-2"/>
                                 <br/>
-                                <input type="text" placeholder="Message" className="form-control" value={this.state.message}
+                                <input type="text" placeholder="Message" className="w-full rounded border px-3 py-2" value={this.state.message}
                                  onKeyPress={this.enterPressed.bind(this)}
                                  onChange={ev => this.setState({message: ev.target.value})}/>
                                 <br/>
-                                <button onClick={this.sendMessage} className="btn btn-primary form-control">Send</button>
+                                <button onClick={this.sendMessage} className="w-full rounded bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90">Send</button>
                             </div>
                         </div>
                     </div>

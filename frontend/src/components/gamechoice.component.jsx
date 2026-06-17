@@ -84,7 +84,7 @@ export default class GameChoice extends Component {
         if(this.state.showSinglePlayerSetup){
             const humanSide = this.state.aiSide === 'tiger' ? 'goat' : 'tiger';
             return(
-                <div className="container single-setup">
+                <div className="mx-auto max-w-2xl px-4 single-setup">
                     <h5>Play vs Computer</h5>
                     <label htmlFor="aiSideSelect">You play as: </label>
                     <select id="aiSideSelect" value={humanSide}
@@ -101,15 +101,15 @@ export default class GameChoice extends Component {
                         <option value="hard">Hard</option>
                     </select>
                     {' '}
-                    <button onClick={this.startSinglePlayer} className="btn btn-success">Start</button>
+                    <button onClick={this.startSinglePlayer} className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700">Start</button>
                 </div>
             )
         }
         return(
-            <div className="container">
-                <button onClick={this.singlePlayer} className="btn btn-primary form-control">Play vs Computer</button>{' '}
-                <button onClick={this.twoPlayer} className="btn btn-primary form-control">Two Players on same Device</button>{' '}
-                <button onClick={this.multiplayer} className="btn btn-primary form-control">Multiplayer</button>{'   '}
+            <div className="mx-auto max-w-2xl px-4">
+                <button onClick={this.singlePlayer} className="w-full rounded bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90">Play vs Computer</button>{' '}
+                <button onClick={this.twoPlayer} className="w-full rounded bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90">Two Players on same Device</button>{' '}
+                <button onClick={this.multiplayer} className="w-full rounded bg-primary px-4 py-2 text-primary-foreground hover:bg-primary/90">Multiplayer</button>{'   '}
             </div>
         )
     }
