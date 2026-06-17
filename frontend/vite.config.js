@@ -11,7 +11,7 @@ export default defineConfig({
   // pre-bundle CJS deps so the dev server doesn't 504 ("Outdated Optimize Dep")
   // when it discovers them late
   optimizeDeps: {
-    include: ['canvas-confetti'],
+    include: ['canvas-confetti', 'qrcode.react'],
   },
   build: {
     outDir: 'build',

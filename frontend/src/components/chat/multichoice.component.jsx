@@ -6,6 +6,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { QRCodeSVG } from 'qrcode.react';
 import axios from 'axios';
 import { auth } from "../../firebase.config";
 
@@ -51,7 +52,7 @@ DATE
 export default class Multichoice extends Component {
     constructor(props){
         super(props);
-        this.state={modalShow:true, playerPiece:null, linkId:null, setRedirect:false, userInfo: this.props.userInfo, generateResult: null, joinLink: ''};
+        this.state={modalShow:true, playerPiece:null, linkId:null, setRedirect:false, userInfo: this.props.userInfo, generateResult: null, joinLink: '', copied: false};
         this.onCloseButtonClick =  this.onCloseButtonClick.bind(this);
         this.onGenerateButtonClick =  this.onGenerateButtonClick.bind(this);
         this.createGame = this.createGame.bind(this);
@@ -122,6 +123,35 @@ export default class Multichoice extends Component {
             return;
         }
         this.setState({ generateResult: { ok: true, link: this.state.linkId } });
+    }
+
+    /* the full shareable URL for the generated room */
+    roomLink = () => `https://gameoftiger.prabal.dev/room/${this.state.generateResult.link}`;
+
+    /* copy the room link to the clipboard, with brief "Copied!" feedback */
+    handleCopy = async () => {
+        try {
+            await navigator.clipboard.writeText(this.roomLink());
+            this.setState({ copied: true });
+            setTimeout(() => this.setState({ copied: false }), 2000);
+        } catch (err) {
+            console.error('copy failed:', err);
+        }
+    }
+
+    /* open the native share sheet (email/SMS/apps) on supported devices,
+       falling back to copy on browsers without the Web Share API */
+    handleShare = async () => {
+        const url = this.roomLink();
+        if (navigator.share) {
+            try {
+                await navigator.share({ title: 'Game of the Tiger', text: 'Join my Bagchal game!', url });
+            } catch (err) {
+                /* user dismissed the share sheet — ignore */
+            }
+        } else {
+            this.handleCopy();
+        }
     }
 
     /*trivial function to go to the room*/
@@ -199,15 +229,32 @@ export default class Multichoice extends Component {
                                     </RadioGroup>
                                 </div>
 
-                                <div className="space-y-1">
-                                    <p className="text-sm text-muted-foreground">Share the link below with your friends</p>
-                                    {this.state.generateResult && (this.state.generateResult.ok
-                                        ? <p className="text-sm text-green-600 break-all">http://gameoftiger.prabal.dev/room/{this.state.generateResult.link}</p>
-                                        : <p className="text-sm text-muted-foreground">Error in generating key. Please press again.</p>)}
-                                </div>
+                                {this.state.generateResult && (this.state.generateResult.ok ? (
+                                    <div className="rounded-xl border border-border bg-background/60 p-4">
+                                        <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start">
+                                            <div className="shrink-0 rounded-lg bg-white p-2 shadow-sm">
+                                                <QRCodeSVG value={this.roomLink()} size={108} bgColor="#ffffff" fgColor="#184b89" level="M" />
+                                            </div>
+                                            <div className="min-w-0 flex-1 space-y-2">
+                                                <p className="text-sm font-medium text-foreground">Scan, copy, or share to invite a friend</p>
+                                                <p className="break-all rounded-md bg-muted/60 px-2 py-1 text-xs text-muted-foreground">{this.roomLink()}</p>
+                                                <div className="flex flex-wrap gap-2">
+                                                    <Button size="sm" variant="outline" onClick={this.handleCopy}>
+                                                        {this.state.copied ? 'Copied!' : 'Copy link'}
+                                                    </Button>
+                                                    <Button size="sm" variant="outline" onClick={this.handleShare}>Share</Button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <p className="text-sm text-destructive">Error generating link. Please try again.</p>
+                                ))}
 
                                 <div className="flex gap-2">
-                                    <Button size="sm" onClick={this.onGenerateButtonClick}>Generate game link</Button>
+                                    <Button size="sm" onClick={this.onGenerateButtonClick}>
+                                        {this.state.generateResult && this.state.generateResult.ok ? 'Regenerate link' : 'Generate game link'}
+                                    </Button>
                                     <Button size="sm" onClick={this.createGame}>Submit</Button>
                                 </div>
                             </TabsContent>
