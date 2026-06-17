@@ -36,40 +36,45 @@ DATE
 export default function InstructPage(props) {
 
     return (
-        <div>
-            <div className="mx-auto max-w-2xl px-4">
-                <h3 className="text-center">Instructions for the game</h3>
-                <p>
-                बाघचाल  Bagh-Chal  meaning Game of Tiger is a strategic, two-player board game originating in Nepal.
-
-                Compared to traditional board games like Chess or Checkers,
-                this game is asymmetric in that one player controls four tigers and the other player controls upto twenty goats.
-                </p>
-                <br/>
-                <p>
-                    Tigers:
-                </p>
-                <p>
-                    Tigers need to jump over(eat) 5 goats to win.
-                </p>
-                <p>
-                    Tigers can only jump over 1 goat at a time.
-                </p>
-                <br/>
-                <p>
-                    Goats:
-                </p>
-                <p>
-                    Goats need to block moves of all four tigers to win.
-                </p>
-                <p>
-                    Goats cannot jump over tigers. But can block the move of the tiger by standing against each other.
-                </p>
-                <br/>
-                <p>
-                    for more information visit the wikipedia page: <a href='https://en.wikipedia.org/wiki/Bagh-Chal'> Bagchal </a>
+        <main className="mx-auto max-w-3xl px-5 py-12">
+            <div className="animate-rise text-center">
+                <p className="eyebrow">How to play</p>
+                <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight">बाघचाल · Bagh-Chal</h1>
+                <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
+                    A strategic, asymmetric two-player game from Nepal. One side commands
+                    four <span className="text-primary">tigers</span>, the other up to twenty <span className="text-accent">goats</span>.
                 </p>
             </div>
-        </div>
+
+            <div className="mt-8 grid gap-4 sm:grid-cols-2">
+                <section className="heritage-card p-6">
+                    <div className="mb-3 flex items-center gap-2">
+                        <span className="text-2xl">🐯</span>
+                        <h2 className="font-display text-xl font-semibold text-primary">Tigers</h2>
+                    </div>
+                    <ul className="space-y-2 text-sm text-muted-foreground">
+                        <li className="flex gap-2"><span className="text-primary">•</span> Capture (jump over) 5 goats to win.</li>
+                        <li className="flex gap-2"><span className="text-primary">•</span> Jump over only one goat at a time, into an empty point.</li>
+                        <li className="flex gap-2"><span className="text-primary">•</span> Start on the four corners of the board.</li>
+                    </ul>
+                </section>
+
+                <section className="heritage-card p-6">
+                    <div className="mb-3 flex items-center gap-2">
+                        <span className="text-2xl">🐐</span>
+                        <h2 className="font-display text-xl font-semibold text-accent">Goats</h2>
+                    </div>
+                    <ul className="space-y-2 text-sm text-muted-foreground">
+                        <li className="flex gap-2"><span className="text-accent">•</span> Win by blocking every tiger so none can move.</li>
+                        <li className="flex gap-2"><span className="text-accent">•</span> Place all 20 goats first, then move them.</li>
+                        <li className="flex gap-2"><span className="text-accent">•</span> Cannot jump — corner the tigers by standing firm.</li>
+                    </ul>
+                </section>
+            </div>
+
+            <p className="mt-8 text-center text-sm text-muted-foreground">
+                More on the <a href="https://en.wikipedia.org/wiki/Bagh-Chal" className="font-medium text-primary hover:underline">Bagh-Chal Wikipedia page</a>.
+            </p>
+        </main>
     )
 }

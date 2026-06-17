@@ -561,17 +561,37 @@ class Game extends Component {
         let nextPlayer;
         nextPlayer = 'Next player: ' + (this.state.gisnext ? 'Goat' : 'Tiger');
         let status = this.state.status;
+        const goatTurn = this.state.gisnext;
         return (
-            <div>
-                <div className="game-info">
-                    <div>{nextPlayer}</div>
-                    <div>Goats: placed: {this.state.goatsOnBoard}</div>
-                    <div>Eaten: {this.state.goatsTaken}</div>
-                    <div>{status}</div>
-                    {this.state.winner?<Winner winner={this.state.winner}/>:<p></p>}
+            <main className="mx-auto max-w-5xl px-4 py-6">
+                {/* scoreboard */}
+                <div className="game-info heritage-card mb-6 flex flex-wrap items-center justify-between gap-4 p-4 sm:p-5">
+                    <div className="flex items-center gap-3">
+                        <span className={`flex h-10 w-10 items-center justify-center rounded-full text-xl ${goatTurn ? 'bg-accent/15' : 'bg-primary/15'}`}>
+                            {goatTurn ? '🐐' : '🐯'}
+                        </span>
+                        <div>
+                            <p className="text-xs uppercase tracking-wider text-muted-foreground">Now playing</p>
+                            <p className={`font-display text-lg font-semibold ${goatTurn ? 'text-accent' : 'text-primary'}`}>
+                                {goatTurn ? 'Goats' : 'Tigers'}
+                            </p>
+                        </div>
+                    </div>
+                    <div className="flex gap-2">
+                        <div className="rounded-lg border border-border/70 bg-card/60 px-3 py-1.5 text-center">
+                            <p className="font-display text-lg font-semibold">{this.state.goatsOnBoard}<span className="text-sm text-muted-foreground">/20</span></p>
+                            <p className="text-[11px] uppercase tracking-wider text-muted-foreground">Placed</p>
+                        </div>
+                        <div className="rounded-lg border border-border/70 bg-card/60 px-3 py-1.5 text-center">
+                            <p className="font-display text-lg font-semibold text-primary">{this.state.goatsTaken}<span className="text-sm text-muted-foreground">/5</span></p>
+                            <p className="text-[11px] uppercase tracking-wider text-muted-foreground">Eaten</p>
+                        </div>
+                    </div>
+                    {status ? <p className="w-full text-sm text-muted-foreground">{status}</p> : null}
+                    {this.state.winner?<Winner winner={this.state.winner}/>:null}
                 </div>
-                <div className="game">
 
+                <div className="game">
                     <div>
                             {/*get the main board*/}
                             <Board
@@ -581,13 +601,13 @@ class Game extends Component {
                             {/*contains all the illustrated paths/click divs and diagonal elements.*/}
                     </div>
                 </div>
-                <div className="chat">
+                <div className="chat mt-6 grid gap-4 sm:grid-cols-2">
                 {this.props.choice === 'multi'?
-                    <Chat name="Room" roomID={this.props.roomID} socket={this.state.socket}/>:<p></p>
+                    <Chat name="Room" roomID={this.props.roomID} socket={this.state.socket}/>:null
                 }
                 <Chat name="Global" socket={this.state.socket}/>
                 </div>
-            </div>
+            </main>
         )
     }
 }
