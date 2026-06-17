@@ -1,8 +1,31 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import heritagePhoto from '../SVG/landing.jpg'
 
 //about page function displays simple facts about the developer
 export default function AboutPage() {
+    const bmcRef = useRef(null);
+
+    // Inject the Buy Me a Coffee widget script into its container. The widget
+    // renders its button right after the script tag, so it appears inside this
+    // div. Guard against StrictMode's double-invoke creating two buttons.
+    useEffect(() => {
+        const container = bmcRef.current;
+        if (!container || container.querySelector('script')) return;
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js';
+        script.async = true;
+        script.setAttribute('data-name', 'bmc-button');
+        script.setAttribute('data-slug', 'prabalchhatkuli');
+        script.setAttribute('data-color', '#FFDD00');
+        script.setAttribute('data-emoji', '');
+        script.setAttribute('data-font', 'Cookie');
+        script.setAttribute('data-text', 'Buy me a coffee');
+        script.setAttribute('data-outline-color', '#000000');
+        script.setAttribute('data-font-color', '#000000');
+        script.setAttribute('data-coffee-color', '#ffffff');
+        container.appendChild(script);
+    }, []);
+
     return (
         <main className="mx-auto max-w-2xl px-5 py-12">
             {/* featured heritage photo: elders playing Bagchal */}
@@ -38,6 +61,12 @@ export default function AboutPage() {
                 >
                     View source on GitHub →
                 </a>
+
+                {/* support the developer */}
+                <div className="mt-8 border-t border-border/60 pt-6">
+                    <p className="mb-3 text-sm text-muted-foreground">Enjoying the game? Support its development:</p>
+                    <div ref={bmcRef} className="flex justify-center" />
+                </div>
             </div>
         </main>
     )
