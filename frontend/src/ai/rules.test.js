@@ -2,7 +2,7 @@ import { test, expect } from 'vitest';
 import Piece from '../components/piece/piece.component';
 import Tiger from '../components/piece/tigerpiece.component';
 import Goat from '../components/piece/goatpiece.component';
-import { cloneBoard, getLegalMoves, applyMove } from './rules';
+import { cloneBoard, getLegalMoves, applyMove, getWinner } from './rules';
 
 function emptyBoard() {
   return Array.from({ length: 25 }, () => new Piece());
@@ -82,4 +82,23 @@ test('applyMove capture: removes captured goat, increments goatsTaken', () => {
   expect(next.board[1].player).toBe(null);
   expect(next.goatsTaken).toBe(1);
   expect(next.gisnext).toBe(true);
+});
+
+test('getWinner: tigers win at 5 captures', () => {
+  const b = withTigersAtCorners();
+  expect(getWinner(b, 5)).toBe('T');
+  expect(getWinner(b, 4)).toBe(null);
+});
+
+test('getWinner: goats win when all tigers are blocked', () => {
+  const b = withTigersAtCorners();
+  [1, 5, 6, 3, 8, 9, 15, 16, 21, 18, 19, 23].forEach(i => { b[i] = new Goat(); });
+  [2, 7, 10, 11, 12, 13, 14, 17, 22].forEach(i => { if (b[i].player === null) b[i] = new Goat(); });
+  expect(getWinner(b, 0)).toBe('G');
+});
+
+test('getWinner: returns null when a tiger can still move', () => {
+  const b = withTigersAtCorners();
+  b[12] = new Goat();
+  expect(getWinner(b, 0)).toBe(null);
 });

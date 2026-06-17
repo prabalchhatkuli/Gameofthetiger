@@ -57,3 +57,15 @@ export function applyMove(board, move, state) {
 
   return { board: next, goatsOnBoard, goatsTaken, gisnext: !state.gisnext };
 }
+
+export function getWinner(board, goatsTaken) {
+  if (goatsTaken >= 5) return 'T';
+  let sawTiger = false;
+  for (let i = 0; i < 25; i++) {
+    if (board[i].player === 'T') {
+      sawTiger = true;
+      if (!board[i].isTigerBlocked(i, board)) return null;
+    }
+  }
+  return sawTiger ? 'G' : null;
+}
