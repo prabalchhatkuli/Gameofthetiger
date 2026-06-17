@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import './game.css';
+import tigerPieceSvg from '../../SVG/tigerpiece.svg'
+import goatPieceSvg from '../../SVG/goatpiece.svg'
 
 /**/
 /*
@@ -40,7 +42,7 @@ export default class Square extends Component {
 
       case 'T':    return <img
           alt=""
-          src={require('../../SVG/tigerpiece.svg')}
+          src={tigerPieceSvg}
           width="45%"
           height="45%"
           className="d-inline-block align-top"
@@ -49,7 +51,7 @@ export default class Square extends Component {
   
       case 'G':    return <img
           alt=""
-          src={require('../../SVG/goatpiece.svg')}
+          src={goatPieceSvg}
           width="60%"
           height="60%"
           className="d-inline-block align-top"

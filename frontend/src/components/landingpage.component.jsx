@@ -44,8 +44,8 @@ export default function landingpage(props) {
                 </div>
                 
                 {/*display the animation and the image on the landing page */}
-                <div class="hero-image">
-                    <div class="hero-text">
+                <div className="hero-image">
+                    <div className="hero-text">
                         <h2 style={{fontSize:"50px"}}>BagChal</h2>
                         <h4>A traditional game in a multiplayer approach</h4>
                     </div>

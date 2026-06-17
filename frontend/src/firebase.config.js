@@ -2,6 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 import { getAuth, GoogleAuthProvider, signInWithPopup, browserSessionPersistence, setPersistence } from 'firebase/auth';
 import { getAnalytics } from 'firebase/analytics';
+import axios from 'axios';
 
 // Configuration to connect to firebase
 const firebaseConfig = {
@@ -34,6 +35,21 @@ setPersistence(auth, browserSessionPersistence);
 const provider = new GoogleAuthProvider();
 export const signInWithGoogle = () => {
     return signInWithPopup(auth, provider);
+};
+
+/**/
+/*
+recordAiGame(difficulty, side, result)
+        Posts a single-player AI game result to the backend, authenticated with
+        the current user's Firebase ID token. side = the human's side
+        ('tiger'|'goat'); result = 'win' | 'loss'. No-op if not signed in.
+*/
+/**/
+export const recordAiGame = async (difficulty, side, result) => {
+    if (!auth.currentUser) return;
+    const token = await auth.currentUser.getIdToken();
+    await axios.post('/ai-game/result', { difficulty, side, result },
+        { headers: { Authorization: `Bearer ${token}` } });
 };
 
 /**/

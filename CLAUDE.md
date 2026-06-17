@@ -43,6 +43,11 @@
 │       ├── index.jsx             # React 18 entry with createRoot
 │       ├── App.jsx               # Main router (React Router v6)
 │       ├── firebase.config.js    # Firebase v10 modular setup
+│       ├── ai/                    # Client-side minimax AI engine
+│       │   ├── rules.js           # pure move enumeration/application/win
+│       │   ├── evaluate.js        # position heuristic
+│       │   ├── minimax.js         # alpha-beta search
+│       │   └── index.js           # getAIMove + difficulty mapping
 │       ├── components/
 │       │   ├── game/             # Core game logic
 │       │   │   ├── game.component.jsx
@@ -69,7 +74,7 @@
 ```bash
 # Development (from repo root)
 npm run dev            # Start Vite dev server (port 3000)
-npm start              # Start backend server (port 5000)
+npm start              # Start backend server (port 8000)
 
 # Or work within each module directly
 cd frontend && npm run dev
@@ -115,6 +120,11 @@ const io = new Server(server, { cors: {...} });
 - `POST /room/generate` - Create multiplayer room (requires `Authorization: Bearer <Firebase ID token>`)
 - `POST /room/validateRoom` - Check room exists (public)
 - `POST /room/joinRoom` - Join and get assigned piece (requires `Authorization: Bearer <Firebase ID token>`)
+- `POST /ai-game/result` - Record a single-player AI game result (requires `Authorization: Bearer <Firebase ID token>`); increments separate `aiStats.<difficulty>.<side>` counters via the Admin SDK
+
+## Single-Player AI
+
+Single-player is "vs computer": a client-side minimax bot (alpha-beta, in `frontend/src/ai/`) with Easy/Medium/Hard difficulty. The player picks their side; the AI plays the other (including the goats' placement phase). Results are recorded separately from ranked multiplayer stats via `POST /ai-game/result`. AI move computation is entirely in-browser; only the stat write touches the server.
 
 ## Code Conventions
 
@@ -147,7 +157,7 @@ const io = new Server(server, { cors: {...} });
 
 - Backend expects `ATLAS_URI` in `server/.env` for MongoDB connection
 - Firebase config is in `frontend/src/firebase.config.js`
-- Dev server: port 3000 (Vite), port 5000 (Express)
+- Dev server: port 3000 (Vite), port 8000 (Express)
 - Vite proxies `/room` and `/socket.io` to backend in development
 - Backend also expects `FIREBASE_SERVICE_ACCOUNT` in `server/.env` (service account JSON, single line) for token verification and server-side stat writes
 - Sockets require a Firebase ID token via the Socket.io `auth` payload

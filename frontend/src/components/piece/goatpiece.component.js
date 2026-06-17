@@ -146,7 +146,6 @@ export default class Goatpiece extends Piece{
             }
         //find boundaries
         let boundaries=this.findBoundaries(evenOrOdd, src);
-        console.log(boundaries);
         //if even
             //can go all sides except boundaries
         if(evenOrOdd)

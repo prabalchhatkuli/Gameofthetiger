@@ -39,14 +39,31 @@ export default class GameChoice extends Component {
         console.log(props);
         this.state ={
             gamechosen: false,
+            showSinglePlayerSetup: false,
+            aiSide: 'goat',
+            aiDifficulty: 'medium',
         };
         this.singlePlayer =  this.singlePlayer.bind(this);
+        this.startSinglePlayer = this.startSinglePlayer.bind(this);
         this.twoPlayer =  this.twoPlayer.bind(this);
         this.multiplayer =  this.multiplayer.bind(this);
     }
 
     singlePlayer(){
-        ReactDOM.render(<Game choice="single" userInfo={this.props.userInfo}/>, document.getElementById('gametype'));
+        this.setState({ showSinglePlayerSetup: true });
+    }
+
+    startSinglePlayer(){
+        ReactDOM.render(
+            <Game
+                choice="single"
+                playerSide={this.state.aiSide === 'tiger' ? 'goat' : 'tiger'}
+                aiSide={this.state.aiSide}
+                difficulty={this.state.aiDifficulty}
+                userInfo={this.props.userInfo}
+            />,
+            document.getElementById('gametype')
+        );
     }
 
     twoPlayer(){
@@ -61,14 +78,40 @@ export default class GameChoice extends Component {
     }
 
     choose(){
-        if(!this.state.gamechosen){
+        if(this.state.gamechosen){
+            return null;
+        }
+        if(this.state.showSinglePlayerSetup){
+            const humanSide = this.state.aiSide === 'tiger' ? 'goat' : 'tiger';
             return(
-                <div className="container">
-                    <button onClick={this.twoPlayer} className="btn btn-primary form-control">Two Players on same Device</button>{' '}
-                    <button onClick={this.multiplayer} className="btn btn-primary form-control">Multiplayer</button>{'   '}
+                <div className="container single-setup">
+                    <h5>Play vs Computer</h5>
+                    <label htmlFor="aiSideSelect">You play as: </label>
+                    <select id="aiSideSelect" value={humanSide}
+                            onChange={e => this.setState({ aiSide: e.target.value === 'tiger' ? 'goat' : 'tiger' })}>
+                        <option value="goat">Goat</option>
+                        <option value="tiger">Tiger</option>
+                    </select>
+                    {' '}
+                    <label htmlFor="aiDiffSelect">Difficulty: </label>
+                    <select id="aiDiffSelect" value={this.state.aiDifficulty}
+                            onChange={e => this.setState({ aiDifficulty: e.target.value })}>
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                    {' '}
+                    <button onClick={this.startSinglePlayer} className="btn btn-success">Start</button>
                 </div>
             )
         }
+        return(
+            <div className="container">
+                <button onClick={this.singlePlayer} className="btn btn-primary form-control">Play vs Computer</button>{' '}
+                <button onClick={this.twoPlayer} className="btn btn-primary form-control">Two Players on same Device</button>{' '}
+                <button onClick={this.multiplayer} className="btn btn-primary form-control">Multiplayer</button>{'   '}
+            </div>
+        )
     }
 
     render() {

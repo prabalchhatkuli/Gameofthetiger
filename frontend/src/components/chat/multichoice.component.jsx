@@ -174,13 +174,13 @@ export default class Multichoice extends Component {
                             <Tabs defaultActiveKey="new" id="uncontrolled-tab-example">
                                 <Tab eventKey="new" title="Create New Room">
                                     <h6>Choose Your piece</h6>
-                                    <div class="custom-control custom-radio custom-control-inline" onChange={this.setPlayerPiece.bind(this)}>
-                                    <input type="radio" id="GoatChoice" name="PieceChoice" value='goat' class="custom-control-input"/>
-                                    <label class="custom-control-label" for="GoatChoice">Goat</label>
+                                    <div className="custom-control custom-radio custom-control-inline" onChange={this.setPlayerPiece.bind(this)}>
+                                    <input type="radio" id="GoatChoice" name="PieceChoice" value='goat' className="custom-control-input"/>
+                                    <label className="custom-control-label" htmlFor="GoatChoice">Goat</label>
                                     </div>
-                                    <div class="custom-control custom-radio custom-control-inline" onChange={this.setPlayerPiece.bind(this)}>
-                                    <input type="radio" id="TigerChoice" name="PieceChoice" value='tiger' class="custom-control-input"/>
-                                    <label class="custom-control-label" for="TigerChoice">Tiger</label>
+                                    <div className="custom-control custom-radio custom-control-inline" onChange={this.setPlayerPiece.bind(this)}>
+                                    <input type="radio" id="TigerChoice" name="PieceChoice" value='tiger' className="custom-control-input"/>
+                                    <label className="custom-control-label" htmlFor="TigerChoice">Tiger</label>
                                     </div>
                                     <p>Share the link below with your friends</p>
                                     <div id='generate result'></div>
@@ -189,8 +189,8 @@ export default class Multichoice extends Component {
                                     <Button onClick={this.createGame}>Submit</Button>
                                 </Tab>
                                 <Tab eventKey="old" title="Join with link">
-                                <label for="JoinGame">Paste the URL Below to join the Room:</label>
-                                <input type="url" id="JoinGame" name="JoinGame" class="form-control"/><br/><br/>
+                                <label htmlFor="JoinGame">Paste the URL Below to join the Room:</label>
+                                <input type="url" id="JoinGame" name="JoinGame" className="form-control"/><br/><br/>
                                 <Button onClick={this.joinGame}>Join Game</Button>
                                 </Tab>
                             </Tabs>
