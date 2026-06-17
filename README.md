@@ -21,7 +21,7 @@ please mention any bugs in the Issues section.
 Run the two modules in separate terminals:
 
 ```bash
-# Terminal 1 — backend (Express + Socket.io on port 5000)
+# Terminal 1 — backend (Express + Socket.io on port 8000)
 cd server
 npm install
 npm start
@@ -55,6 +55,6 @@ npm install
 npm start
 ```
 
-Open http://localhost:5000. From the repo root, the same flow is
+Open http://localhost:8000. From the repo root, the same flow is
 `npm run build && npm start`. On Heroku, the root `heroku-postbuild` script
 runs the build automatically and `npm start` launches the server.

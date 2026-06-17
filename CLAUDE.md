@@ -69,7 +69,7 @@
 ```bash
 # Development (from repo root)
 npm run dev            # Start Vite dev server (port 3000)
-npm start              # Start backend server (port 5000)
+npm start              # Start backend server (port 8000)
 
 # Or work within each module directly
 cd frontend && npm run dev
@@ -147,7 +147,7 @@ const io = new Server(server, { cors: {...} });
 
 - Backend expects `ATLAS_URI` in `server/.env` for MongoDB connection
 - Firebase config is in `frontend/src/firebase.config.js`
-- Dev server: port 3000 (Vite), port 5000 (Express)
+- Dev server: port 3000 (Vite), port 8000 (Express)
 - Vite proxies `/room` and `/socket.io` to backend in development
 - Backend also expects `FIREBASE_SERVICE_ACCOUNT` in `server/.env` (service account JSON, single line) for token verification and server-side stat writes
 - Sockets require a Firebase ID token via the Socket.io `auth` payload
