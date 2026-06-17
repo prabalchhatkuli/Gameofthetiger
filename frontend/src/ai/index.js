@@ -1,6 +1,9 @@
 import { search } from './minimax';
 import { getLegalMoves } from './rules';
 
+// Difficulty -> search depth. Measured mid-game latency (main thread):
+// hard ~250ms worst case (tiger), medium ~50ms, easy <15ms - all responsive,
+// so no Web Worker is needed. Placement phase is depth-capped (high branching).
 const DEPTH = { easy: 2, medium: 3, hard: 4 };
 const PLACEMENT_DEPTH = { easy: 1, medium: 2, hard: 2 };
 

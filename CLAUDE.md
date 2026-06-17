@@ -43,6 +43,11 @@
 │       ├── index.jsx             # React 18 entry with createRoot
 │       ├── App.jsx               # Main router (React Router v6)
 │       ├── firebase.config.js    # Firebase v10 modular setup
+│       ├── ai/                    # Client-side minimax AI engine
+│       │   ├── rules.js           # pure move enumeration/application/win
+│       │   ├── evaluate.js        # position heuristic
+│       │   ├── minimax.js         # alpha-beta search
+│       │   └── index.js           # getAIMove + difficulty mapping
 │       ├── components/
 │       │   ├── game/             # Core game logic
 │       │   │   ├── game.component.jsx
@@ -115,6 +120,11 @@ const io = new Server(server, { cors: {...} });
 - `POST /room/generate` - Create multiplayer room (requires `Authorization: Bearer <Firebase ID token>`)
 - `POST /room/validateRoom` - Check room exists (public)
 - `POST /room/joinRoom` - Join and get assigned piece (requires `Authorization: Bearer <Firebase ID token>`)
+- `POST /ai-game/result` - Record a single-player AI game result (requires `Authorization: Bearer <Firebase ID token>`); increments separate `aiStats.<difficulty>.<side>` counters via the Admin SDK
+
+## Single-Player AI
+
+Single-player is "vs computer": a client-side minimax bot (alpha-beta, in `frontend/src/ai/`) with Easy/Medium/Hard difficulty. The player picks their side; the AI plays the other (including the goats' placement phase). Results are recorded separately from ranked multiplayer stats via `POST /ai-game/result`. AI move computation is entirely in-browser; only the stat write touches the server.
 
 ## Code Conventions
 
