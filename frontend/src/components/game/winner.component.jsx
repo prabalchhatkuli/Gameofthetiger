@@ -1,9 +1,7 @@
 import React, { Component, useContext,useState } from 'react'
 import { UserContext } from "../../providers/UserProvider";
-import Modal from 'react-bootstrap/Modal'
-import Button from 'react-bootstrap/Button'
-import Tabs from 'react-bootstrap/Tabs'
-import Tab from 'react-bootstrap/Tab'
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import axios from 'axios';
 
 /**/
@@ -46,25 +44,14 @@ export default function Winner(props) {
     const handleClose = () => console.log("Tried to close modal");
   
     return (
-      <>
-
-        <Modal
-          show={show}
-          onHide={handleClose}
-          backdrop="static"
-          keyboard={false}
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>Game Over!!</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {props.winner=='T'?"Tiger":"Goat"} player is the winner of the game.
-            Press understood to Redirect.
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="primary" onClick={()=>{window.location.href="/game"}}>Understood</Button>
-          </Modal.Footer>
-        </Modal>
-      </>
+      <Dialog open={show}>
+        <DialogContent onInteractOutside={(e)=>e.preventDefault()} onEscapeKeyDown={(e)=>e.preventDefault()} className="[&>button]:hidden">
+          <DialogHeader><DialogTitle>Game Over!!</DialogTitle></DialogHeader>
+          <p>{props.winner=='T' ? 'Tiger' : 'Goat'} player is the winner of the game. Press understood to continue.</p>
+          <DialogFooter>
+            <Button variant="default" onClick={()=>{ window.location.href="/game"; }}>Understood</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     );
   }

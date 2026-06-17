@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {Link} from 'react-router-dom';
 import * as firebase from "firebase/app";
 import "firebase/auth";
@@ -187,42 +188,32 @@ export default class SignupPage extends Component {
   //render function for the component
   render() {
     return (
-      <div>
-      <div>  
-        <div className="container">  
-            <div> <h3>Create an account with us</h3></div>
-              <Form>
-                <Form.Group controlId="formBasicEmail">
-                  <Form.Label>Email address</Form.Label>
-                  <Form.Control type="email" placeholder="example@example.com"  onChange={this.handleEmailChange} />
-                  <Form.Text className="text-muted">
-                    ***We'll never share your info with anyone else.
-                  </Form.Text>
-                </Form.Group>
-                <Form.Group>
-                  <Form.Label>Firstname:</Form.Label>
-                  <Form.Control type="text" placeholder="Lorem" onChange={this.handleFirstnameChange}/>
-                  <Form.Label>Lastname:</Form.Label>
-                  <Form.Control type="text" placeholder="Ipsum" onChange={this.handleLastnameChange}/>
-                </Form.Group>
-
-                <Form.Group controlId="formBasicPassword">
-                  <Form.Label>Password:</Form.Label>
-                  <Form.Control type="password" placeholder="Secret Password"  onChange={this.handlePasswordChange} />
-                  <Form.Label>Confirm Password:</Form.Label>
-                  <Form.Control type="password" placeholder="Retype same Password" onChange={this.handleConfirmPasswordChange}/>
-                </Form.Group>
-
-                <Button className="center" variant="primary" onClick={this.handleSignup}>
-                  Create an account
-                </Button>{' '}
-                <Link to="/login" className="btn btn-primary">
-                   Back to Login?
-                </Link>
-              </Form>
-            </div>
-         </div>
+      <div className="mx-auto max-w-md px-4 py-6">
+        <h3 className="mb-4 text-2xl font-semibold">Create an account with us</h3>
+        <div className="space-y-4">
+          <div className="space-y-1">
+            <Label htmlFor="email">Email address</Label>
+            <Input id="email" type="email" placeholder="example@example.com" onChange={this.handleEmailChange} />
+            <p className="text-sm text-muted-foreground">***We'll never share your info with anyone else.</p>
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor="firstname">Firstname</Label>
+            <Input id="firstname" type="text" placeholder="Lorem" onChange={this.handleFirstnameChange} />
+            <Label htmlFor="lastname">Lastname</Label>
+            <Input id="lastname" type="text" placeholder="Ipsum" onChange={this.handleLastnameChange} />
+          </div>
+          <div className="space-y-1">
+            <Label htmlFor="password">Password</Label>
+            <Input id="password" type="password" placeholder="Secret Password" onChange={this.handlePasswordChange} />
+            <Label htmlFor="confirm">Confirm Password</Label>
+            <Input id="confirm" type="password" placeholder="Retype same Password" onChange={this.handleConfirmPasswordChange} />
+          </div>
+          <div className="flex gap-2">
+            <Button variant="default" onClick={this.handleSignup}>Create an account</Button>
+            <Button variant="outline" asChild><Link to="/login">Back to Login?</Link></Button>
+          </div>
+        </div>
       </div>
-    )
+    );
   }
 }

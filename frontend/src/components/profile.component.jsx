@@ -96,10 +96,10 @@ export default class Profile extends Component {
 
     //render method for the component
     render() {
-        
+
         return (
-            <div className="container">
-                <div className = "container">
+            <div className="mx-auto max-w-2xl px-4 py-6">
+                <div className="mx-auto max-w-2xl px-4 py-6">
                     <h2>Player Info</h2>
                     <hr/>
                     <h5>Name: {this.state.name}</h5>
@@ -108,9 +108,9 @@ export default class Profile extends Component {
                     <h5>Total losses: {this.state.losses}</h5>
                     <hr/>
                     <h5>Vs Computer</h5>
-                    <table>
+                    <table className="w-full border-collapse text-left">
                         <thead>
-                            <tr><th>Difficulty</th><th>As Tiger (W&ndash;L)</th><th>As Goat (W&ndash;L)</th></tr>
+                            <tr><th className="border px-3 py-1">Difficulty</th><th className="border px-3 py-1">As Tiger (W&ndash;L)</th><th className="border px-3 py-1">As Goat (W&ndash;L)</th></tr>
                         </thead>
                         <tbody>
                             {['easy', 'medium', 'hard'].map(level => {
@@ -119,9 +119,9 @@ export default class Profile extends Component {
                                 const g = s.goat || { wins: 0, losses: 0 };
                                 return (
                                     <tr key={level}>
-                                        <td>{level}</td>
-                                        <td>{(t.wins || 0)}&ndash;{(t.losses || 0)}</td>
-                                        <td>{(g.wins || 0)}&ndash;{(g.losses || 0)}</td>
+                                        <td className="border px-3 py-1">{level}</td>
+                                        <td className="border px-3 py-1">{(t.wins || 0)}&ndash;{(t.losses || 0)}</td>
+                                        <td className="border px-3 py-1">{(g.wins || 0)}&ndash;{(g.losses || 0)}</td>
                                     </tr>
                                 );
                             })}

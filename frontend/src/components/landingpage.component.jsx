@@ -1,6 +1,5 @@
 import React from 'react'
 import '../App.css';
-import Image from 'react-bootstrap/Image'
 
 /**/
 /*
@@ -37,7 +36,7 @@ DATE
 export default function landingpage(props) {
     return (
         <div>
-                <div className="text-center text-light bg-success">
+                <div className="text-center text-white bg-green-600">
                     Welcome! {'  '}
                     {/* find if a user is signed in , if yes display the email */}
                     {props.userInfo === null ? <p>Visitor, please signup or login to play the game</p> : props.userInfo.email }

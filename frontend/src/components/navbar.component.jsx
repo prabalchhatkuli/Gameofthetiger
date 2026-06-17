@@ -1,11 +1,9 @@
 import React,{useContext} from 'react'
-import Nav from 'react-bootstrap/Nav'
-import Navbar from 'react-bootstrap/Navbar'
-import Button from 'react-bootstrap/Button'
 import {auth} from '../firebase.config.js'
 import { signOut } from "firebase/auth";
 import goatSvg from '../SVG/goat.svg'
 import tigerSvg from '../SVG/tiger.svg'
+import { Button } from '@/components/ui/button';
 
 /**/
 /*
@@ -49,54 +47,22 @@ export default function Navigation(props) {
         }
 
         //elements returned by the component
-        return(
-            
-            <Navbar collapseOnSelect expand="lg" bg="light " variant="light">
-                <div className="container">
-                    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                
-                    <Navbar.Collapse id="responsive-navbar-nav">
-                        <Nav className="mr-auto">
-                            <Button variant="outline-success"  href='/game'>Play the Game </Button>{' '}
-                            <Nav.Link href="/instruction">Instruction</Nav.Link>
-                        </Nav>
-                    </Navbar.Collapse>
-
-                    <Navbar.Brand className = "p" href="/"> 
-                        <img
-                        alt=""
-                        src={goatSvg}
-                        width="30"
-                        height="30"
-                        className="d-inline-block align-top"
-                        />{' '}
-                     Game of the Tiger
-                     {' '}
-                     <img
-                        alt=""
-                        src={tigerSvg}
-                        width="30"
-                        height="30"
-                        className="d-inline-block align-top"
-                        />
-                     </Navbar.Brand>
-
-                    <Navbar.Collapse id="responsive-navbar-nav">
-                        
-                        <Nav className="ml-auto">
-                            <Nav.Link href="/about">About</Nav.Link>{' '}
-                            {props.userInfo === null?
-                                <div></div>:<Nav.Link href="/Profile">Profile</Nav.Link>
-                            }
-                            {props.userInfo === null?
-                                <Button variant="outline-success" href='/login'>Log In/Sign Up</Button>
-                                :
-                                <Button variant="outline-danger" onClick={signout}>Signout </Button>
-                            }{' '}
-                        </Nav>
-                    </Navbar.Collapse>
-                    </div>
-                </Navbar>
-           
-           );
+        return (
+    <nav className="flex flex-wrap items-center justify-between gap-2 bg-white px-4 py-2 shadow-sm">
+      <a href="/" className="flex items-center gap-2 font-semibold">
+        <img alt="" src={goatSvg} width="30" height="30" className="inline-block align-top" />
+        Game of the Tiger
+        <img alt="" src={tigerSvg} width="30" height="30" className="inline-block align-top" />
+      </a>
+      <div className="flex flex-wrap items-center gap-2">
+        <Button variant="outline" asChild><a href="/game">Play the Game</a></Button>
+        <a href="/instruction" className="px-2 text-sm hover:underline">Instruction</a>
+        <a href="/about" className="px-2 text-sm hover:underline">About</a>
+        {props.userInfo !== null && <a href="/Profile" className="px-2 text-sm hover:underline">Profile</a>}
+        {props.userInfo === null
+          ? <Button variant="outline" asChild><a href="/login">Log In/Sign Up</a></Button>
+          : <Button variant="destructive" onClick={signout}>Signout</Button>}
+      </div>
+    </nav>
+  );
 }

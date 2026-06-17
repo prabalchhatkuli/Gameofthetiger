@@ -1,10 +1,11 @@
 import React, { Component, useContext } from 'react'
-import ReactDOM from 'react-dom'
 import { UserContext } from "../../providers/UserProvider";
-import Modal from 'react-bootstrap/Modal'
-import Button from 'react-bootstrap/Button'
-import Tabs from 'react-bootstrap/Tabs'
-import Tab from 'react-bootstrap/Tab'
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import axios from 'axios';
 import { auth } from "../../firebase.config";
 
@@ -24,8 +25,8 @@ SYNOPSIS
             linkId              ->the id of the game room
             setRedirect         ->flag for redirecting to the room
             userInfo            ->the user object from firebase
-        
-        
+
+
 
 DESCRIPTION
         The component create a modal and asks for user to input the piece they want to play with.
@@ -50,7 +51,7 @@ DATE
 export default class Multichoice extends Component {
     constructor(props){
         super(props);
-        this.state={modalShow:true, playerPiece:null, linkId:null, setRedirect:false, userInfo: this.props.userInfo};
+        this.state={modalShow:true, playerPiece:null, linkId:null, setRedirect:false, userInfo: this.props.userInfo, generateResult: null, joinLink: ''};
         this.onCloseButtonClick =  this.onCloseButtonClick.bind(this);
         this.onGenerateButtonClick =  this.onGenerateButtonClick.bind(this);
         this.createGame = this.createGame.bind(this);
@@ -65,7 +66,7 @@ export default class Multichoice extends Component {
         this.setState({
             modalShow: false,
           })
-        
+
           //rederect to the gameChoice page
           window.location.href="/game"
     }
@@ -75,7 +76,7 @@ export default class Multichoice extends Component {
         this.setState({
             playerPiece: event.target.value,
           })
-        
+
         //set local player information
         var playerInfo = {creator:true, playerPiece:this.state.playerPiece, linkId:this.state.linkId};
         localStorage.setItem("playerInfo", JSON.stringify(playerInfo));
@@ -117,12 +118,10 @@ export default class Multichoice extends Component {
         catch(error)
         {
             console.log(error);
-            const errorMsg = <p className="text-warning">Error in generating key. Please press again.</p>
-            ReactDOM.render(errorMsg, document.getElementById('generate result'));
+            this.setState({ generateResult: { ok: false } });
             return;
         }
-        const successMsg = <p className="text-success">http://gameoftiger.prabal.dev/room/{this.state.linkId}</p>
-        ReactDOM.render(successMsg, document.getElementById('generate result'));
+        this.setState({ generateResult: { ok: true, link: this.state.linkId } });
     }
 
     /*trivial function to go to the room*/
@@ -141,7 +140,7 @@ export default class Multichoice extends Component {
     joinGame(e)
     {
         //enter the url
-        let joinLink= document.getElementById("JoinGame").value;
+        let joinLink= this.state.joinLink;
         let arrLink = joinLink.split("/");
         window.location.href="/room/"+arrLink[4];
         //go to the url
@@ -156,50 +155,37 @@ export default class Multichoice extends Component {
         else
         {
             return (
-                <div>
-                    <Modal
-                        show={this.state.modalShow}
-                        onHide={this.onCloseButtonClick}
-                        size="lg"
-                        aria-labelledby="contained-modal-title-vcenter"
-                        centered
-                        >
-                        <Modal.Header closeButton>
-                            <Modal.Title id="contained-modal-title-vcenter">
-                            Multiplayer game
-                            </Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <h5>Join:</h5>
-                            <Tabs defaultActiveKey="new" id="uncontrolled-tab-example">
-                                <Tab eventKey="new" title="Create New Room">
-                                    <h6>Choose Your piece</h6>
-                                    <div className="custom-control custom-radio custom-control-inline" onChange={this.setPlayerPiece.bind(this)}>
-                                    <input type="radio" id="GoatChoice" name="PieceChoice" value='goat' className="custom-control-input"/>
-                                    <label className="custom-control-label" htmlFor="GoatChoice">Goat</label>
-                                    </div>
-                                    <div className="custom-control custom-radio custom-control-inline" onChange={this.setPlayerPiece.bind(this)}>
-                                    <input type="radio" id="TigerChoice" name="PieceChoice" value='tiger' className="custom-control-input"/>
-                                    <label className="custom-control-label" htmlFor="TigerChoice">Tiger</label>
-                                    </div>
-                                    <p>Share the link below with your friends</p>
-                                    <div id='generate result'></div>
-                                    <Button onClick={this.onGenerateButtonClick}>Generate game link</Button>
-                                    <p id="gameLink"></p>
-                                    <Button onClick={this.createGame}>Submit</Button>
-                                </Tab>
-                                <Tab eventKey="old" title="Join with link">
-                                <label htmlFor="JoinGame">Paste the URL Below to join the Room:</label>
-                                <input type="url" id="JoinGame" name="JoinGame" className="form-control"/><br/><br/>
+                <Dialog open={this.state.modalShow} onOpenChange={(o)=>{ if(!o) this.onCloseButtonClick(); }}>
+                    <DialogContent className="max-w-lg">
+                        <DialogHeader><DialogTitle>Multiplayer game</DialogTitle></DialogHeader>
+                        <h5 className="font-medium">Join:</h5>
+                        <Tabs defaultValue="new">
+                            <TabsList>
+                                <TabsTrigger value="new">Create New Room</TabsTrigger>
+                                <TabsTrigger value="old">Join with link</TabsTrigger>
+                            </TabsList>
+                            <TabsContent value="new" className="space-y-3">
+                                <h6 className="font-medium">Choose Your piece</h6>
+                                <RadioGroup value={this.state.playerPiece || ''} onValueChange={(v)=>this.setPlayerPiece({ target: { value: v } })} className="flex gap-4">
+                                    <div className="flex items-center gap-2"><RadioGroupItem value="goat" id="GoatChoice" /><Label htmlFor="GoatChoice">Goat</Label></div>
+                                    <div className="flex items-center gap-2"><RadioGroupItem value="tiger" id="TigerChoice" /><Label htmlFor="TigerChoice">Tiger</Label></div>
+                                </RadioGroup>
+                                <p>Share the link below with your friends</p>
+                                {this.state.generateResult && (this.state.generateResult.ok
+                                    ? <p className="text-green-600">http://gameoftiger.prabal.dev/room/{this.state.generateResult.link}</p>
+                                    : <p className="text-yellow-500">Error in generating key. Please press again.</p>)}
+                                <Button onClick={this.onGenerateButtonClick}>Generate game link</Button>
+                                <Button onClick={this.createGame}>Submit</Button>
+                            </TabsContent>
+                            <TabsContent value="old" className="space-y-3">
+                                <Label htmlFor="JoinGame">Paste the URL Below to join the Room:</Label>
+                                <Input type="url" id="JoinGame" value={this.state.joinLink} onChange={(e)=>this.setState({ joinLink: e.target.value })} />
                                 <Button onClick={this.joinGame}>Join Game</Button>
-                                </Tab>
-                            </Tabs>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="secondary" onClick={this.onCloseButtonClick}>Close</Button>
-                        </Modal.Footer>
-                    </Modal>
-                </div>
+                            </TabsContent>
+                        </Tabs>
+                        <DialogFooter><Button variant="secondary" onClick={this.onCloseButtonClick}>Close</Button></DialogFooter>
+                    </DialogContent>
+                </Dialog>
             )
         }
     }

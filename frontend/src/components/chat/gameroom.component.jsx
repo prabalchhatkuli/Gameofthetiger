@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
+import { Button } from '@/components/ui/button';
 import Game from '../game/game.component';
 import axios from 'axios';
 import { auth } from "../../firebase.config";
