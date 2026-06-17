@@ -8,6 +8,8 @@ import Piece from '../piece/piece.component'
 import Chat from '../chat/chat.component'
 import Winner from './winner.component'
 import { auth } from '../../firebase.config'
+import { getAIMove } from '../../ai/index'
+import { applyMove, getWinner } from '../../ai/rules'
 
 /**/
 /*
@@ -83,6 +85,7 @@ class Game extends Component {
             goatsTaken:0,
             winner:null,
             status:'',
+            aiThinking:false,
             socket:io('/', {
                 auth: (cb) => {
                     // called on every (re)connect; sends a fresh ID token
@@ -96,6 +99,60 @@ class Game extends Component {
         };
     }
     
+    /**/
+    /*
+    applyMoveToState(move)
+            Applies a move object (place|move|capture) to the board via the pure
+            rules engine and updates component state. Shared AI move path.
+    */
+    /**/
+    applyMoveToState(move){
+        const current = this.state.history[this.state.history.length - 1];
+        const result = applyMove(current.squares, move, {
+            gisnext: this.state.gisnext,
+            goatsOnBoard: this.state.goatsOnBoard,
+            goatsTaken: this.state.goatsTaken
+        });
+        const winner = getWinner(result.board, result.goatsTaken);
+        this.setState(state => ({
+            history: state.history.concat([{ squares: result.board }]),
+            currentBoard: result.board,
+            goatsOnBoard: result.goatsOnBoard,
+            goatsTaken: result.goatsTaken,
+            gisnext: result.gisnext,
+            winner: winner,
+            status: winner ? (winner === 'T' ? 'Tiger Player is the winner' : 'Goat Player is the winner') : this.state.status
+        }));
+    }
+
+    /**/
+    /*
+    componentDidUpdate
+            In single-player, when it becomes the AI's turn and the game is not
+            over, compute and apply an AI move after a short delay.
+    */
+    /**/
+    componentDidUpdate(){
+        if (this.props.choice !== 'single') return;
+        if (this.state.winner) return;
+        if (this.state.aiThinking) return;
+
+        const aiGisnext = this.props.aiSide === 'goat';
+        if (this.state.gisnext !== aiGisnext) return;
+
+        this.setState({ aiThinking: true });
+        setTimeout(() => {
+            const current = this.state.history[this.state.history.length - 1];
+            const move = getAIMove(current.squares, this.props.aiSide, {
+                gisnext: this.state.gisnext,
+                goatsOnBoard: this.state.goatsOnBoard,
+                goatsTaken: this.state.goatsTaken
+            }, this.props.difficulty);
+            if (move) this.applyMoveToState(move);
+            this.setState({ aiThinking: false });
+        }, 400);
+    }
+
     /**/
     /*
     componentDidMount
@@ -246,7 +303,15 @@ class Game extends Component {
         const history =  this.state.history;
         const current = history[history.length-1];
         const squares = current.squares.slice();
-        
+
+        if(this.props.choice === 'single'){
+            const humanGisnext = this.props.playerSide === 'goat';
+            if(this.state.gisnext !== humanGisnext || this.state.aiThinking){
+                this.setState({ status: 'Wait for the computer to move' });
+                return;
+            }
+        }
+
         if(this.props.choice ==='multi')
         {
             console.log("multi engaged");
