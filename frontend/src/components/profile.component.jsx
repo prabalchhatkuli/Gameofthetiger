@@ -43,7 +43,8 @@ export default class Profile extends Component {
             name:'',
             email:'',
             wins:0,
-            losses:0
+            losses:0,
+            aiStats:null
         }
     }
 
@@ -87,7 +88,8 @@ export default class Profile extends Component {
                 return {name:document.firstname + " "+document.lastname,
                 email: document.email,
                 wins: document.wins,
-                losses: document.losses}
+                losses: document.losses,
+                aiStats: document.aiStats || null}
             })
         }
     }
@@ -104,6 +106,27 @@ export default class Profile extends Component {
                     <h5>Email: {this.state.email}</h5>
                     <h5>Total wins: {this.state.wins}</h5>
                     <h5>Total losses: {this.state.losses}</h5>
+                    <hr/>
+                    <h5>Vs Computer</h5>
+                    <table>
+                        <thead>
+                            <tr><th>Difficulty</th><th>As Tiger (W&ndash;L)</th><th>As Goat (W&ndash;L)</th></tr>
+                        </thead>
+                        <tbody>
+                            {['easy', 'medium', 'hard'].map(level => {
+                                const s = (this.state.aiStats && this.state.aiStats[level]) || {};
+                                const t = s.tiger || { wins: 0, losses: 0 };
+                                const g = s.goat || { wins: 0, losses: 0 };
+                                return (
+                                    <tr key={level}>
+                                        <td>{level}</td>
+                                        <td>{(t.wins || 0)}&ndash;{(t.losses || 0)}</td>
+                                        <td>{(g.wins || 0)}&ndash;{(g.losses || 0)}</td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         )

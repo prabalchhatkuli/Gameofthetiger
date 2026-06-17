@@ -7,7 +7,7 @@ import Goat from '../piece/goatpiece.component'
 import Piece from '../piece/piece.component'
 import Chat from '../chat/chat.component'
 import Winner from './winner.component'
-import { auth } from '../../firebase.config'
+import { auth, recordAiGame } from '../../firebase.config'
 import { getAIMove } from '../../ai/index'
 import { applyMove, getWinner } from '../../ai/rules'
 
@@ -86,6 +86,7 @@ class Game extends Component {
             winner:null,
             status:'',
             aiThinking:false,
+            aiResultRecorded:false,
             socket:io('/', {
                 auth: (cb) => {
                     // called on every (re)connect; sends a fresh ID token
@@ -122,7 +123,15 @@ class Game extends Component {
             gisnext: result.gisnext,
             winner: winner,
             status: winner ? (winner === 'T' ? 'Tiger Player is the winner' : 'Goat Player is the winner') : this.state.status
-        }));
+        }), () => {
+            if (winner && this.props.choice === 'single' && !this.state.aiResultRecorded) {
+                this.setState({ aiResultRecorded: true });
+                const humanWon = (winner === 'T' && this.props.playerSide === 'tiger') ||
+                                 (winner === 'G' && this.props.playerSide === 'goat');
+                recordAiGame(this.props.difficulty, this.props.playerSide, humanWon ? 'win' : 'loss')
+                    .catch(err => console.error('recordAiGame failed:', err));
+            }
+        });
     }
 
     /**/
