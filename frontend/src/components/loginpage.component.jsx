@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom';
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import {auth} from '../firebase.config.js'
+import { signInWithEmailAndPassword } from "firebase/auth";
  
 /**/
 /*
@@ -130,7 +131,7 @@ export default class LoginPage extends Component {
   /**/
   async handleLogin(e)
   {
-    await auth.signInWithEmailAndPassword(this.state.email, this.state.password).catch(function(error) {
+    await signInWithEmailAndPassword(auth, this.state.email, this.state.password).catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;

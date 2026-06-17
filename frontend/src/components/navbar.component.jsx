@@ -3,6 +3,9 @@ import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 import Button from 'react-bootstrap/Button'
 import {auth} from '../firebase.config.js'
+import { signOut } from "firebase/auth";
+import goatSvg from '../SVG/goat.svg'
+import tigerSvg from '../SVG/tiger.svg'
 
 /**/
 /*
@@ -42,7 +45,7 @@ export default function Navigation(props) {
         //trivial function for the signout button
         function signout()
         {
-            auth.signOut();
+            signOut(auth);
         }
 
         //elements returned by the component
@@ -62,7 +65,7 @@ export default function Navigation(props) {
                     <Navbar.Brand className = "p" href="/"> 
                         <img
                         alt=""
-                        src={require('../SVG/goat.svg')}
+                        src={goatSvg}
                         width="30"
                         height="30"
                         className="d-inline-block align-top"
@@ -71,7 +74,7 @@ export default function Navigation(props) {
                      {' '}
                      <img
                         alt=""
-                        src={require('../SVG/tiger.svg')}
+                        src={tigerSvg}
                         width="30"
                         height="30"
                         className="d-inline-block align-top"

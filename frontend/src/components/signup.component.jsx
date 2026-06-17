@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom';
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import { auth, signInWithGoogle, generateUserDocument } from '../firebase.config.js';
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 /**/
 /*
@@ -161,7 +162,7 @@ export default class SignupPage extends Component {
     e.preventDefault();
 
     //create the user
-    const {user} = await auth.createUserWithEmailAndPassword(this.state.email, this.state.confirmPassword).catch(function(error) {
+    const {user} = await createUserWithEmailAndPassword(auth, this.state.email, this.state.confirmPassword).catch(function(error) {
       var errorCode = error.code;
       var errorMessage = error.message;
       // [START_EXCLUDE]
