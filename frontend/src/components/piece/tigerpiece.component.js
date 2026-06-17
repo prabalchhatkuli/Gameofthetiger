@@ -135,7 +135,7 @@ export default class Tigerpiece extends Piece{
     */
     /**/
     isTigerBlocked(src, board)
-    {   
+    {
         //check source number
             //even or odd
             //true if even, false if odd
@@ -146,7 +146,6 @@ export default class Tigerpiece extends Piece{
             }
         //find boundaries
         let boundaries=this.findBoundaries(evenOrOdd, src);
-        console.log(boundaries);
         //if even can go all sides except boundaries
         let moves=[];
         let eatMoves=[];
@@ -315,7 +314,7 @@ export default class Tigerpiece extends Piece{
     */
     /**/
     isMovePossible(src, dest, board)
-    {   
+    {
         //check source number
             //even or odd
             //true if even, false if odd
@@ -326,7 +325,6 @@ export default class Tigerpiece extends Piece{
             }
         //find boundaries
         let boundaries=this.findBoundaries(evenOrOdd, src);
-        console.log(boundaries);
         //if even can go all sides except boundaries
         let moves=[];
         let eatMoves=[];
@@ -398,9 +396,6 @@ export default class Tigerpiece extends Piece{
               eatMoves[3]=null;
             }
         }
-        console.log("length of moves");
-        console.log(eatMoves);
-        console.log(moves);
         for(let i=0; i<moves.length; i++)
             {
               //check if a goat is present in the box, if not cannot jump over
