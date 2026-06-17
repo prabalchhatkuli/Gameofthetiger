@@ -52,7 +52,7 @@ function App() {
 
   // Returns a router with all main components
   return (
-    <Router>
+    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <Navbar userInfo={user} />
       <Routes>
         <Route path="/" element={<Landing userInfo={user} />} />
