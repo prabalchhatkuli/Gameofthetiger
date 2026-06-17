@@ -123,15 +123,7 @@ class Game extends Component {
             gisnext: result.gisnext,
             winner: winner,
             status: winner ? (winner === 'T' ? 'Tiger Player is the winner' : 'Goat Player is the winner') : this.state.status
-        }), () => {
-            if (winner && this.props.choice === 'single' && !this.state.aiResultRecorded) {
-                this.setState({ aiResultRecorded: true });
-                const humanWon = (winner === 'T' && this.props.playerSide === 'tiger') ||
-                                 (winner === 'G' && this.props.playerSide === 'goat');
-                recordAiGame(this.props.difficulty, this.props.playerSide, humanWon ? 'win' : 'loss')
-                    .catch(err => console.error('recordAiGame failed:', err));
-            }
-        });
+        }));
     }
 
     /**/
@@ -143,7 +135,21 @@ class Game extends Component {
     /**/
     componentDidUpdate(){
         if (this.props.choice !== 'single') return;
-        if (this.state.winner) return;
+
+        // Record the result once, regardless of whether the human or the AI
+        // made the winning move (human wins are detected in handleClick, AI
+        // wins in applyMoveToState; both land here via the resulting setState).
+        if (this.state.winner) {
+            if (!this.state.aiResultRecorded) {
+                this.setState({ aiResultRecorded: true });
+                const humanWon = (this.state.winner === 'T' && this.props.playerSide === 'tiger') ||
+                                 (this.state.winner === 'G' && this.props.playerSide === 'goat');
+                recordAiGame(this.props.difficulty, this.props.playerSide, humanWon ? 'win' : 'loss')
+                    .catch(err => console.error('recordAiGame failed:', err));
+            }
+            return;
+        }
+
         if (this.state.aiThinking) return;
 
         const aiGisnext = this.props.aiSide === 'goat';
