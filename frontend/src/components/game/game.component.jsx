@@ -563,9 +563,9 @@ class Game extends Component {
         let status = this.state.status;
         const goatTurn = this.state.gisnext;
         return (
-            <main className="mx-auto max-w-5xl px-4 py-6">
-                {/* scoreboard */}
-                <div className="game-info heritage-card mb-6 flex flex-wrap items-center justify-between gap-4 p-4 sm:p-5">
+            <main className="mx-auto max-w-6xl px-4 py-6">
+                {/* scoreboard (full width) */}
+                <div className="heritage-card mb-6 flex flex-wrap items-center justify-between gap-4 p-4 sm:p-5">
                     <div className="flex items-center gap-3">
                         <span className={`flex h-10 w-10 items-center justify-center rounded-full text-xl ${goatTurn ? 'bg-accent/15' : 'bg-primary/15'}`}>
                             {goatTurn ? '🐐' : '🐯'}
@@ -588,24 +588,23 @@ class Game extends Component {
                         </div>
                     </div>
                     {status ? <p className="w-full text-sm text-muted-foreground">{status}</p> : null}
-                    {this.state.winner?<Winner winner={this.state.winner}/>:null}
+                    {this.state.winner ? <Winner winner={this.state.winner} /> : null}
                 </div>
 
-                <div className="game">
-                    <div>
-                            {/*get the main board*/}
-                            <Board
-                                squares={current.squares}
-                                handleClick={(i)=> this.handleClick(i)}
-                            />
-                            {/*contains all the illustrated paths/click divs and diagonal elements.*/}
+                {/* board + chat sidebar */}
+                <div className="grid items-start gap-6 lg:grid-cols-[1fr_340px]">
+                    <div className="flex justify-center">
+                        <Board
+                            squares={current.squares}
+                            handleClick={(i) => this.handleClick(i)}
+                        />
                     </div>
-                </div>
-                <div className="chat mt-6 grid gap-4 sm:grid-cols-2">
-                {this.props.choice === 'multi'?
-                    <Chat name="Room" roomID={this.props.roomID} socket={this.state.socket}/>:null
-                }
-                <Chat name="Global" socket={this.state.socket}/>
+                    <aside className="flex flex-col gap-4">
+                        {this.props.choice === 'multi'
+                            ? <Chat name="Room" roomID={this.props.roomID} socket={this.state.socket} />
+                            : null}
+                        <Chat name="Global" socket={this.state.socket} />
+                    </aside>
                 </div>
             </main>
         )

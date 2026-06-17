@@ -4,28 +4,10 @@
     background-color:  rgb(41, 175, 41);
     text-align: center;
     position: relative;
-    width: 45vw;
-    height: 45vw;
+    width: min(86vw, 30rem);
+    aspect-ratio: 1 / 1;
     margin: auto;
   }
-
-/*style for the info board*/
-.game-info{
-  float: left;
-  width: 15%;
-}
-
-/*style for the game board*/
-.game{
-  float: left;
-  width: 50%;
-}
-
-/*style for the chat boxes*/
-.chat{
-  float: right;
-  width: 33%;
-}
 
 /*all squares in the board except the board*/
 .squares {
@@ -104,23 +86,5 @@
     pointer-events: none;
   }
 
-  @media only screen and (max-width: 600px) {
-    /* For mobile phones: */
-    [class="board"] {
-      width: 100vw;
-      height: 100vw;
-    }
-    [class="game"]{
-      /* display: block; */
-      width: 100%;
-    }
-    [class="chat"]{
-      /* display: block; */
-      width: 100%;
-    }
-    [class="game-info"]{
-      /* display: block; */
-      width: 100%;
-    }
-  }
+
 
