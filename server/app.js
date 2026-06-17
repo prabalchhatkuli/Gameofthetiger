@@ -11,14 +11,13 @@ require('dotenv').config()
 const mongoose = require('mongoose');
 //------------------------------------------------------------------------
 
-var indexRouter = require('./routes/index');
 var roomRouter = require('./routes/room');
 
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 app.use(cors());
 app.use(logger('dev'));
@@ -29,32 +28,20 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //---------------------mongoose connection---------------
 const uri = process.env.ATLAS_URI;
-mongoose.connect(uri,{useNewUrlParser:true, useCreateIndex:true});
-const connection=mongoose.connection;
-connection.once('open',()=>{
-  console.log("MongoDB database connection established successfully.");
-})
+mongoose.connect(uri)
+  .then(() => console.log("MongoDB database connection established successfully."))
+  .catch(err => console.error("MongoDB connection error:", err));
 
-// ... other app.use middleware 
-app.use(express.static(path.join(__dirname, '../build')));
+// serve the built frontend
+app.use(express.static(path.join(__dirname, '../frontend/build')));
 
-// ...
-
-/*
-    ssl certs
-*/
-app.get("/.well-known/acme-challenge/QCidg6_Mr5Gngohw1HZ3g9WeA6UmYRYSYjIbWoYx5A4", function(req, res){
-  res.send("QCidg6_Mr5Gngohw1HZ3g9WeA6UmYRYSYjIbWoYx5A4.TNK4ugUkMOjrIi1ihimZMBzrHvoVsn-OPTH3A7wvLfw");
-  });
-
-// Right before your app.listen(), add this:
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, '../build/index.html'));
-});
-//---------------------------------------------------
 //routers
-app.use('/', indexRouter);
 app.use('/room', roomRouter);
+
+// SPA fallback: all remaining GETs get the React app (must stay below the routers)
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/build/index.html'));
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const chatrooms = require('../models/chatrooms.model');
 const chatmessages = require('../models/chatmessages.model');
+const requireAuth = require('../middleware/auth');
 
 /**/
 /*
@@ -83,7 +84,12 @@ var generateRoomID = async function(req, res){
 
   }while(list.size===0)
 
-  await chatrooms.insertMany([{name:roomID, creator:req.body.user, creator_piece:req.body.piece}]);
+  await chatrooms.insertMany([{
+    name: roomID,
+    creator: req.user.email,
+    creator_uid: req.user.uid,
+    creator_piece: req.body.piece
+  }]);
   res.send({roomID:roomID});
   res.end();
 }
@@ -167,13 +173,13 @@ var joinRoom = async function(req, res){
   let listOfRooms = await chatrooms.find({name:req.body.roomID});
   //find what the player is: creator / joiner
   //if joiner is already validated: the requesting client is an audience
-  if(req.body.userInfo === listOfRooms[0].creator)
+  if(req.user.email === listOfRooms[0].creator)
   {
     res.send({playerPiece:listOfRooms[0].creator_piece})
   }
   else
   {
-    if(req.body.userInfo === listOfRooms[0].joiner)
+    if(req.user.email === listOfRooms[0].joiner)
     {
       if(listOfRooms[0].creator_piece==='goat')
       {
@@ -189,7 +195,8 @@ var joinRoom = async function(req, res){
       if(listOfRooms[0].joiner === '-')
       {
         //update the database entry
-        listOfRooms[0].joiner = req.body.userInfo;
+        listOfRooms[0].joiner = req.user.email;
+        listOfRooms[0].joiner_uid = req.user.uid;
         await listOfRooms[0].save();
 
         if(listOfRooms[0].creator_piece==='goat')
@@ -209,10 +216,10 @@ var joinRoom = async function(req, res){
   }
 }
 
-router.post('/joinRoom', joinRoom);
+router.post('/joinRoom', requireAuth, joinRoom);
 
 router.post('/validateRoom', validateRoom);
 
-router.post('/generate', generateRoomID);
+router.post('/generate', requireAuth, generateRoomID);
 
 module.exports = router;
