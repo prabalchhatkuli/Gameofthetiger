@@ -8,6 +8,11 @@ export default defineConfig({
   resolve: {
     alias: { '@': path.resolve(__dirname, './src') },
   },
+  // pre-bundle CJS deps so the dev server doesn't 504 ("Outdated Optimize Dep")
+  // when it discovers them late
+  optimizeDeps: {
+    include: ['canvas-confetti'],
+  },
   build: {
     outDir: 'build',
   },
