@@ -13,6 +13,9 @@
 /frontend/build
 
 # misc
+.env
+.env.*
+!.env.example
 /server/.env
 .DS_Store
 .env.local
