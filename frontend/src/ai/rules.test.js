@@ -2,7 +2,7 @@ import { test, expect } from 'vitest';
 import Piece from '../components/piece/piece.component';
 import Tiger from '../components/piece/tigerpiece.component';
 import Goat from '../components/piece/goatpiece.component';
-import { cloneBoard, getLegalMoves } from './rules';
+import { cloneBoard, getLegalMoves, applyMove } from './rules';
 
 function emptyBoard() {
   return Array.from({ length: 25 }, () => new Piece());
@@ -51,4 +51,35 @@ test('tiger moves include a capture when a goat is jumpable', () => {
   expect(capture.from).toBe(0);
   expect(capture.to).toBe(2);
   expect(capture.captured).toBe(1);
+});
+
+test('applyMove place: adds a goat, increments goatsOnBoard, toggles turn', () => {
+  const b = withTigersAtCorners();
+  const next = applyMove(b, { type: 'place', to: 12 }, { gisnext: true, goatsOnBoard: 0, goatsTaken: 0 });
+  expect(next.board[12].player).toBe('G');
+  expect(next.goatsOnBoard).toBe(1);
+  expect(next.goatsTaken).toBe(0);
+  expect(next.gisnext).toBe(false);
+  expect(b[12].player).toBe(null);
+});
+
+test('applyMove move: relocates the piece and clears the source', () => {
+  const b = withTigersAtCorners();
+  b[12] = new Goat();
+  const next = applyMove(b, { type: 'move', from: 12, to: 13 }, { gisnext: true, goatsOnBoard: 20, goatsTaken: 0 });
+  expect(next.board[12].player).toBe(null);
+  expect(next.board[13].player).toBe('G');
+  expect(next.gisnext).toBe(false);
+});
+
+test('applyMove capture: removes captured goat, increments goatsTaken', () => {
+  const b = withTigersAtCorners();
+  b[1] = new Goat();
+  const next = applyMove(b, { type: 'capture', from: 0, to: 2, captured: 1 },
+    { gisnext: false, goatsOnBoard: 20, goatsTaken: 0 });
+  expect(next.board[0].player).toBe(null);
+  expect(next.board[2].player).toBe('T');
+  expect(next.board[1].player).toBe(null);
+  expect(next.goatsTaken).toBe(1);
+  expect(next.gisnext).toBe(true);
 });

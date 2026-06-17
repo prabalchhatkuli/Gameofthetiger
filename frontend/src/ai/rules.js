@@ -37,3 +37,23 @@ export function getLegalMoves(board, gisnext, goatsOnBoard) {
   }
   return moves;
 }
+
+export function applyMove(board, move, state) {
+  const next = cloneBoard(board);
+  let { goatsOnBoard, goatsTaken } = state;
+
+  if (move.type === 'place') {
+    next[move.to] = new Goat();
+    goatsOnBoard += 1;
+  } else if (move.type === 'move') {
+    next[move.to] = state.gisnext ? new Goat() : new Tiger();
+    next[move.from] = new Piece();
+  } else {
+    next[move.to] = new Tiger();
+    next[move.from] = new Piece();
+    next[move.captured] = new Piece();
+    goatsTaken += 1;
+  }
+
+  return { board: next, goatsOnBoard, goatsTaken, gisnext: !state.gisnext };
+}
