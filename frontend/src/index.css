@@ -159,3 +159,19 @@
 .animate-rise {
   animation: rise-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
+
+/* game-over emblem: pop in with a little overshoot, then a gentle idle bob */
+@keyframes winner-pop {
+  0% { opacity: 0; transform: scale(0.3) rotate(-12deg); }
+  60% { opacity: 1; transform: scale(1.15) rotate(4deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+@keyframes winner-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.winner-pop {
+  animation:
+    winner-pop 0.6s cubic-bezier(0.22, 1.4, 0.4, 1) both,
+    winner-bob 2.4s ease-in-out 0.7s infinite;
+}
