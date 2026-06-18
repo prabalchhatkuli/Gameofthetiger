@@ -9,7 +9,7 @@ import Chat from '../chat/chat.component'
 import Winner from './winner.component'
 import { auth, recordAiGame } from '../../firebase.config'
 import { getAIMove } from '../../ai/index'
-import { applyMove, getWinner } from '../../ai/rules'
+import { applyMove, getWinner, getLegalMoves } from '../../ai/rules'
 
 /**/
 /*
@@ -557,7 +557,19 @@ class Game extends Component {
     render() {
         const history = this.state.history;
         const current = history[history.length -1];
-        
+
+        // highlight: selected piece + its legal destinations
+        const selectedIndex = this.state.sourceSelection;
+        const targets = {};
+        if (selectedIndex >= 0) {
+            const moves = getLegalMoves(current.squares, this.state.gisnext, this.state.goatsOnBoard);
+            for (const m of moves) {
+                if (m.from === selectedIndex) {
+                    targets[m.to] = m.type === 'capture' ? 'capture' : 'move';
+                }
+            }
+        }
+
         let nextPlayer;
         nextPlayer = 'Next player: ' + (this.state.gisnext ? 'Goat' : 'Tiger');
         let status = this.state.status;
@@ -597,6 +609,8 @@ class Game extends Component {
                         <Board
                             squares={current.squares}
                             handleClick={(i) => this.handleClick(i)}
+                            selectedIndex={selectedIndex}
+                            targets={targets}
                         />
                     </div>
                     <aside className="flex flex-col gap-4">

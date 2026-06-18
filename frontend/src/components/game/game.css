@@ -79,7 +79,7 @@
     position:absolute;
     border-top:1px solid yellow;
     width:141.5%;
-    transform: 
+    transform:
         translate(36%)
         rotate(135deg);
     transform-origin: 0% 0%;
@@ -87,4 +87,31 @@
   }
 
 
+/* --- move/selection highlights --- */
+.cell-selected {
+  position: absolute;
+  inset: 8%;
+  border-radius: 9999px;
+  background: radial-gradient(circle, color-mix(in oklch, var(--primary) 30%, transparent), transparent 72%);
+  box-shadow: inset 0 0 0 2px var(--primary);
+  pointer-events: none;
+}
+.cell-move-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 26%;
+  height: 26%;
+  transform: translate(-50%, -50%);
+  border-radius: 9999px;
+  background: color-mix(in oklch, var(--primary) 55%, transparent);
+  pointer-events: none;
+}
+.cell-capture-ring {
+  position: absolute;
+  inset: 14%;
+  border-radius: 9999px;
+  border: 3px solid var(--destructive);
+  pointer-events: none;
+}
 

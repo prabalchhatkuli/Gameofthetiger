@@ -62,12 +62,13 @@ export default class Square extends Component {
   }
 
   render() {
+    const { isSelected, targetType } = this.props;
     return (
-        <div 
-          className="squares" 
-          onClick={this.props.onClick}>
+        <div className="squares" onClick={this.props.onClick}>
+          {isSelected && <span className="cell-selected" />}
+          {targetType === 'move' && <span className="cell-move-dot" />}
+          {targetType === 'capture' && <span className="cell-capture-ring" />}
           {this.getPiece(this.props.value.player)}
-          
         </div>
     );
   }
