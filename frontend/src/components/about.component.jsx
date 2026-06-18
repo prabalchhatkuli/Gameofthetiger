@@ -38,12 +38,6 @@ export default function AboutPage() {
                 >
                     View source on GitHub →
                 </a>
-
-                {/* support the developer */}
-                <div className="mt-8 border-t border-border/60 pt-6">
-                    <p className="mb-3 text-sm text-muted-foreground">Enjoying the game? Support its development:</p>
-                    <div ref={bmcRef} className="flex justify-center" />
-                </div>
             </div>
         </main>
     )
