@@ -19,7 +19,13 @@ export default defineConfig({
   server: {
     port: 3000,
     proxy: {
-      '/room': 'http://localhost:8000',
+      // Proxy ONLY the backend API paths. `/room/:roomID` is a client-side
+      // React Router route (the game-room page), so it must fall through to
+      // Vite's SPA fallback — do NOT proxy the whole `/room` prefix.
+      '/room/generate': 'http://localhost:8000',
+      '/room/validateRoom': 'http://localhost:8000',
+      '/room/joinRoom': 'http://localhost:8000',
+      '/ai-game': 'http://localhost:8000',
       '/socket.io': { target: 'http://localhost:8000', ws: true },
     },
   },
