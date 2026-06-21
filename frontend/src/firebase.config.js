@@ -52,6 +52,14 @@ export const recordAiGame = async (difficulty, side, result) => {
         { headers: { Authorization: `Bearer ${token}` } });
 };
 
+/* persist the chosen emoji avatar via the authenticated backend endpoint */
+export const saveAvatar = async (avatar) => {
+    if (!auth.currentUser) return;
+    const token = await auth.currentUser.getIdToken();
+    await axios.post('/profile/avatar', { avatar },
+        { headers: { Authorization: `Bearer ${token}` } });
+};
+
 /**/
 /*
 generateUserDocument()

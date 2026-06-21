@@ -13,6 +13,7 @@ const mongoose = require('mongoose');
 
 var roomRouter = require('./routes/room');
 var aiGameRouter = require('./routes/aiGame');
+var profileRouter = require('./routes/profile');
 
 var app = express();
 
@@ -39,6 +40,7 @@ app.use(express.static(path.join(__dirname, '../frontend/build')));
 //routers
 app.use('/room', roomRouter);
 app.use('/ai-game', aiGameRouter);
+app.use('/profile', profileRouter);
 
 // SPA fallback: all remaining GETs get the React app (must stay below the routers)
 app.get("*", (req, res) => {

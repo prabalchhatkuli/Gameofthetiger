@@ -34,10 +34,15 @@ export default function Navigation(props) {
                     <NavLink href="/game">Play</NavLink>
                     <NavLink href="/instruction">How to play</NavLink>
                     <NavLink href="/about">About</NavLink>
-                    {props.userInfo !== null && <NavLink href="/Profile">Profile</NavLink>}
                     {props.userInfo === null
                         ? <Button asChild className="ml-1 rounded-full px-5"><a href="/login">Log in</a></Button>
-                        : <Button variant="outline" onClick={signout} className="ml-1 rounded-full px-5">Sign out</Button>}
+                        : <>
+                            <a href="/Profile" title="Profile"
+                               className="ml-1 flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card text-lg leading-none shadow-sm transition-transform hover:-translate-y-0.5">
+                                {props.avatar}
+                            </a>
+                            <Button variant="outline" onClick={signout} className="rounded-full px-5">Sign out</Button>
+                          </>}
                 </div>
             </nav>
         </header>

@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { getUserDocument} from '../firebase.config.js';
+import { AVATARS } from '../avatars';
+import { saveAvatar } from '../firebase.config.js';
 
 /**/
 /*
@@ -46,6 +48,11 @@ export default class Profile extends Component {
             losses:0,
             aiStats:null
         }
+    }
+
+    pickAvatar = (emoji) => {
+        this.props.onAvatarChange && this.props.onAvatarChange(emoji);
+        saveAvatar(emoji).catch(err => console.error('saveAvatar failed:', err));
     }
 
     /**/
@@ -99,13 +106,22 @@ export default class Profile extends Component {
 
         return (
             <main className="mx-auto max-w-3xl px-5 py-12">
-                {/* Header block */}
-                <div className="animate-rise mb-10">
-                    <span className="eyebrow">Your record</span>
-                    <h1 className="font-display text-4xl font-semibold tracking-tight mt-1">
-                        {this.state.name || 'Player'}
-                    </h1>
-                    <p className="text-muted-foreground mt-1">{this.state.email}</p>
+                {/* Avatar header block */}
+                <div className="heritage-card animate-rise mb-6 p-6 text-center">
+                    <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-border bg-card text-4xl shadow-sm">
+                        {this.props.avatar}
+                    </div>
+                    <h1 className="mt-3 font-display text-2xl font-semibold tracking-tight">{this.state.name || 'Player'}</h1>
+                    <p className="text-sm text-muted-foreground">{this.state.email}</p>
+                    <p className="eyebrow mt-5 mb-2">Choose your avatar</p>
+                    <div className="flex flex-wrap justify-center gap-2">
+                        {AVATARS.map(e => (
+                            <button key={e} onClick={() => this.pickAvatar(e)}
+                                className={`flex h-10 w-10 items-center justify-center rounded-lg border text-xl transition-colors ${this.props.avatar === e ? 'border-primary bg-primary/10' : 'border-border hover:bg-muted/50'}`}>
+                                {e}
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
                 {/* Stat tiles */}

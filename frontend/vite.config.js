@@ -26,6 +26,7 @@ export default defineConfig({
       '/room/validateRoom': 'http://localhost:8000',
       '/room/joinRoom': 'http://localhost:8000',
       '/ai-game': 'http://localhost:8000',
+      '/profile/avatar': 'http://localhost:8000',
       '/socket.io': { target: 'http://localhost:8000', ws: true },
     },
   },
