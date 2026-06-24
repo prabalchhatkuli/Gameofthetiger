@@ -41,10 +41,13 @@ export default class Board extends Component {
   //render the squares for positions in the board
     renderSquare(i) {
         return (
-          <Square 
+          <Square
+            key={i}
             index={i}
             value={this.props.squares[i]}
             onClick={()=>this.props.handleClick(i)}
+            isSelected={i === this.props.selectedIndex}
+            targetType={this.props.targets ? this.props.targets[i] : undefined}
           />
         );
       }

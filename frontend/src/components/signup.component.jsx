@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {Link} from 'react-router-dom';
 import * as firebase from "firebase/app";
 import "firebase/auth";
@@ -187,42 +188,41 @@ export default class SignupPage extends Component {
   //render function for the component
   render() {
     return (
-      <div>
-      <div>  
-        <div className="container">  
-            <div> <h3>Create an account with us</h3></div>
-              <Form>
-                <Form.Group controlId="formBasicEmail">
-                  <Form.Label>Email address</Form.Label>
-                  <Form.Control type="email" placeholder="example@example.com"  onChange={this.handleEmailChange} />
-                  <Form.Text className="text-muted">
-                    ***We'll never share your info with anyone else.
-                  </Form.Text>
-                </Form.Group>
-                <Form.Group>
-                  <Form.Label>Firstname:</Form.Label>
-                  <Form.Control type="text" placeholder="Lorem" onChange={this.handleFirstnameChange}/>
-                  <Form.Label>Lastname:</Form.Label>
-                  <Form.Control type="text" placeholder="Ipsum" onChange={this.handleLastnameChange}/>
-                </Form.Group>
-
-                <Form.Group controlId="formBasicPassword">
-                  <Form.Label>Password:</Form.Label>
-                  <Form.Control type="password" placeholder="Secret Password"  onChange={this.handlePasswordChange} />
-                  <Form.Label>Confirm Password:</Form.Label>
-                  <Form.Control type="password" placeholder="Retype same Password" onChange={this.handleConfirmPasswordChange}/>
-                </Form.Group>
-
-                <Button className="center" variant="primary" onClick={this.handleSignup}>
-                  Create an account
-                </Button>{' '}
-                <Link to="/login" className="btn btn-primary">
-                   Back to Login?
-                </Link>
-              </Form>
+      <main className="mx-auto flex max-w-md flex-col px-5 py-12 sm:py-16">
+        <div className="heritage-card animate-rise p-7 sm:p-9">
+          <p className="eyebrow mb-2">Join the hunt</p>
+          <h1 className="mb-6 font-display text-3xl font-semibold tracking-tight">Create your account</h1>
+          <div className="space-y-5">
+            <div className="space-y-1.5">
+              <Label htmlFor="email">Email address</Label>
+              <Input id="email" type="email" placeholder="you@example.com" onChange={this.handleEmailChange} />
             </div>
-         </div>
-      </div>
-    )
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <Label htmlFor="firstname">First name</Label>
+                <Input id="firstname" type="text" placeholder="First" onChange={this.handleFirstnameChange} />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="lastname">Last name</Label>
+                <Input id="lastname" type="text" placeholder="Last" onChange={this.handleLastnameChange} />
+              </div>
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" type="password" placeholder="••••••••" onChange={this.handlePasswordChange} />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="confirm">Confirm password</Label>
+              <Input id="confirm" type="password" placeholder="••••••••" onChange={this.handleConfirmPasswordChange} />
+            </div>
+            <Button onClick={this.handleSignup} size="lg" className="w-full rounded-full text-base">Create account</Button>
+          </div>
+          <p className="mt-6 text-center text-sm text-muted-foreground">
+            Already have an account?{' '}
+            <Link to="/login" className="font-medium text-primary hover:underline">Sign in</Link>
+          </p>
+        </div>
+      </main>
+    );
   }
 }

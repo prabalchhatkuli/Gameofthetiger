@@ -1,102 +1,61 @@
-import React,{useContext} from 'react'
-import Nav from 'react-bootstrap/Nav'
-import Navbar from 'react-bootstrap/Navbar'
-import Button from 'react-bootstrap/Button'
+import React from 'react'
 import {auth} from '../firebase.config.js'
 import { signOut } from "firebase/auth";
 import goatSvg from '../SVG/goat.svg'
 import tigerSvg from '../SVG/tiger.svg'
+import { Button } from '@/components/ui/button';
 
 /**/
 /*
 function Navigation(props)
-
-NAME
-
-        Navigation - the navigation bar component for the application
-
-SYNOPSIS
-
-        export default function Navigation(props)
-            props       --> props contains the user object sent from the App component
-
-DESCRIPTION
-
-        provides a gui at the top of the page for accessing the various routes of the program,
-        inlcuding the sign-in/out and the play game functionality.
-
-RETURNS
-
-        Returns navigation bar gui
-
-AUTHOR
-
-        Prabal Chhatkuli
-
-DATE
-
-        2/24/2020
-
+        The top navigation bar for the application.
 */
 /**/
 
 export default function Navigation(props) {
 
-        //trivial function for the signout button
-        function signout()
-        {
-            signOut(auth);
-        }
+    //trivial function for the signout button
+    function signout() {
+        signOut(auth);
+    }
 
-        //elements returned by the component
-        return(
-            
-            <Navbar collapseOnSelect expand="lg" bg="light " variant="light">
-                <div className="container">
-                    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                
-                    <Navbar.Collapse id="responsive-navbar-nav">
-                        <Nav className="mr-auto">
-                            <Button variant="outline-success"  href='/game'>Play the Game </Button>{' '}
-                            <Nav.Link href="/instruction">Instruction</Nav.Link>
-                        </Nav>
-                    </Navbar.Collapse>
+    return (
+        <header className="sticky top-0 z-40 border-b border-border/70 bg-background/80 backdrop-blur-md">
+            <nav className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
+                <a href="/" className="group flex items-center gap-2.5">
+                    <img alt="" src={tigerSvg} width="30" height="30" className="transition-transform duration-300 group-hover:-rotate-6" />
+                    <span className="font-display text-lg font-semibold tracking-tight">
+                        Game of the <span className="text-primary">Tiger</span>
+                    </span>
+                    <img alt="" src={goatSvg} width="26" height="26" className="transition-transform duration-300 group-hover:rotate-6" />
+                </a>
 
-                    <Navbar.Brand className = "p" href="/"> 
-                        <img
-                        alt=""
-                        src={goatSvg}
-                        width="30"
-                        height="30"
-                        className="d-inline-block align-top"
-                        />{' '}
-                     Game of the Tiger
-                     {' '}
-                     <img
-                        alt=""
-                        src={tigerSvg}
-                        width="30"
-                        height="30"
-                        className="d-inline-block align-top"
-                        />
-                     </Navbar.Brand>
+                <div className="flex flex-wrap items-center gap-1 sm:gap-2">
+                    <NavLink href="/game">Play</NavLink>
+                    <NavLink href="/instruction">How to play</NavLink>
+                    <NavLink href="/about">About</NavLink>
+                    {props.userInfo === null
+                        ? <Button asChild className="ml-1 rounded-full px-5"><a href="/login">Log in</a></Button>
+                        : <>
+                            <a href="/Profile" title="Profile"
+                               className="ml-1 flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card text-lg leading-none shadow-sm transition-transform hover:-translate-y-0.5">
+                                {props.avatar}
+                            </a>
+                            <Button variant="outline" onClick={signout} className="rounded-full px-5">Sign out</Button>
+                          </>}
+                </div>
+            </nav>
+        </header>
+    );
+}
 
-                    <Navbar.Collapse id="responsive-navbar-nav">
-                        
-                        <Nav className="ml-auto">
-                            <Nav.Link href="/about">About</Nav.Link>{' '}
-                            {props.userInfo === null?
-                                <div></div>:<Nav.Link href="/Profile">Profile</Nav.Link>
-                            }
-                            {props.userInfo === null?
-                                <Button variant="outline-success" href='/login'>Log In/Sign Up</Button>
-                                :
-                                <Button variant="outline-danger" onClick={signout}>Signout </Button>
-                            }{' '}
-                        </Nav>
-                    </Navbar.Collapse>
-                    </div>
-                </Navbar>
-           
-           );
+function NavLink({ href, children }) {
+    return (
+        <a
+            href={href}
+            className="relative px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground after:absolute after:bottom-0 after:left-3 after:right-3 after:h-px after:origin-left after:scale-x-0 after:bg-primary after:transition-transform hover:after:scale-x-100"
+        >
+            {children}
+        </a>
+    );
 }

@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import Button from 'react-bootstrap/Button'
-import Form from 'react-bootstrap/Form'
 import {Link} from 'react-router-dom';
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import {auth} from '../firebase.config.js'
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
  
 /**/
 /*
@@ -152,36 +153,30 @@ export default class LoginPage extends Component {
   //render function for the component
   render() {
     return (
-      <div>
-      <div>  
-        <div className="container">  
-            <div> <h3>Sign In</h3></div>
-              <Form>
-                <Form.Group controlId="formBasicEmail">
-                  <Form.Label>Email address</Form.Label>
-                  <Form.Control type="email" placeholder="Enter email"  onChange={this.handleEmailChange} />
-                  <Form.Text className="text-muted">
-                  ***We'll never share your info with anyone else.
-                  </Form.Text>
-                </Form.Group>
-
-                <Form.Group controlId="formBasicPassword">
-                  <Form.Label>Password</Form.Label>
-                  <Form.Control type="password" placeholder="Password" onKeyPress={this.enterPressed.bind(this)} onChange={this.handlePasswordChange} />
-                </Form.Group>
-                <Form.Group controlId="formBasicCheckbox">
-                  <Form.Check className="text-center" type="checkbox" label="Remember me"  onChange={this.handleRemember} />
-                </Form.Group>
-                <Button className="center" variant="primary" onClick={this.handleLogin}>
-                  Submit
-                </Button>{' '}
-                <Link to="/signup" className="btn btn-primary">
-                   Don't have an Account? Wanna create an account?
-                </Link>{' '}
-              </Form>
+      <main className="mx-auto flex max-w-md flex-col px-5 py-12 sm:py-16">
+        <div className="heritage-card animate-rise p-7 sm:p-9">
+          <p className="eyebrow mb-2">Welcome back</p>
+          <h1 className="mb-6 font-display text-3xl font-semibold tracking-tight">Sign in</h1>
+          <div className="space-y-5">
+            <div className="space-y-1.5">
+              <Label htmlFor="email">Email address</Label>
+              <Input id="email" type="email" placeholder="you@example.com" onChange={this.handleEmailChange} />
             </div>
-         </div>
-      </div>
-    )
+            <div className="space-y-1.5">
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" type="password" placeholder="••••••••" onKeyPress={this.enterPressed.bind(this)} onChange={this.handlePasswordChange} />
+            </div>
+            <label className="flex items-center gap-2 text-sm text-muted-foreground">
+              <input type="checkbox" onChange={this.handleRemember} className="accent-primary" /> Remember me
+            </label>
+            <Button onClick={this.handleLogin} size="lg" className="w-full rounded-full text-base">Sign in</Button>
+          </div>
+          <p className="mt-6 text-center text-sm text-muted-foreground">
+            New here?{' '}
+            <Link to="/signup" className="font-medium text-primary hover:underline">Create an account</Link>
+          </p>
+        </div>
+      </main>
+    );
   }
 }

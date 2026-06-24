@@ -1,15 +1,177 @@
-/* create-react-app default css document */
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+  Game of the Tiger — "heritage parchment" design system.
+  Palette is taken from the actual game pieces: tiger saffron (#d15a09)
+  and goat indigo (#184b89) on aged parchment.
+*/
+:root {
+  --radius: 0.5rem;
+
+  --background: oklch(0.967 0.014 84);
+  --foreground: oklch(0.255 0.022 52);
+
+  --card: oklch(0.992 0.006 84);
+  --card-foreground: oklch(0.255 0.022 52);
+  --popover: oklch(0.992 0.006 84);
+  --popover-foreground: oklch(0.255 0.022 52);
+
+  /* tiger saffron */
+  --primary: oklch(0.585 0.158 49);
+  --primary-foreground: oklch(0.98 0.012 84);
+
+  --secondary: oklch(0.918 0.02 78);
+  --secondary-foreground: oklch(0.30 0.04 56);
+
+  --muted: oklch(0.93 0.014 80);
+  --muted-foreground: oklch(0.50 0.025 58);
+
+  /* goat indigo */
+  --accent: oklch(0.40 0.105 256);
+  --accent-foreground: oklch(0.98 0.012 84);
+
+  --destructive: oklch(0.55 0.205 27);
+
+  --border: oklch(0.855 0.024 74);
+  --input: oklch(0.855 0.024 74);
+  --ring: oklch(0.585 0.158 49);
+
+  --chart-1: oklch(0.585 0.158 49);
+  --chart-2: oklch(0.40 0.105 256);
+  --chart-3: oklch(0.70 0.12 70);
+  --chart-4: oklch(0.50 0.09 200);
+  --chart-5: oklch(0.55 0.13 20);
+
+  --sidebar: oklch(0.992 0.006 84);
+  --sidebar-foreground: oklch(0.255 0.022 52);
+  --sidebar-primary: oklch(0.585 0.158 49);
+  --sidebar-primary-foreground: oklch(0.98 0.012 84);
+  --sidebar-accent: oklch(0.918 0.02 78);
+  --sidebar-accent-foreground: oklch(0.30 0.04 56);
+  --sidebar-border: oklch(0.855 0.024 74);
+  --sidebar-ring: oklch(0.585 0.158 49);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-sans: "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 }
 
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    /* layered parchment: warm radial glow + faint grain */
+    background-image:
+      radial-gradient(ellipse 80% 60% at 50% -10%, oklch(0.585 0.158 49 / 0.07), transparent 60%),
+      radial-gradient(ellipse 70% 50% at 100% 100%, oklch(0.40 0.105 256 / 0.06), transparent 55%);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer components {
+  /* a parchment card with a double-rule frame, echoing the board's lines */
+  .heritage-card {
+    @apply rounded-xl border bg-card shadow-[0_1px_0_oklch(1_0_0/0.6)_inset,0_18px_40px_-24px_oklch(0.255_0.022_52/0.5)];
+    position: relative;
+  }
+  .heritage-card::after {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border: 1px solid color-mix(in oklch, var(--border) 80%, transparent);
+    border-radius: calc(var(--radius) + 2px);
+    pointer-events: none;
+  }
+  /* small uppercase eyebrow label */
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.18em] text-primary;
+  }
+  /* faint grain overlay you can drop onto any section */
+  .grain {
+    position: relative;
+  }
+  .grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.4;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+  }
+}
+
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+.animate-rise {
+  animation: rise-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* game-over emblem: pop in with a little overshoot, then a gentle idle bob */
+@keyframes winner-pop {
+  0% { opacity: 0; transform: scale(0.3) rotate(-12deg); }
+  60% { opacity: 1; transform: scale(1.15) rotate(4deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+@keyframes winner-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.winner-pop {
+  animation:
+    winner-pop 0.6s cubic-bezier(0.22, 1.4, 0.4, 1) both,
+    winner-bob 2.4s ease-in-out 0.7s infinite;
+}

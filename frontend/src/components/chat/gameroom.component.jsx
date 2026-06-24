@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
+import { Button } from '@/components/ui/button';
 import Game from '../game/game.component';
 import axios from 'axios';
 import { auth } from "../../firebase.config";
@@ -116,20 +116,33 @@ export default function GameRoom({ userInfo }) {
     // Verify the room has been created if not, give an error
     if (!gameFlag) {
         if (userInfo === null) {
-            return <h4>Please log in to continue.</h4>;
+            return (
+                <main className="mx-auto max-w-md px-5 py-20 text-center">
+                    <h2 className="font-display text-2xl font-semibold">Please log in to continue</h2>
+                    <Button asChild className="mt-6 rounded-full px-7"><a href="/login">Log in</a></Button>
+                </main>
+            );
         }
 
         return (
-            <div id='gametype'>
-                {validRoom ? (
-                    <div>
-                        <h4>Room is valid click start game to enter</h4>
-                        <Button onClick={startGame}>Start Game</Button>
-                    </div>
-                ) : (
-                    <h4>The room is invalid, please enter the link again or create a link to join.</h4>
-                )}
-            </div>
+            <main id='gametype' className="mx-auto max-w-md px-5 py-16">
+                <div className="heritage-card animate-rise p-8 text-center">
+                    {validRoom ? (
+                        <div>
+                            <p className="eyebrow mb-2">Online match</p>
+                            <h2 className="font-display text-2xl font-semibold">Room ready</h2>
+                            <p className="mt-2 text-sm text-muted-foreground">Your opponent's room is valid. Enter when you're ready.</p>
+                            <Button onClick={startGame} size="lg" className="mt-6 rounded-full px-8">Start game</Button>
+                        </div>
+                    ) : (
+                        <div>
+                            <h2 className="font-display text-2xl font-semibold">Room not found</h2>
+                            <p className="mt-2 text-sm text-muted-foreground">That link is invalid. Check the URL, or create a new room to invite a friend.</p>
+                            <Button asChild variant="outline" className="mt-6 rounded-full px-7"><a href="/game">Back to menu</a></Button>
+                        </div>
+                    )}
+                </div>
+            </main>
         );
     }
 

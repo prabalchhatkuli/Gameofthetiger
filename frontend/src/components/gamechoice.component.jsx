@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom';
 import Game from './game/game.component'
 import Multichoice from './chat/multichoice.component'
+import { Button } from '@/components/ui/button';
 
 /**/
 /*
@@ -83,33 +84,62 @@ export default class GameChoice extends Component {
         }
         if(this.state.showSinglePlayerSetup){
             const humanSide = this.state.aiSide === 'tiger' ? 'goat' : 'tiger';
+            const difficulties = ['easy', 'medium', 'hard'];
             return(
-                <div className="container single-setup">
-                    <h5>Play vs Computer</h5>
-                    <label htmlFor="aiSideSelect">You play as: </label>
-                    <select id="aiSideSelect" value={humanSide}
-                            onChange={e => this.setState({ aiSide: e.target.value === 'tiger' ? 'goat' : 'tiger' })}>
-                        <option value="goat">Goat</option>
-                        <option value="tiger">Tiger</option>
-                    </select>
-                    {' '}
-                    <label htmlFor="aiDiffSelect">Difficulty: </label>
-                    <select id="aiDiffSelect" value={this.state.aiDifficulty}
-                            onChange={e => this.setState({ aiDifficulty: e.target.value })}>
-                        <option value="easy">Easy</option>
-                        <option value="medium">Medium</option>
-                        <option value="hard">Hard</option>
-                    </select>
-                    {' '}
-                    <button onClick={this.startSinglePlayer} className="btn btn-success">Start</button>
+                <div className="heritage-card animate-rise single-setup mx-auto max-w-md p-7">
+                    <p className="eyebrow mb-2">Single player</p>
+                    <h2 className="mb-6 font-display text-2xl font-semibold">Set up your match</h2>
+
+                    <p className="mb-2 text-sm font-medium text-muted-foreground">You play as</p>
+                    <div className="mb-6 grid grid-cols-2 gap-2">
+                        {['goat', 'tiger'].map(side => (
+                            <button key={side} onClick={() => this.setState({ aiSide: side === 'tiger' ? 'goat' : 'tiger' })}
+                                className={`rounded-lg border-2 px-4 py-3 text-sm font-semibold capitalize transition-colors ${humanSide === side ? 'border-primary bg-primary/10 text-foreground' : 'border-border bg-card text-muted-foreground hover:border-primary/40'}`}>
+                                {side === 'goat' ? '20 Goats' : '4 Tigers'}
+                            </button>
+                        ))}
+                    </div>
+
+                    <p className="mb-2 text-sm font-medium text-muted-foreground">Difficulty</p>
+                    <div className="mb-7 grid grid-cols-3 gap-2">
+                        {difficulties.map(d => (
+                            <button key={d} onClick={() => this.setState({ aiDifficulty: d })}
+                                className={`rounded-lg border px-3 py-2 text-sm font-medium capitalize transition-colors ${this.state.aiDifficulty === d ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-card text-muted-foreground hover:border-primary/40'}`}>
+                                {d}
+                            </button>
+                        ))}
+                    </div>
+
+                    <div className="flex gap-2">
+                        <Button variant="ghost" onClick={() => this.setState({ showSinglePlayerSetup: false })} className="rounded-full">Back</Button>
+                        <Button onClick={this.startSinglePlayer} size="lg" className="flex-1 rounded-full text-base">Start game</Button>
+                    </div>
                 </div>
             )
         }
+        const modes = [
+            { onClick: this.singlePlayer, title: 'Play vs Computer', desc: 'Minimax AI — easy, medium or hard.', tag: 'Solo' },
+            { onClick: this.twoPlayer, title: 'Two Players', desc: 'Pass and play on one device.', tag: 'Local' },
+            { onClick: this.multiplayer, title: 'Online Multiplayer', desc: 'Create a room and share the link.', tag: 'Online' },
+        ];
         return(
-            <div className="container">
-                <button onClick={this.singlePlayer} className="btn btn-primary form-control">Play vs Computer</button>{' '}
-                <button onClick={this.twoPlayer} className="btn btn-primary form-control">Two Players on same Device</button>{' '}
-                <button onClick={this.multiplayer} className="btn btn-primary form-control">Multiplayer</button>{'   '}
+            <div className="mx-auto max-w-3xl px-5 py-12">
+                <div className="mb-8 text-center animate-rise">
+                    <p className="eyebrow">Choose a mode</p>
+                    <h1 className="mt-2 font-display text-4xl font-semibold tracking-tight">How will you play?</h1>
+                </div>
+                <div className="grid gap-4 sm:grid-cols-3">
+                    {modes.map((m, i) => (
+                        <button key={m.title} onClick={m.onClick}
+                            className="heritage-card animate-rise group flex flex-col items-start gap-2 p-6 text-left transition-transform hover:-translate-y-1"
+                            style={{ animationDelay: `${i * 80}ms` }}>
+                            <span className="rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider text-accent">{m.tag}</span>
+                            <span className="font-display text-xl font-semibold">{m.title}</span>
+                            <span className="text-sm text-muted-foreground">{m.desc}</span>
+                            <span className="mt-2 text-sm font-medium text-primary transition-transform group-hover:translate-x-1">Play →</span>
+                        </button>
+                    ))}
+                </div>
             </div>
         )
     }
@@ -117,8 +147,10 @@ export default class GameChoice extends Component {
     render() {
         return(
             this.props.userInfo===null?
-                <div>
-                    <h4>Please log in to continue.</h4>
+                <div className="mx-auto max-w-md px-5 py-20 text-center">
+                    <h2 className="font-display text-2xl font-semibold">Please log in to continue</h2>
+                    <p className="mt-2 text-muted-foreground">You need an account to play and track your record.</p>
+                    <Button asChild className="mt-6 rounded-full px-7"><a href="/login">Log in</a></Button>
                 </div>
                 :
                 <div>

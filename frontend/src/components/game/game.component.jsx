@@ -9,7 +9,7 @@ import Chat from '../chat/chat.component'
 import Winner from './winner.component'
 import { auth, recordAiGame } from '../../firebase.config'
 import { getAIMove } from '../../ai/index'
-import { applyMove, getWinner } from '../../ai/rules'
+import { applyMove, getWinner, getLegalMoves } from '../../ai/rules'
 
 /**/
 /*
@@ -557,37 +557,70 @@ class Game extends Component {
     render() {
         const history = this.state.history;
         const current = history[history.length -1];
-        
+
+        // highlight: selected piece + its legal destinations
+        const selectedIndex = this.state.sourceSelection;
+        const targets = {};
+        if (selectedIndex >= 0) {
+            const moves = getLegalMoves(current.squares, this.state.gisnext, this.state.goatsOnBoard);
+            for (const m of moves) {
+                if (m.from === selectedIndex) {
+                    targets[m.to] = m.type === 'capture' ? 'capture' : 'move';
+                }
+            }
+        }
+
         let nextPlayer;
         nextPlayer = 'Next player: ' + (this.state.gisnext ? 'Goat' : 'Tiger');
         let status = this.state.status;
+        const goatTurn = this.state.gisnext;
         return (
-            <div>
-                <div className="game-info">
-                    <div>{nextPlayer}</div>
-                    <div>Goats: placed: {this.state.goatsOnBoard}</div>
-                    <div>Eaten: {this.state.goatsTaken}</div>
-                    <div>{status}</div>
-                    {this.state.winner?<Winner winner={this.state.winner}/>:<p></p>}
-                </div>
-                <div className="game">
-
-                    <div>
-                            {/*get the main board*/}
-                            <Board
-                                squares={current.squares}
-                                handleClick={(i)=> this.handleClick(i)}
-                            />
-                            {/*contains all the illustrated paths/click divs and diagonal elements.*/}
+            <main className="mx-auto max-w-6xl px-4 py-6">
+                {/* scoreboard (full width) */}
+                <div className="heritage-card mb-6 flex flex-wrap items-center justify-between gap-4 p-4 sm:p-5">
+                    <div className="flex items-center gap-3">
+                        <span className={`flex h-10 w-10 items-center justify-center rounded-full text-xl ${goatTurn ? 'bg-accent/15' : 'bg-primary/15'}`}>
+                            {goatTurn ? '🐐' : '🐯'}
+                        </span>
+                        <div>
+                            <p className="text-xs uppercase tracking-wider text-muted-foreground">Now playing</p>
+                            <p className={`font-display text-lg font-semibold ${goatTurn ? 'text-accent' : 'text-primary'}`}>
+                                {goatTurn ? 'Goats' : 'Tigers'}
+                            </p>
+                        </div>
                     </div>
+                    <div className="flex gap-2">
+                        <div className="rounded-lg border border-border/70 bg-card/60 px-3 py-1.5 text-center">
+                            <p className="font-display text-lg font-semibold">{this.state.goatsOnBoard}<span className="text-sm text-muted-foreground">/20</span></p>
+                            <p className="text-[11px] uppercase tracking-wider text-muted-foreground">Placed</p>
+                        </div>
+                        <div className="rounded-lg border border-border/70 bg-card/60 px-3 py-1.5 text-center">
+                            <p className="font-display text-lg font-semibold text-primary">{this.state.goatsTaken}<span className="text-sm text-muted-foreground">/5</span></p>
+                            <p className="text-[11px] uppercase tracking-wider text-muted-foreground">Eaten</p>
+                        </div>
+                    </div>
+                    {status ? <p className="w-full text-sm text-muted-foreground">{status}</p> : null}
+                    {this.state.winner ? <Winner winner={this.state.winner} /> : null}
                 </div>
-                <div className="chat">
-                {this.props.choice === 'multi'?
-                    <Chat name="Room" roomID={this.props.roomID} socket={this.state.socket}/>:<p></p>
-                }
-                <Chat name="Global" socket={this.state.socket}/>
+
+                {/* board + chat sidebar */}
+                <div className="grid items-start gap-6 lg:grid-cols-[1fr_340px]">
+                    <div className="flex justify-center">
+                        <Board
+                            squares={current.squares}
+                            handleClick={(i) => this.handleClick(i)}
+                            selectedIndex={selectedIndex}
+                            targets={targets}
+                        />
+                    </div>
+                    <aside className="flex flex-col gap-4">
+                        {this.props.choice === 'multi'
+                            ? <Chat name="Room" roomID={this.props.roomID} socket={this.state.socket} />
+                            : null}
+                        <Chat name="Global" socket={this.state.socket} />
+                    </aside>
                 </div>
-            </div>
+            </main>
         )
     }
 }

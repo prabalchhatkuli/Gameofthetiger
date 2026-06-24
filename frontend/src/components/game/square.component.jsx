@@ -45,7 +45,7 @@ export default class Square extends Component {
           src={tigerPieceSvg}
           width="45%"
           height="45%"
-          className="d-inline-block align-top"
+          className="inline-block align-top"
           />
 
   
@@ -54,7 +54,7 @@ export default class Square extends Component {
           src={goatPieceSvg}
           width="60%"
           height="60%"
-          className="d-inline-block align-top"
+          className="inline-block align-top"
           />
 
       default: 
@@ -62,12 +62,13 @@ export default class Square extends Component {
   }
 
   render() {
+    const { isSelected, targetType } = this.props;
     return (
-        <div 
-          className="squares" 
-          onClick={this.props.onClick}>
+        <div className="squares" onClick={this.props.onClick}>
+          {isSelected && <span className="cell-selected" />}
+          {targetType === 'move' && <span className="cell-move-dot" />}
+          {targetType === 'capture' && <span className="cell-capture-ring" />}
           {this.getPiece(this.props.value.player)}
-          
         </div>
     );
   }
